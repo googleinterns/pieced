@@ -1,0 +1,17 @@
+#species-page {
+    display: flex;
+    flex-direction: row;
+    padding: 0 !important;
+    height: 100vh;
+}
+
+#species-image-container {
+    background: blue;
+    flex-grow: 1;
+    margin: 0 auto;
+}
+
+#species-info-container {
+    background: green;
+    flex-grow: 3;
+}
