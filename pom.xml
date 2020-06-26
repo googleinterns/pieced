@@ -23,13 +23,6 @@
       <version>4.0.1</version>
       <scope>provided</scope>
     </dependency>
-
-    <dependency>
-      <!-- jsoup HTML parser library @ https://jsoup.org/ -->
-      <groupId>org.jsoup</groupId>
-      <artifactId>jsoup</artifactId>
-      <version>1.13.1</version>
-    </dependency>
   </dependencies>
 
   <build>
@@ -44,14 +37,6 @@
           <!-- TODO: set project ID. -->
           <deploy.projectId>YOUR_PROJECT_ID_HERE</deploy.projectId>
           <deploy.version>1</deploy.version>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.6.0</version>
-        <configuration>
-          <mainClass>com.google.sps.utils.data.MainScraper</mainClass>
         </configuration>
       </plugin>
     </plugins>
