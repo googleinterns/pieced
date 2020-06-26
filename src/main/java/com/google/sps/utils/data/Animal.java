@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class Animal {
+    
     // Cross-referenced
     private String common_name;
     private String binomial_name;
