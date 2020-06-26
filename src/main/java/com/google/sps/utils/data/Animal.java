@@ -27,7 +27,7 @@ public class Animal {
     private boolean marine_system;
     private boolean freshwater_system;
     private boolean terrestrial_system;
-    private String taxonomicnotes;
+    private String taxonomic_notes;
     private Collection<String> countries;
     private Collection<AnimalHistory> history_set;
     private String citation_link;
@@ -48,7 +48,7 @@ public class Animal {
         marine_system = false;
         freshwater_system = false;
         terrestrial_system = false;
-        taxonomicnotes = null;
+        taxonomic_notes = null;
         countries = new HashSet<>();
         history_set = new HashSet<>();
         citation_link = "https://apiv3.iucnredlist.org/api/v3/taxonredirect/";
@@ -115,8 +115,8 @@ public class Animal {
         this.terrestrial_system = indicator;
     }
 
-    public void setTaxonomicNotes(Stirng taxonomicnotes) {
-        this.taxonomicnotes = taxonomicnotes;
+    public void setTaxonomicNotes(String taxonomic_notes) {
+        this.taxonomic_notes = taxonomic_notes;
     }
 
     public void addCountry(String country) {
@@ -188,7 +188,7 @@ public class Animal {
     }
 
     public String getTaxonomicnotes() {
-        return taxonomicnotes;
+        return taxonomic_notes;
     }
 
     public Collection<String> getCountries() {
