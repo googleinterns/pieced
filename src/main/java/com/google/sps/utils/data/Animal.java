@@ -10,48 +10,72 @@ public class Animal {
     // Cross-referenced
     private String common_name;
     private String binomial_name;
+    private String status;
+    private boolean isPopulationDecreasing;
 
     // Provided by Wikipedia
     private int population;
-    private String status;
+    private String wikipedia_notes;
+    private String image_link;
 
     // Provided by IUCN API
     private int id;
-    private String kingdom;
-    private String phylum;
-    private String class;
-    private String order;
-    private String family;
-    private String genus;
-    private String population_trend;
+    private Taxonomy taxonomy;
     private boolean marine_system;
     private boolean freshwater_system;
     private boolean terrestrial_system;
     private String taxonomic_notes;
     private Collection<String> countries;
     private Collection<AnimalHistory> history_set;
-    private String citation_link;
+    private Collection<String> citation_links;
 
     public Animal() {
         common_name = null;
         binomial_name = null;
-        population = -1;
         status = null;
+        isPopulationDecreasing = false;
+        population = -1;
+        wikipedia_notes = null;
+        image_link = null;
         id = -1;
-        kingdom = null;
-        phylum = null;
-        class = null;
-        order = null;
-        family = null;
-        genus = null;
-        population_trend = null;
+        taxonomy = null;
         marine_system = false;
         freshwater_system = false;
         terrestrial_system = false;
         taxonomic_notes = null;
         countries = new HashSet<>();
         history_set = new HashSet<>();
-        citation_link = "https://apiv3.iucnredlist.org/api/v3/taxonredirect/";
+        citation_links = new HashSet<>();
+    }
+
+    // Wikipedia-side creation
+    public Animal(String common_name, String binomial_name, String status, boolean isPopulationDecreasing,
+                  int population, String wikipedia_notes, String image_link) {
+        this();
+        this.common_name = common_name;
+        this.binomial_name = binomial_name;
+        this.status = status;
+        this.isPopulationDecreasing = isPopulationDecreasing;
+        this.population = population;
+        this.wikipedia_notes = wikipedia_notes;
+        this.image_link = image_link;
+    }
+
+    // API-side creation
+    public Animal(String common_name, String binomial_name, String status, boolean isPopulationDecreasing,
+                  int id, Taxonomy taxonomy, boolean marine_system, boolean freshwater_system,
+                  boolean terrestrial_system, String taxonomic_notes) {
+        this();
+        this.common_name = common_name;
+        this.binomial_name = binomial_name;
+        this.status = status;
+        this.isPopulationDecreasing = isPopulationDecreasing;
+        this.id = id;
+        this.taxonomy = taxonomy;
+        this.marine_system = marine_system;
+        this.freshwater_system = freshwater_system;
+        this.terrestrial_system = terrestrial_system;
+        this.taxonomic_notes = taxonomic_notes;
     }
 
     public void setCommonName(String common_name) {
@@ -70,37 +94,23 @@ public class Animal {
         this.status = status;
     }
 
+    public void setImageLink(String link) {
+        this.image_link = link;
+    }
+
     public void setId(int id) {
         this.id = id;
-        this.citation_link += id;
+
+        // Currently have the IUCN link automatically added but can change this to be done somewhere else
+        this.citation_links.add("https://apiv3.iucnredlist.org/api/v3/taxonredirect/" + id);
     }
 
-    public void setKingdom(String kingdom) {
-        this.kingdom = kingdom;
+    public void setTaxonomy(Taxonomy taxonomy) {
+        this.taxonomy = taxonomy;
     }
 
-    public void setPhylum(String phylum) {
-        this.phylum = phylum;
-    }
-
-    public void setClass(String class) {
-        this.class = class;
-    }
-
-    public void setOrder(String order) {
-        this.order = order;
-    }
-
-    public void setFamily(String family) {
-        this.family = family;
-    }
-
-    public void setGenus(String genus) {
-        this.genus = genus;
-    }
-
-    public void setPopulationTrend(String population_trend) {
-        this.population_trend = population_trend;
+    public void setPopulationDecreasing(boolean isPopulationDecreasing) {
+        this.isPopulationDecreasing = isPopulationDecreasing;
     }
 
     public void setMarineSystem(boolean indicator) {
@@ -127,6 +137,10 @@ public class Animal {
         this.history_set.add(history);
     }
 
+    public void addCitationLink(String link) {
+        this.citation_links.add(link);
+    }
+
     public String getCommonName() {
         return common_name;
     }
@@ -147,32 +161,16 @@ public class Animal {
         return id;
     }
 
-    public String getKingdom() {
-        return kingdom;
+    public String getImageLink() {
+        return image_link;
     }
 
-    public String getPhylum() {
-        return phylum;
+    public Taxonomy getTaxonomy() {
+        return taxonomy;
     }
 
-    public String getClass() {
-        return class;
-    }
-
-    public String getOrder() {
-        return order;
-    }
-
-    public String getFamily() {
-        return family;
-    }
-
-    public String getGenus() {
-        return genus;
-    }
-
-    public String getPopulationTrend() {
-        return population_trend;
+    public String getPopulationDecreasing() {
+        return isPopulationDecreasing;
     }
 
     public boolean isMarineSystem() {
@@ -199,7 +197,7 @@ public class Animal {
         return history_set;
     }
 
-    public String getCitationLink() {
-        return citation_link;
+    public Collection<String> getCitationLinks() {
+        return citation_links;
     }
 }

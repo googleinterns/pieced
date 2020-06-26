@@ -5,11 +5,7 @@ public class AnimalHistory {
     private String code;
     private String category;
 
-    private AnimalHistory() {
-        year = 0;
-        code = null;
-        category = null;
-    }
+    private AnimalHistory();
 
     private AnimalHistory(int year, String code, String category) {
         this.year = year;
