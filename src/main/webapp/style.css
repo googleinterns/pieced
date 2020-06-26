@@ -6,12 +6,25 @@
 }
 
 #species-image-container {
-    background: blue;
+    background: #AEDFDB;
     flex-grow: 1;
-    margin: 0 auto;
+}
+
+#species-name, #species-image, #canvas, #pixel_factor {
+    display: block;
+    margin: auto;
 }
 
 #species-info-container {
-    background: green;
+    background: #75C9CC;
     flex-grow: 3;
+}
+
+canvas {
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -o-crisp-edges;
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor;
 }

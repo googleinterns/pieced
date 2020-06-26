@@ -44,13 +44,11 @@
   <!-- Page Content -->
   <div id = "species-page" class = "container-fluid">
       <div id = "species-image-container">
-        <h1 class="mt-5"> Debug </h1>
+        <p id = "species-name"> Debug </p>
         <div>
-            <div class="pixelation"> Pixelation
-                <input class="slider" type="range" min="0" max="100" value="0" />
-                <output id="output"></output>
-            </div>
-            <img id = "species-image" class="image" src="hd_leaf.jpg" alt="Leaf" height = "512px" width = "256px">
+            <canvas onmouseover="over()" onmouseout="out()" id="canvas" width="500" height="400"></canvas>
+            <img id = "species-image" class="image" src="hd_leaf.jpg" alt="Leaf" style = "display: none;" height = "512px" width = "256px">
+            <input id="pixel_factor" type="number" min="16" max="131072" value = "100">
         </div>
       </div>
 
