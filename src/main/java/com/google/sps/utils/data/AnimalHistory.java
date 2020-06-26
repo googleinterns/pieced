@@ -66,7 +66,6 @@ public class AnimalHistory {
         boolean yearEqual = (this.year == a.getYear());
         boolean codeEqual = this.code.equals(a.getCode());
         boolean categoryEqual = this.category.equals(a.getCategory());
-
         return yearEqual && codeEqual && categoryEqual;
     }
 }
