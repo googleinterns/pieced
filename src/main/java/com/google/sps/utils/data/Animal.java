@@ -8,82 +8,82 @@ import java.util.HashSet;
 public class Animal {
     
     // Cross-referenced
-    private String common_name;
-    private String binomial_name;
+    private String commonName;
+    private String binomialName;
     private String status;
     private boolean isPopulationDecreasing;
 
     // Provided by Wikipedia
     private int population;
-    private String wikipedia_notes;
-    private String image_link;
+    private String wikipediaNotes;
+    private String imageLink;
 
     // Provided by IUCN API
     private int id;
     private Taxonomy taxonomy;
-    private boolean marine_system;
-    private boolean freshwater_system;
-    private boolean terrestrial_system;
-    private String taxonomic_notes;
+    private boolean marineSystem;
+    private boolean freshwaterSystem;
+    private boolean terrestrialSystem;
+    private String taxonomicNotes;
     private Collection<String> countries;
-    private Collection<AnimalHistory> history_set;
-    private Collection<String> citation_links;
+    private Collection<AnimalHistory> historySet;
+    private Collection<String> citationLinks;
 
     public Animal() {
-        common_name = null;
-        binomial_name = null;
+        commonName = null;
+        binomialName = null;
         status = null;
         isPopulationDecreasing = false;
         population = -1;
-        wikipedia_notes = null;
-        image_link = null;
+        wikipediaNotes = null;
+        imageLink = null;
         id = -1;
         taxonomy = null;
-        marine_system = false;
-        freshwater_system = false;
-        terrestrial_system = false;
-        taxonomic_notes = null;
+        marineSystem = false;
+        freshwaterSystem = false;
+        terrestrialSystem = false;
+        taxonomicNotes = null;
         countries = new HashSet<>();
-        history_set = new HashSet<>();
-        citation_links = new HashSet<>();
+        historySet = new HashSet<>();
+        citationLinks = new HashSet<>();
     }
 
     // Wikipedia-side creation
-    public Animal(String common_name, String binomial_name, String status, boolean isPopulationDecreasing,
-                  int population, String wikipedia_notes, String image_link) {
+    public Animal(String commonName, String binomialName, String status, boolean isPopulationDecreasing,
+                  int population, String wikipediaNotes, String imageLink) {
         this();
-        this.common_name = common_name;
-        this.binomial_name = binomial_name;
+        this.commonName = commonName;
+        this.binomialName = binomialName;
         this.status = status;
         this.isPopulationDecreasing = isPopulationDecreasing;
         this.population = population;
-        this.wikipedia_notes = wikipedia_notes;
-        this.image_link = image_link;
+        this.wikipediaNotes = wikipediaNotes;
+        this.imageLink = imageLink;
     }
 
     // API-side creation
-    public Animal(String common_name, String binomial_name, String status, boolean isPopulationDecreasing,
-                  int id, Taxonomy taxonomy, boolean marine_system, boolean freshwater_system,
-                  boolean terrestrial_system, String taxonomic_notes) {
+    public Animal(String commonName, String binomialName, String status, boolean isPopulationDecreasing,
+                  int id, Taxonomy taxonomy, boolean marineSystem, boolean freshwaterSystem,
+                  boolean terrestrialSystem, String taxonomicNotes) {
         this();
-        this.common_name = common_name;
-        this.binomial_name = binomial_name;
+        this.commonName = commonName;
+        this.binomialName = binomialName;
         this.status = status;
         this.isPopulationDecreasing = isPopulationDecreasing;
         this.id = id;
         this.taxonomy = taxonomy;
-        this.marine_system = marine_system;
-        this.freshwater_system = freshwater_system;
-        this.terrestrial_system = terrestrial_system;
-        this.taxonomic_notes = taxonomic_notes;
+        this.marineSystem = marineSystem;
+        this.freshwaterSystem = freshwaterSystem;
+        this.terrestrialSystem = terrestrialSystem;
+        this.taxonomicNotes = taxonomicNotes;
     }
 
-    public void setCommonName(String common_name) {
-        this.common_name = common_name;
+    public void setCommonName(String commonName) {
+        this.commonName = commonName;
     }
 
-    public void setBinomialName(String binomial_name) {
-        this.binomial_name = binomial_name;
+    public void setBinomialName(String binomialName) {
+        this.binomialName = binomialName;
     }
 
     public void setPopulation(int population) {
@@ -95,14 +95,14 @@ public class Animal {
     }
 
     public void setImageLink(String link) {
-        this.image_link = link;
+        this.imageLink = link;
     }
 
     public void setId(int id) {
         this.id = id;
 
         // Currently have the IUCN link automatically added but can change this to be done somewhere else
-        this.citation_links.add("https://apiv3.iucnredlist.org/api/v3/taxonredirect/" + id);
+        this.citationLinks.add("https://apiv3.iucnredlist.org/api/v3/taxonredirect/" + id);
     }
 
     public void setTaxonomy(Taxonomy taxonomy) {
@@ -114,19 +114,19 @@ public class Animal {
     }
 
     public void setMarineSystem(boolean indicator) {
-        this.marine_system = indicator;
+        this.marineSystem = indicator;
     }
 
     public void setFreshwaterSystem(boolean indicator) {
-        this.freshwater_system = indicator;
+        this.freshwaterSystem = indicator;
     }
 
     public void setTerrestrialSystem(boolean indicator) {
-        this.terrestrial_system = indicator;
+        this.terrestrialSystem = indicator;
     }
 
-    public void setTaxonomicNotes(String taxonomic_notes) {
-        this.taxonomic_notes = taxonomic_notes;
+    public void setTaxonomicNotes(String taxonomicNotes) {
+        this.taxonomicNotes = taxonomicNotes;
     }
 
     public void addCountry(String country) {
@@ -134,19 +134,19 @@ public class Animal {
     }
 
     public void addHistory(AnimalHistory history) {
-        this.history_set.add(history);
+        this.historySet.add(history);
     }
 
     public void addCitationLink(String link) {
-        this.citation_links.add(link);
+        this.citationLinks.add(link);
     }
 
     public String getCommonName() {
-        return common_name;
+        return commonName;
     }
 
     public String getBinomialName() {
-        return binomial_name;
+        return binomialName;
     }
 
     public int getPopulation() {
@@ -162,7 +162,7 @@ public class Animal {
     }
 
     public String getImageLink() {
-        return image_link;
+        return imageLink;
     }
 
     public Taxonomy getTaxonomy() {
@@ -174,19 +174,19 @@ public class Animal {
     }
 
     public boolean isMarineSystem() {
-        return marine_system;
+        return marineSystem;
     }
 
     public boolean isFreshwaterSystem() {
-        return freshwater_system;
+        return freshwaterSystem;
     }
 
     public boolean isTerrestrialSystem() {
-        return terrestrial_system;
+        return terrestrialSystem;
     }
 
     public String getTaxonomicnotes() {
-        return taxonomic_notes;
+        return taxonomicNotes;
     }
 
     public Collection<String> getCountries() {
@@ -194,10 +194,10 @@ public class Animal {
     }
 
     public Collection<AnimalHistory> getHistory() {
-        return history_set;
+        return historySet;
     }
 
     public Collection<String> getCitationLinks() {
-        return citation_links;
+        return citationLinks;
     }
 }
