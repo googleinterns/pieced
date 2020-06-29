@@ -7,6 +7,7 @@ import java.io.IOException;
 public class DataCollection {
   
   public static void main (String[] args) throws IOException {
-    WebScraper.parseSpeciesTable("https://en.wikipedia.org/wiki/List_of_carnivorans_by_population");
+    WebScraper.parseListofPages();
+    // WebScraper.parseSpeciesTable("https://en.wikipedia.org/wiki/List_of_carnivorans_by_population");
   }
 }

@@ -7,33 +7,45 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class WebScraper {
-  private static final String listURL = "https://en.wikipedia.org/wiki/Lists_of_organisms_by_population";
-  
-//   public static void main (String[] args) throws IOException {
-//     Document doc = Jsoup.connect(listURL).get();
-//     Elements content = doc.getElementsByClass("mw-parser-output");
-//     Elements lists = content.select("li");
+  private static final String LIST_URL = "https://en.wikipedia.org/wiki/Lists_of_organisms_by_population";
+  private static final String LIST_CONTENT_CLASS = "mw-parser-output";
 
-//     int i = 0;
-//     for (Element list: lists) {
-//     //   System.out.println(list.attr("class"));
-//       i++;
-//       if (!list.attr("class").equals("")) {
-//         continue;
-//       }
-//       if (list.select("ul").equals("")) {
-//         continue;
-//       }
-//     //   System.out.println(list);
-//     //   System.out.println(list.select("ul"));
-//     //   System.out.println("NEW\n");
-//     }
-//     // System.out.print(lists);
-//     parseSpeciesTable(getPageURL());
-//   }
+  /**
+   * Scrapes LIST_URL to get a list of all the URLs with information about species
+   * Page Structure:
+   * <ul><li>
+   *   <a>Subheading</a>
+   *   <ul>
+   *     <li><a href="LINK"></a></li>
+   *     <li><a href="LINK"></a></li>
+   *   </ul>
+   * </li></ul>
+   */
+  public static void parseListofPages() throws IOException {
+    Document doc = Jsoup.connect(LIST_URL).get();
+    Elements content = doc.getElementsByClass(LIST_CONTENT_CLASS);
+    Elements listItems = content.select("li > ul > li"); // get list items that are in a nested ul
+
+    for (Element listItem: listItems) {
+
+      // Ignores list items from the Table of Contents
+      if (!listItem.attr("class").equals("")) {
+        continue;
+      }
+
+      // Gets the absolute link to the new wiki page
+      // Example: https://en.wikipedia.org/wiki/List_of_even-toed_ungulates_by_population
+      Element link = listItem.select("a[href]").first();
+      String absHref = link.attr("abs:href");
+      if (absHref.contains("#")) { // if link is actually a bookmark
+        continue;
+      }
+    
+      System.out.println(absHref);
+    }
+  }
 
   public static void parseSpeciesTable(String url) throws IOException {
-      System.out.println("HERE");
     Document doc = Jsoup.connect(url).get();
 
     Elements table = doc.getElementsByClass("wikitable");
@@ -43,14 +55,10 @@ public class WebScraper {
         if (tds.size() > 6) {
           String commonName = tds.get(0).text();
           String binomialName = tds.get(1).text();
-          String population = tds.get(2).select("b").text();
-          System.out.println(commonName + ":" + population);
+          String populationString = tds.get(2).select("b").text().replaceAll(",", "");
+          System.out.println(commonName + ":" + populationString);
         }
       }
     }
-  }
-
-  public static String getPageURL() {
-    return "https://en.wikipedia.org/wiki/List_of_carnivorans_by_population";
   }
 }
