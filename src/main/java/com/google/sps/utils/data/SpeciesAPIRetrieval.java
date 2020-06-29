@@ -10,13 +10,13 @@ public class SpeciesAPIRetrieval {
     private static final String apiURL = "https://api.gbif.org/v1/species/5231190";
 
     public static void main(String[] args) {
-        try {
-            get(apiURL);
-        }
-        catch (Exception e) {
-            System.out.println("Exception occurred.");
-            e.printStackTrace();
-        }
+        // try {
+        //     get(apiURL);
+        // }
+        // catch (Exception e) {
+        //     System.out.println("Exception occurred.");
+        //     e.printStackTrace();
+        // }
     }
 
     public static void get(String uri) throws IOException, InterruptedException {

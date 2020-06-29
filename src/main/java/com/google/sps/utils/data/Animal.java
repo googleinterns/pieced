@@ -169,7 +169,7 @@ public class Animal {
         return taxonomy;
     }
 
-    public String getPopulationDecreasing() {
+    public boolean getPopulationDecreasing() {
         return isPopulationDecreasing;
     }
 

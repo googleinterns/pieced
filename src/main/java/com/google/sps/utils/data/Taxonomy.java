@@ -4,17 +4,19 @@ public class Taxonomy {
 
     private String kingdom;
     private String phylum;
-    private String class;
+    private String class_t;
     private String order;
     private String family;
     private String genus;
 
-    public Taxonomy();
+    public Taxonomy() {
+        kingdom = null;
+    }
 
-    public Taxonomy(String kingdom, String phylum, String class, String order, String family, String genus) {
+    public Taxonomy(String kingdom, String phylum, String class_t, String order, String family, String genus) {
         this.kingdom = kingdom;
         this.phylum = phylum;
-        this.class = class;
+        this.class_t = class_t;
         this.order = order;
         this.family = family;
         this.genus = genus;
@@ -28,8 +30,8 @@ public class Taxonomy {
         this.phylum = phylum;
     }
 
-    public void setClass(String class) {
-        this.class = class;
+    public void setclass_t(String class_t) {
+        this.class_t = class_t;
     }
 
     public void setOrder(String order) {
@@ -52,8 +54,8 @@ public class Taxonomy {
         return phylum;
     }
 
-    public String getClass() {
-        return class;
+    public String getclass_t() {
+        return class_t;
     }
 
     public String getOrder() {

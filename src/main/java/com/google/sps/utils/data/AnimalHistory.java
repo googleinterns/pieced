@@ -4,7 +4,10 @@ public class AnimalHistory {
     private int year;
     private String category;
 
-    private AnimalHistory();
+    private AnimalHistory() {
+        year = 0;
+        category = null;
+    }
 
     private AnimalHistory(int year, String category) {
         this.year = year;
