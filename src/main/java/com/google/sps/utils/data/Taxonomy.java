@@ -1,4 +1,4 @@
-package com.google.sps.data;
+package com.google.sps.utils.data;
 
 public class Taxonomy {
 

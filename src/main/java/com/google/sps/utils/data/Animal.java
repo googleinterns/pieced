@@ -1,4 +1,4 @@
-package com.google.sps.data;
+package com.google.sps.utils.data;
 
 import java.util.ArrayList;
 import java.util.List;
