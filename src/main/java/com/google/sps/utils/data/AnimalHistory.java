@@ -4,12 +4,12 @@ public class AnimalHistory {
     private int year;
     private String category;
 
-    private AnimalHistory() {
-        year = 0;
-        category = null;
+
+    public AnimalHistory() {
+    
     }
 
-    private AnimalHistory(int year, String category) {
+    public AnimalHistory(int year, String category) {
         this.year = year;
         this.category = category;
     }
