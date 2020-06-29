@@ -1,5 +1,7 @@
-package com.google.sps.data;
+package com.google.sps.utils.data;
 
+import com.google.sps.utils.data.AnimalHistory;
+import com.google.sps.utils.data.Taxonomy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
@@ -169,7 +171,7 @@ public class Animal {
         return taxonomy;
     }
 
-    public String getPopulationDecreasing() {
+    public boolean getPopulationDecreasing() {
         return isPopulationDecreasing;
     }
 

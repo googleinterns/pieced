@@ -1,12 +1,14 @@
-package com.google.sps.data;
+package com.google.sps.utils.data;
 
 public class AnimalHistory {
     private int year;
     private String category;
 
-    private AnimalHistory();
+    public AnimalHistory() {
+        
+    }
 
-    private AnimalHistory(int year, String category) {
+    public AnimalHistory(int year, String category) {
         this.year = year;
         this.category = category;
     }
