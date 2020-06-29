@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <title>Capstone</title>
 
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="menu.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
@@ -43,31 +43,28 @@
 
   <!-- Page Content -->
   <div id = "species-page" class = "container-fluid">
-      <div id = "species-image-container">
-        <p id = "species-name"> Debug </p>
-        <div>
-            <canvas onmouseover = "animateFullResolution()" onmouseout = "animateOldResolution()" id="canvas" width="500" height="400"></canvas>
-            <!-- <canvas id="canvas" width="500" height="400"></canvas> -->
-            <img id = "species-image" class="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Royal_Bengal_Tiger_at_Kanha_National_Park.jpg/800px-Royal_Bengal_Tiger_at_Kanha_National_Park.jpg" alt="Leaf" style = "display: none;" height = "512px" width = "256px">
-
-            <input id="pixel_factor" type="number" min="16" max="131072" value = "100">
+      
+        <div class="grid">
+        <div class="grid-sizer"></div>
+        <div class="grid-item"> <img src="test-images/deer.jpg" /> </div>
+        <div class="grid-item"> <img src="test-images/giraffe.jpg" /> </div>
+        <div class="grid-item"> <img src="test-images/owl.jpg" /> </div>
+        <div class="grid-item"> <img src="test-images/pangolin.jpg" /> </div>
+        <div class="grid-item"> <img src="test-images/peacock.jpeg" /> </div>
+        <div class="grid-item"> <img src="test-images/porcupine.jpg" /> </div>
+        <div class="grid-item"> <img src="test-images/red-pander.jpg" /> </div>
+        <div class="grid-item"> <img src="test-images/seal.jpg" /> </div>
+        <div class="grid-item"> <img src="test-images/snake.jpg" /> </div>
+        <div class="grid-item"> <img src="test-images/squirrel.jpeg" /> </div>
+        <div class="grid-item"> <img src="test-images/tiger.jpeg" /> </div>
+        <div class="grid-item"> <img src="test-images/toucan.jpg" /> </div>
         </div>
-      </div>
 
-      <div id = "species-info-container">
-        <h1 class="text-center"> Status </h1>
-        <h1 class="text-center"> Threats </h1>
-        <h1 class="text-center"> Description </h1>
-        <h1 class="text-center"> Citations </h1>
-        <div id="globe">
-            <canvas></canvas>
-        </div>
-      </div>
   </div>
 
   <!-- JavaScript -->
-  <script src="pixelate-master/pixelate.js"></script>  
-  <script src="index.js"></script>
+  <!-- <script src="pixelate-master/pixelate.js"></script>   -->
+  <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
   <!-- <script src="jquery/jquery.slim.min.js"></script> -->
@@ -75,5 +72,6 @@
   <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
+  <script src="menu.js"></script>
 </body>
 </html>
