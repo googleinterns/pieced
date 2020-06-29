@@ -51,7 +51,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.6.0</version>
         <configuration>
-          <mainClass>com.google.sps.utils.data.MainScraper</mainClass>
+          <mainClass>com.google.sps.utils.data.DataCollection</mainClass>
         </configuration>
       </plugin>
     </plugins>

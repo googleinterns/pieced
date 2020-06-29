@@ -6,33 +6,34 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class MainScraper {
+public class WebScraper {
   private static final String listURL = "https://en.wikipedia.org/wiki/Lists_of_organisms_by_population";
   
-  public static void main (String[] args) throws IOException {
-    Document doc = Jsoup.connect(listURL).get();
-    Elements content = doc.getElementsByClass("mw-parser-output");
-    Elements lists = content.select("li");
+//   public static void main (String[] args) throws IOException {
+//     Document doc = Jsoup.connect(listURL).get();
+//     Elements content = doc.getElementsByClass("mw-parser-output");
+//     Elements lists = content.select("li");
 
-    int i = 0;
-    for (Element list: lists) {
-    //   System.out.println(list.attr("class"));
-      i++;
-      if (!list.attr("class").equals("")) {
-        continue;
-      }
-      if (list.select("ul"). == "") {
-        continue;
-      }
-      System.out.println(list);
-      System.out.println(list.select("ul"));
-      System.out.println("NEW\n");
-    }
-    // System.out.print(lists);
-    // parseSpeciesTable(getPageURL());
-  }
+//     int i = 0;
+//     for (Element list: lists) {
+//     //   System.out.println(list.attr("class"));
+//       i++;
+//       if (!list.attr("class").equals("")) {
+//         continue;
+//       }
+//       if (list.select("ul").equals("")) {
+//         continue;
+//       }
+//     //   System.out.println(list);
+//     //   System.out.println(list.select("ul"));
+//     //   System.out.println("NEW\n");
+//     }
+//     // System.out.print(lists);
+//     parseSpeciesTable(getPageURL());
+//   }
 
-  private static void parseSpeciesTable(String url) throws IOException {
+  public static void parseSpeciesTable(String url) throws IOException {
+      System.out.println("HERE");
     Document doc = Jsoup.connect(url).get();
 
     Elements table = doc.getElementsByClass("wikitable");
@@ -49,7 +50,7 @@ public class MainScraper {
     }
   }
 
-  private static String getPageURL() {
+  public static String getPageURL() {
     return "https://en.wikipedia.org/wiki/List_of_carnivorans_by_population";
   }
 }
