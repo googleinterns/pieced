@@ -1,5 +1,7 @@
 package com.google.sps.utils.data;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,11 +22,14 @@ public class WebScraper {
    *     <li><a href="LINK"></a></li>
    *   </ul>
    * </li></ul>
+   *
+   * @return List of all the URLs to go to
    */
-  public static void parseListofPages() throws IOException {
+  public static List<String> parseListofPages() throws IOException {
     Document doc = Jsoup.connect(LIST_URL).get();
     Elements content = doc.getElementsByClass(LIST_CONTENT_CLASS);
     Elements listItems = content.select("li > ul > li"); // get list items that are in a nested ul
+    List<String> urls = new ArrayList<String>();
 
     for (Element listItem: listItems) {
 
@@ -41,8 +46,10 @@ public class WebScraper {
         continue;
       }
     
-      System.out.println(absHref);
+      urls.add(absHref);
     }
+    
+    return urls;
   }
 
   public static void parseSpeciesTable(String url) throws IOException {
@@ -55,8 +62,16 @@ public class WebScraper {
         if (tds.size() > 6) {
           String commonName = tds.get(0).text();
           String binomialName = tds.get(1).text();
-          String populationString = tds.get(2).select("b").text().replaceAll(",", "");
-          System.out.println(commonName + ":" + populationString);
+          String populationString = tds.get(2).text(); // @TODO: Clean up this string. Currently has [#] for reference and commas
+          String status = tds.get(3).text();
+          String trend;
+          Element trendImg = tds.select("img").first();
+          if (trendImg != null) {
+            trend = trendImg.attr("alt");
+          } else {
+            trend = "Unknown";
+          }
+          System.out.println(commonName + "     " + binomialName + "     " + populationString + "     " + status + "     " + trend);
         }
       }
     }
