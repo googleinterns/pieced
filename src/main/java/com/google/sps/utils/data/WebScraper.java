@@ -68,9 +68,8 @@ public class WebScraper {
         if (tds.size() > 6) {
           String commonName = tds.get(0).text();
           String binomialName = tds.get(1).text();
-          String populationString = tds.get(2).text(); // @TODO: Clean up this string. Currently has [#] for reference and commas
-          populationString = populationString.replaceAll(",","").replaceAll("\\s+","");
-          String status = tds.get(3).text().replaceAll("Domesticated", "D");
+          String populationString = cleanPopulation(tds.get(2).text());
+          String status = cleanStatus(tds.get(3).text());
           String trend;
           Element trendImg = tds.get(4).select("img").first();
           if (trendImg != null) {
@@ -84,7 +83,7 @@ public class WebScraper {
           if (image != null) {
             imgUrl = image.absUrl("src");
           }
-          System.out.printf("%-25s %-30s %-25s %-10s %-15s %s %n", commonName, binomialName, populationString, status, trend, imgUrl);
+          System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, populationString, status, trend);
           Animal animal = new Animal(commonName, binomialName, populationString, status, trend, notes, imgUrl);
           animal.addCitationLink(url);
           animals.put(binomialName, animal);
@@ -92,5 +91,21 @@ public class WebScraper {
       }
     }
     return animals;
+  }
+
+  private static String cleanStatus(String statusString) {
+    String status = statusString.replaceAll("Domesticated", "D");
+    status = removeBrackets(status);
+    return status;
+  }
+
+  private static String cleanPopulation(String populationString) {
+    String pop = removeBrackets(populationString);
+    pop = pop.replaceAll("[^0-9.–-]", "");
+    return pop;
+  }
+
+  private static String removeBrackets(String og) {
+    return og.replaceAll("\\s*\\[[^\\]]*\\]\\s*", " ");
   }
 }

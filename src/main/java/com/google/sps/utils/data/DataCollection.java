@@ -17,12 +17,12 @@ public class DataCollection {
     List<String> urls = WebScraper.parseListofPages();
     Map<String, Animal> speciesMap = new HashMap<String, Animal>();
     for (String url: urls) {
-    //   System.out.println("NEW PAGE: " + url);
+      System.out.println("NEW PAGE: " + url);
       Map<String, Animal> animals = WebScraper.parseSpeciesTable(url);
       speciesMap.putAll(animals);
     //   System.out.println(animals.toString());
-    //   System.out.println("\n");
-      break;
+      System.out.println("\n");
+    //   break;
     }
     // System.out.println(speciesMap.toString());
     writeJson(speciesMap);
