@@ -1,7 +1,12 @@
 package com.google.sps.utils.data;
 
+import com.google.sps.utils.data.Animal;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+
 import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -52,8 +57,9 @@ public class WebScraper {
     return urls;
   }
 
-  public static void parseSpeciesTable(String url) throws IOException {
+  public static Map<String, Animal> parseSpeciesTable(String url) throws IOException {
     Document doc = Jsoup.connect(url).get();
+    Map<String, Animal> animals = new HashMap<String, Animal>();
 
     Elements table = doc.getElementsByClass("wikitable");
     for (Element head : table.select("tbody")) {
@@ -63,17 +69,28 @@ public class WebScraper {
           String commonName = tds.get(0).text();
           String binomialName = tds.get(1).text();
           String populationString = tds.get(2).text(); // @TODO: Clean up this string. Currently has [#] for reference and commas
-          String status = tds.get(3).text();
+          populationString = populationString.replaceAll(",","").replaceAll("\\s+","");
+          String status = tds.get(3).text().replaceAll("Domesticated", "D");
           String trend;
-          Element trendImg = tds.select("img").first();
+          Element trendImg = tds.get(4).select("img").first();
           if (trendImg != null) {
             trend = trendImg.attr("alt");
           } else {
             trend = "Unknown";
           }
-          System.out.println(commonName + "     " + binomialName + "     " + populationString + "     " + status + "     " + trend);
+          String notes = tds.get(5).text();
+          String imgUrl = "";
+          Element image = tds.get(6).select("img").first();
+          if (image != null) {
+            imgUrl = image.absUrl("src");
+          }
+          System.out.printf("%-25s %-30s %-25s %-10s %-15s %s %n", commonName, binomialName, populationString, status, trend, imgUrl);
+          Animal animal = new Animal(commonName, binomialName, populationString, status, trend, notes, imgUrl);
+          animal.addCitationLink(url);
+          animals.put(binomialName, animal);
         }
       }
     }
+    return animals;
   }
 }
