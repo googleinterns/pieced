@@ -9,7 +9,7 @@ import java.util.HashSet;
 
 public class Animal {
     
-    // Cross-referenced
+    // Cross-referenced IUCN/Wikipedia
     private String commonName;
     private String binomialName;
     private String status;
@@ -20,9 +20,11 @@ public class Animal {
     private String wikipediaNotes;
     private String imageLink;
 
+    // Provided by GBIF
+    private Taxonomy taxonomy;
+
     // Provided by IUCN API
     private int id;
-    private Taxonomy taxonomy;
     private boolean marineSystem;
     private boolean freshwaterSystem;
     private boolean terrestrialSystem;
@@ -63,7 +65,7 @@ public class Animal {
         this.imageLink = imageLink;
     }
 
-    // API-side creation
+    // IUCN-side creation
     public Animal(String commonName, String binomialName, String status, boolean isPopulationDecreasing,
                   int id, Taxonomy taxonomy, boolean marineSystem, boolean freshwaterSystem,
                   boolean terrestrialSystem, String taxonomicNotes) {

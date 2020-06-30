@@ -69,4 +69,15 @@ public class Taxonomy {
     public String getAnimalGenus() {
         return genus_t;
     }
+
+    public static void printTaxonomy(Taxonomy taxonomy) {
+        System.out.println("===Taxonomy===");
+        System.out.println("Kingdom: " + taxonomy.getAnimalKingdom());
+        System.out.println("Phylum: " + taxonomy.getAnimalPhylum());
+        System.out.println("Class: " + taxonomy.getAnimalClass());
+        System.out.println("Order: " + taxonomy.getAnimalOrder());
+        System.out.println("Family: " + taxonomy.getAnimalFamily());
+        System.out.println("Genus: " + taxonomy.getAnimalGenus());
+        System.out.println("===========");
+    }
 }
