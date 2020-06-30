@@ -57,6 +57,8 @@ public class SpeciesAPIRetrieval {
     }
 
     // Updates the DataCollection speciesMap with fields from converted JSON map
+    // canonicalName: binomial name of species
+    // jsonMap: mapping of the JSON returned from API call to this species
     public static void updateMap(String canonicalName, Map jsonMap) {
         if (jsonMap == null) {
             return;
@@ -70,7 +72,6 @@ public class SpeciesAPIRetrieval {
         String family = jsonMap.get("family").toString();
         String genus = jsonMap.get("genus").toString();
         Taxonomy taxonomy = new Taxonomy(kingdom, phylum, class_t, order, family, genus);
-        Taxonomy.printTaxonomy(taxonomy);
         if (DataCollection.speciesMap.get(canonicalName) != null) {
             DataCollection.speciesMap.get(canonicalName).setTaxonomy(taxonomy);
         }

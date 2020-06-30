@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class DataCollection {
-    private static final String API_URL = "https://api.gbif.org/v1/species/match?name=";
+    public static final String API_URL = "https://api.gbif.org/v1/species/match?name=";
     public static Map<String, Animal> speciesMap = new HashMap<String, Animal>(); 
   
     public static void main (String[] args) throws IOException {
@@ -22,18 +22,18 @@ public class DataCollection {
             System.out.println("\n");
         }
 
-        try {
-            String canonicalName = "Passer domesticus";
-            String apiJSON = SpeciesAPIRetrieval.getJSON(API_URL, canonicalName);
-            // convert json to map
-            Map jsonMap = SpeciesAPIRetrieval.convertJSONToMap(apiJSON);
-            System.out.println("Canonical Name: " + jsonMap.get("canonicalName"));
-            SpeciesAPIRetrieval.updateMap(canonicalName, jsonMap);
-        }
-        catch (Exception e) {
-            System.out.println("Exception occurred.");
-            e.printStackTrace();
-        }
+        // try {
+        //     String canonicalName = "Passer domesticus";
+        //     String apiJSON = SpeciesAPIRetrieval.getJSON(API_URL, canonicalName);
+        //     // convert json to map
+        //     Map jsonMap = SpeciesAPIRetrieval.convertJSONToMap(apiJSON);
+        //     System.out.println("Canonical Name: " + jsonMap.get("canonicalName"));
+        //     SpeciesAPIRetrieval.updateMap(canonicalName, jsonMap);
+        // }
+        // catch (Exception e) {
+        //     System.out.println("Exception occurred.");
+        //     e.printStackTrace();
+        // }
     }
 
 }

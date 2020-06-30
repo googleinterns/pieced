@@ -1,7 +1,14 @@
 package com.google.sps.utils.data;
 
+import com.google.sps.utils.data.DataCollection;
+import com.google.sps.utils.data.PopulationTrend;
+import com.google.sps.utils.data.SpeciesAPIRetrieval;
+import com.google.sps.utils.data.Animal;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -71,9 +78,45 @@ public class WebScraper {
           } else {
             trend = "Unknown";
           }
-          System.out.println(commonName + "     " + binomialName + "     " + populationString + "     " + status + "     " + trend);
+        //   System.out.println(commonName + "     " + binomialName + "     " + populationString + "     " + status + "     " + trend);
+            updateSpeciesMap(commonName, binomialName, status, trend);
         }
       }
     }
   }
+
+    public static void updateSpeciesMap(String commonName, String binomialName, String status, String trendString) {
+        PopulationTrend trend = getPopulationTrend(trendString);
+        Animal animal = new Animal(commonName, binomialName, status, trend, 0, null, null);
+        DataCollection.speciesMap.put(binomialName, animal);
+
+        // Add API-side fields if available
+        try {
+            String apiJSON = SpeciesAPIRetrieval.getJSON(DataCollection.API_URL, binomialName);
+            // convert json to map
+            Map jsonMap = SpeciesAPIRetrieval.convertJSONToMap(apiJSON);
+
+            SpeciesAPIRetrieval.updateMap(binomialName, jsonMap);
+            System.out.println("Binomial Name: " + DataCollection.speciesMap.get(binomialName).getBinomialName());
+            System.out.println("Trend: " + DataCollection.speciesMap.get(binomialName).getTrend());
+            System.out.println("Genus: " + DataCollection.speciesMap.get(binomialName).getTaxonomy().getAnimalGenus());
+        }
+        catch (Exception e) {
+            System.out.println("Exception occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    private static PopulationTrend getPopulationTrend(String trendString) {
+        switch(trendString) {
+            case "Increase":
+                return PopulationTrend.INCREASING;
+            case "Decrease":
+                return PopulationTrend.DECREASING;
+            case "Steady":
+                return PopulationTrend.STEADY;
+            default:
+                return PopulationTrend.UNKNOWN;
+        }
+    }
 }

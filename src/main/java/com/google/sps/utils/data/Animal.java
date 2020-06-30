@@ -2,6 +2,7 @@ package com.google.sps.utils.data;
 
 import com.google.sps.utils.data.AnimalHistory;
 import com.google.sps.utils.data.Taxonomy;
+import com.google.sps.utils.data.PopulationTrend;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
@@ -13,7 +14,7 @@ public class Animal {
     private String commonName;
     private String binomialName;
     private String status;
-    private boolean isPopulationDecreasing;
+    private PopulationTrend trend;
 
     // Provided by Wikipedia
     private int population;
@@ -37,12 +38,12 @@ public class Animal {
         commonName = null;
         binomialName = null;
         status = null;
-        isPopulationDecreasing = false;
+        trend = PopulationTrend.UNKNOWN;
         population = -1;
         wikipediaNotes = null;
         imageLink = null;
         id = -1;
-        taxonomy = null;
+        taxonomy = new Taxonomy();
         marineSystem = false;
         freshwaterSystem = false;
         terrestrialSystem = false;
@@ -53,27 +54,27 @@ public class Animal {
     }
 
     // Wikipedia-side creation
-    public Animal(String commonName, String binomialName, String status, boolean isPopulationDecreasing,
+    public Animal(String commonName, String binomialName, String status, PopulationTrend trend,
                   int population, String wikipediaNotes, String imageLink) {
         this();
         this.commonName = commonName;
         this.binomialName = binomialName;
         this.status = status;
-        this.isPopulationDecreasing = isPopulationDecreasing;
+        this.trend = trend;
         this.population = population;
         this.wikipediaNotes = wikipediaNotes;
         this.imageLink = imageLink;
     }
 
     // IUCN-side creation
-    public Animal(String commonName, String binomialName, String status, boolean isPopulationDecreasing,
+    public Animal(String commonName, String binomialName, String status, PopulationTrend trend,
                   int id, Taxonomy taxonomy, boolean marineSystem, boolean freshwaterSystem,
                   boolean terrestrialSystem, String taxonomicNotes) {
         this();
         this.commonName = commonName;
         this.binomialName = binomialName;
         this.status = status;
-        this.isPopulationDecreasing = isPopulationDecreasing;
+        this.trend = trend;
         this.id = id;
         this.taxonomy = taxonomy;
         this.marineSystem = marineSystem;
@@ -113,8 +114,8 @@ public class Animal {
         this.taxonomy = taxonomy;
     }
 
-    public void setPopulationDecreasing(boolean isPopulationDecreasing) {
-        this.isPopulationDecreasing = isPopulationDecreasing;
+    public void setTrend(PopulationTrend trend) {
+        this.trend = trend;
     }
 
     public void setMarineSystem(boolean indicator) {
@@ -173,8 +174,8 @@ public class Animal {
         return taxonomy;
     }
 
-    public boolean getPopulationDecreasing() {
-        return isPopulationDecreasing;
+    public PopulationTrend getTrend() {
+        return trend;
     }
 
     public boolean isMarineSystem() {
