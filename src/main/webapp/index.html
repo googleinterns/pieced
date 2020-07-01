@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
-<body>
+<body onload="fetchSpeciesData()">
 
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
@@ -48,25 +48,37 @@
         <div>
             <canvas onmouseover = "animateFullResolution()" onmouseout = "animateOldResolution()" id="canvas" width="500" height="400"></canvas>
             <!-- <canvas id="canvas" width="500" height="400"></canvas> -->
-            <img id = "species-image" class="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Royal_Bengal_Tiger_at_Kanha_National_Park.jpg/800px-Royal_Bengal_Tiger_at_Kanha_National_Park.jpg" alt="Leaf" style = "display: none;" height = "512px" width = "256px">
-
+            <img id = "species-image" class="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Royal_Bengal_Tiger_at_Kanha_National_Park.jpg/800px-Royal_Bengal_Tiger_at_Kanha_National_Park.jpg" alt="Tiger" style = "display: none;" height = "512px" width = "256px">
             <input id="pixel_factor" type="number" min="16" max="131072" value = "100">
         </div>
       </div>
 
       <div id = "species-info-container">
+        <h1 class="text-center"> Name </h1>
+        <div id = "common-name-container"></div>
+
+        <h1 class="text-center"> Scientific Name </h1>
+        <div id = "scientific-name-container"></div>
+
         <h1 class="text-center"> Status </h1>
-        <h1 class="text-center"> Threats </h1>
+        <div id = "status-container"></div>
+        
         <h1 class="text-center"> Description </h1>
+        <div id = "description-container"></div>
+        
         <h1 class="text-center"> Citations </h1>
-        <div id="globe">
-            <canvas></canvas>
-        </div>
+        <div id = "citations-container"></div>
+        <div id="globe"></div>
       </div>
   </div>
 
   <!-- JavaScript -->
   <script src="pixelate-master/pixelate.js"></script>  
+
+
+  <!-- Access to test JSON file -->
+  <script src="test.json"></script>
+
   <script src="index.js"></script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 

@@ -93,15 +93,16 @@ function animate_update(endpoint) {
     // TODO: Change speed parameters to be a function of the original resolution.
     // TODO: Ease functions?
 
-    var dx = 2000; // "speed" parameter. Cannot be the same as the paramter for the other animation function,
-                   // or else they will cancel out and loop forever.
+    // var dx = (originalNumPixels - PIXEL_FACTOR_CURR) / 100; // "speed" parameter. Cannot be the same as the paramter for the other animation function,
+                                                            // or else they will cancel out and loop forever.
+    var dx = 2000;
     animated = true;
     doAnimation();
 
     function doAnimation() {
         PIXEL_FACTOR_CURR += dx;
 
-        if (PIXEL_FACTOR_CURR > originalNumPixels) {
+        if (PIXEL_FACTOR_CURR >= originalNumPixels) {
             animated = false;
             return;
         }
@@ -119,15 +120,16 @@ function animate_update(endpoint) {
  * Zoom back in to old number of pixels.
  */
 function animateOldResolution() {
-    var dx = 4000; // "speed" parameter. Cannot be the same as the paramter for the other animation function,
-                   // or else they will cancel out and loop forever.
+    // var dx = (PIXEL_FACTOR_CURR - PIXEL_FACTOR_OLD) / 50; // "speed" parameter. Cannot be the same as the paramter for the other animation function,
+                                                          // or else they will cancel out and loop forever.
+    var dx = 4000;
     animated = true;
     doAnimation();
 
     function doAnimation() {
         PIXEL_FACTOR_CURR -= dx;
 
-        if (PIXEL_FACTOR_CURR < PIXEL_FACTOR_OLD) {
+        if (PIXEL_FACTOR_CURR <= PIXEL_FACTOR_OLD) {
             animated = false;
             return;
         }
@@ -147,3 +149,60 @@ window.requestAnimationFrame = (function () {
         window.setTimeout(callback, 1000 / 60);
     };
 })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Test function that fetches sample JSON and modifies page to display information for one species.
+function fetchSpeciesData(name) {
+    // const URL = '/data?species=' + name;
+    // fetch(URL).then(response => response.json()).then(speciesData => {
+    fetch("test.json").then(response => response.json()).then(speciesData => {
+        // console.log(speciesData);
+        species = speciesData["Pelea capreolus"];
+
+        var commonNameContainer = document.getElementById('common-name-container');
+        var scientificNameContainer = document.getElementById('scientific-name-container');
+        var statusContainer = document.getElementById('status-container');
+        var descriptionContainer = document.getElementById('description-container');
+        var citationsContainer = document.getElementById('citations-container');
+        var img = document.getElementById('species-image');
+        var numPixels = document.getElementById('pixel_factor');
+
+        commonNameContainer.innerText = species.commonName;
+        scientificNameContainer.innerText = species.binomialName;
+
+        var statusCode = species.status;
+        statusCode = statusCode.substr(0, statusCode.indexOf('['));
+        var statusMap = {
+                            "EX" : "Extinct",
+                            "EW" : "Extinct in the Wild",
+                            "CR" : "Critically Endangered",
+                            "EN" : "Endangered",
+                            "VU" : "Vulnerable",
+                            "NT" : "Near Threatened",
+                            "LC" : "Least Concern",
+                            "DD" : "Data Deficient",
+                            "NE" : "Not Evaluated"
+                        };
+        statusContainer.innerText = statusMap[statusCode] === undefined ? "unknown" : statusCode + ": " + statusMap[statusCode];
+
+        descriptionContainer.innerText = "N/A";
+        citationsContainer.innerText = species.citationLinks;
+
+        img.src = species.imageLink;
+
+        var pop = species.population;
+        pop = pop.substr(0, pop.indexOf('[')); 
+        numPixels.value = pop;
+    });
+}
