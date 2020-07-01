@@ -10,7 +10,12 @@ public class Taxonomy {
     private String genus_t;
 
     public Taxonomy() {
-
+        kingdom_t = "";
+        phylum_t = "";
+        class_t = "";
+        order_t = "";
+        family_t = "";
+        genus_t = "";
     }
 
     public Taxonomy(String kingdom_t, String phylum_t, String class_t, String order_t, String family_t, String genus_t) {

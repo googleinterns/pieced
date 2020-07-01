@@ -4,6 +4,11 @@ import com.google.sps.utils.data.DataCollection;
 import com.google.sps.utils.data.PopulationTrend;
 import com.google.sps.utils.data.SpeciesAPIRetrieval;
 import com.google.sps.utils.data.Animal;
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.KeyFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +23,8 @@ import org.jsoup.select.Elements;
 public class WebScraper {
   private static final String LIST_URL = "https://en.wikipedia.org/wiki/Lists_of_organisms_by_population";
   private static final String LIST_CONTENT_CLASS = "mw-parser-output";
+  private static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+  private static KeyFactory keyFactory = datastore.newKeyFactory().setKind("Species");
 
   /**
    * Scrapes LIST_URL to get a list of all the URLs with information about species
@@ -86,6 +93,19 @@ public class WebScraper {
   }
 
     public static void updateSpeciesMap(String commonName, String binomialName, String status, String trendString) {
+        try {
+            Key key = keyFactory.newKey(binomialName);
+            Entity oldEntity = datastore.get(key);
+            if (oldEntity != null) {
+                System.out.println(binomialName + " was already in Datastore.");
+                return;
+            }
+        }
+        catch (Exception e) {
+            System.out.println(binomialName + " was missing field(s).");
+            return;
+        }
+
         PopulationTrend trend = getPopulationTrend(trendString);
         Animal animal = new Animal(commonName, binomialName, status, trend, 0, null, null);
         DataCollection.speciesMap.put(binomialName, animal);
@@ -97,14 +117,16 @@ public class WebScraper {
             Map jsonMap = SpeciesAPIRetrieval.convertJSONToMap(apiJSON);
 
             SpeciesAPIRetrieval.updateMap(binomialName, jsonMap);
-            System.out.println("Binomial Name: " + DataCollection.speciesMap.get(binomialName).getBinomialName());
-            System.out.println("Trend: " + DataCollection.speciesMap.get(binomialName).getTrend());
-            System.out.println("Genus: " + DataCollection.speciesMap.get(binomialName).getTaxonomy().getAnimalGenus());
+            // System.out.println("Binomial Name: " + DataCollection.speciesMap.get(binomialName).getBinomialName());
+            // System.out.println("Trend: " + DataCollection.speciesMap.get(binomialName).getTrend());
+            // System.out.println("Genus: " + DataCollection.speciesMap.get(binomialName).getTaxonomy().getAnimalGenus());
         }
         catch (Exception e) {
             System.out.println("Exception occurred.");
             e.printStackTrace();
         }
+
+        addSpeciesToDatastore(animal);
     }
 
     private static PopulationTrend getPopulationTrend(String trendString) {
@@ -119,4 +141,39 @@ public class WebScraper {
                 return PopulationTrend.UNKNOWN;
         }
     }
+
+    public static void addSpeciesToDatastore(Animal animal) {
+        // Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        // KeyFactory keyFactory = datastore.newKeyFactory().setKind("Species");
+
+        try {
+            Key key = keyFactory.newKey(animal.getBinomialName());
+            Entity oldEntity = datastore.get(key);
+            if (oldEntity == null) {
+                Entity animalEntity = Entity.newBuilder(key)
+                    .set("common_name", animal.getCommonName())
+                    .set("binomial_name", animal.getBinomialName())
+                    .set("trend", animal.getTrend().name())
+                    .set("status", animal.getStatus())
+                    .set("kingdom", animal.getTaxonomy().getAnimalKingdom())
+                    .set("phylum", animal.getTaxonomy().getAnimalPhylum())
+                    .set("class", animal.getTaxonomy().getAnimalClass())
+                    .set("order", animal.getTaxonomy().getAnimalOrder())
+                    .set("family", animal.getTaxonomy().getAnimalFamily())
+                    .set("genus", animal.getTaxonomy().getAnimalGenus())
+                    .build();
+                datastore.put(animalEntity);
+                System.out.println(animal.getBinomialName() + " was added to Datastore.");
+            }
+            else {
+                System.out.println(animal.getBinomialName() + " was already in Datastore.");
+            }
+        }
+        catch (Exception e) {
+            System.out.println(animal.getBinomialName() + " was missing field(s).");
+        }
+
+        return;
+    }
+
 }
