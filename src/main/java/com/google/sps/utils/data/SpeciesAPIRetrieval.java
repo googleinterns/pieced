@@ -1,6 +1,5 @@
 package com.google.sps.utils.data;
 
-
 import com.google.gson.Gson;
 import com.google.sps.utils.data.Animal;
 import com.google.sps.utils.data.Taxonomy;
@@ -39,7 +38,9 @@ public class SpeciesAPIRetrieval {
         }
     }
 
-    // Returns converted map of JSON, or null if incorrect JSON format
+    /* Returns converted map of JSON, or null if incorrect JSON format
+     * Will be used to convert API JSON to a Map for easier access
+     */
     public static Map convertJSONToMap(String jsonString) {
         Gson gson = new Gson();
         Map map = gson.fromJson(jsonString, Map.class);
@@ -53,27 +54,28 @@ public class SpeciesAPIRetrieval {
             return null;
         }
         return null;
-        // Assert.assertEquals(Double.class, map.get("employee.salary").getClass());
     }
 
-    // Updates the DataCollection speciesMap with fields from converted JSON map
-    // canonicalName: binomial name of species
-    // jsonMap: mapping of the JSON returned from API call to this species
-    public static void updateMap(String canonicalName, Map jsonMap) {
-        if (jsonMap == null) {
+    /* Updates the DataCollection speciesMap with fields from converted JSON map
+     * binomialName: canonicalName name of species
+     * apiMap: map of the JSON returned from API call to this species
+     */
+    public static void addAPISpeciesInfoToMap(String binomialName, Map apiMap) {
+        if (apiMap == null) {
+            System.out.println("No results found in GBIF API for '" + binomialName + "'.");
             return;
         }
 
-        // Update DataCollection.speciesMap with values from jsonMap, search map by canonicalName
-        String kingdom = jsonMap.get("kingdom").toString();
-        String phylum = jsonMap.get("phylum").toString();
-        String class_t = jsonMap.get("class").toString();
-        String order = jsonMap.get("order").toString();
-        String family = jsonMap.get("family").toString();
-        String genus = jsonMap.get("genus").toString();
+        // Update DataCollection.speciesMap with values from apiMap
+        String kingdom = apiMap.get("kingdom").toString();
+        String phylum = apiMap.get("phylum").toString();
+        String class_t = apiMap.get("class").toString();
+        String order = apiMap.get("order").toString();
+        String family = apiMap.get("family").toString();
+        String genus = apiMap.get("genus").toString();
         Taxonomy taxonomy = new Taxonomy(kingdom, phylum, class_t, order, family, genus);
-        if (DataCollection.speciesMap.get(canonicalName) != null) {
-            DataCollection.speciesMap.get(canonicalName).setTaxonomy(taxonomy);
+        if (DataCollection.speciesMap.get(binomialName) != null) {
+            DataCollection.speciesMap.get(binomialName).setTaxonomy(taxonomy);
         }
         return;
     }

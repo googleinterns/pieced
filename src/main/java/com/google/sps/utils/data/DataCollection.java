@@ -12,6 +12,9 @@ import java.util.HashMap;
 
 public class DataCollection {
     public static final String API_URL = "https://api.gbif.org/v1/species/match?name=";
+
+    /* Mapping of species' binomial name to its corresponding Animal object
+     */
     public static Map<String, Animal> speciesMap = new HashMap<String, Animal>(); 
   
     public static void main (String[] args) throws IOException {
@@ -21,19 +24,19 @@ public class DataCollection {
             WebScraper.parseSpeciesTable(url);
             System.out.println("\n");
         }
+    }
 
-        // try {
-        //     String canonicalName = "Passer domesticus";
-        //     String apiJSON = SpeciesAPIRetrieval.getJSON(API_URL, canonicalName);
-        //     // convert json to map
-        //     Map jsonMap = SpeciesAPIRetrieval.convertJSONToMap(apiJSON);
-        //     System.out.println("Canonical Name: " + jsonMap.get("canonicalName"));
-        //     SpeciesAPIRetrieval.updateMap(canonicalName, jsonMap);
-        // }
-        // catch (Exception e) {
-        //     System.out.println("Exception occurred.");
-        //     e.printStackTrace();
-        // }
+    public static PopulationTrend getPopulationTrend(String trendString) {
+        switch(trendString) {
+            case "Increase":
+                return PopulationTrend.INCREASING;
+            case "Decrease":
+                return PopulationTrend.DECREASING;
+            case "Steady":
+                return PopulationTrend.STEADY;
+            default:
+                return PopulationTrend.UNKNOWN;
+        }
     }
 
 }

@@ -17,7 +17,7 @@ public class Animal {
     private PopulationTrend trend;
 
     // Provided by Wikipedia
-    private int population;
+    private String population;
     private String wikipediaNotes;
     private String imageLink;
 
@@ -39,7 +39,7 @@ public class Animal {
         binomialName = null;
         status = null;
         trend = PopulationTrend.UNKNOWN;
-        population = -1;
+        population = null;
         wikipediaNotes = null;
         imageLink = null;
         id = -1;
@@ -55,7 +55,7 @@ public class Animal {
 
     // Wikipedia-side creation
     public Animal(String commonName, String binomialName, String status, PopulationTrend trend,
-                  int population, String wikipediaNotes, String imageLink) {
+                  String population, String wikipediaNotes, String imageLink) {
         this();
         this.commonName = commonName;
         this.binomialName = binomialName;
@@ -91,7 +91,7 @@ public class Animal {
         this.binomialName = binomialName;
     }
 
-    public void setPopulation(int population) {
+    public void setPopulation(String population) {
         this.population = population;
     }
 
@@ -154,7 +154,7 @@ public class Animal {
         return binomialName;
     }
 
-    public int getPopulation() {
+    public String getPopulation() {
         return population;
     }
 

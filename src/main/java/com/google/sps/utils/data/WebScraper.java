@@ -24,7 +24,7 @@ public class WebScraper {
   private static final String LIST_URL = "https://en.wikipedia.org/wiki/Lists_of_organisms_by_population";
   private static final String LIST_CONTENT_CLASS = "mw-parser-output";
   private static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-  private static KeyFactory keyFactory = datastore.newKeyFactory().setKind("Species");
+  private static KeyFactory keyFactory = datastore.newKeyFactory().setKind("Species-2");
 
   /**
    * Scrapes LIST_URL to get a list of all the URLs with information about species
@@ -74,106 +74,101 @@ public class WebScraper {
       for (Element row : head.select("tr")) {
         Elements tds = row.select("td");
         if (tds.size() > 6) {
-          String commonName = tds.get(0).text();
-          String binomialName = tds.get(1).text();
-          String populationString = tds.get(2).text(); // @TODO: Clean up this string. Currently has [#] for reference and commas
-          String status = tds.get(3).text();
-          String trend;
-          Element trendImg = tds.select("img").first();
-          if (trendImg != null) {
-            trend = trendImg.attr("alt");
-          } else {
-            trend = "Unknown";
-          }
+            String commonName = tds.get(0).text();
+            String binomialName = tds.get(1).text();
+            String populationString = tds.get(2).text(); // @TODO: Clean up this string. Currently has [#] for reference and commas
+            String status = tds.get(3).text();
+            String trend;
+            Element trendImg = tds.select("img").first();
+            if (trendImg != null) {
+                trend = trendImg.attr("alt");
+            } else {
+                trend = "Unknown";
+            }
         //   System.out.println(commonName + "     " + binomialName + "     " + populationString + "     " + status + "     " + trend);
-            updateSpeciesMap(commonName, binomialName, status, trend);
+            // Proceed if we have the binomialName for this species and it isn't stored in Datastore
+            if ((binomialName == null) || (binomialName.length() <= 0)) {
+                System.out.println("'" + commonName + "' did not have a binomialName, skipping.");
+                continue;
+            }
+            if (!speciesAlreadyStored(binomialName)) {
+                System.out.println("Processing '" + binomialName + "'...");
+                addWikipediaSpeciesInfoToMap(commonName, binomialName, status, trend, populationString);
+                retrieveAndAddAPISpeciesInfoToMap(binomialName);
+                addSpeciesToDatastore(DataCollection.speciesMap.get(binomialName));
+                System.out.println("\n");
+            }
         }
       }
     }
   }
 
-    public static void updateSpeciesMap(String commonName, String binomialName, String status, String trendString) {
-        try {
-            Key key = keyFactory.newKey(binomialName);
-            Entity oldEntity = datastore.get(key);
-            if (oldEntity != null) {
-                System.out.println(binomialName + " was already in Datastore.");
-                return;
-            }
-        }
-        catch (Exception e) {
-            System.out.println(binomialName + " was missing field(s).");
-            return;
-        }
-
-        PopulationTrend trend = getPopulationTrend(trendString);
-        Animal animal = new Animal(commonName, binomialName, status, trend, 0, null, null);
-        DataCollection.speciesMap.put(binomialName, animal);
-
+    /* Retrieves apiMap for the passed species and adds additional info to DataCollection.speciesMap
+     * binomialName: non-null species name that isn't already stored in Datastore
+     */
+    public static void retrieveAndAddAPISpeciesInfoToMap(String binomialName) {
         // Add API-side fields if available
         try {
             String apiJSON = SpeciesAPIRetrieval.getJSON(DataCollection.API_URL, binomialName);
-            // convert json to map
-            Map jsonMap = SpeciesAPIRetrieval.convertJSONToMap(apiJSON);
-
-            SpeciesAPIRetrieval.updateMap(binomialName, jsonMap);
-            // System.out.println("Binomial Name: " + DataCollection.speciesMap.get(binomialName).getBinomialName());
-            // System.out.println("Trend: " + DataCollection.speciesMap.get(binomialName).getTrend());
-            // System.out.println("Genus: " + DataCollection.speciesMap.get(binomialName).getTaxonomy().getAnimalGenus());
+            Map apiMap = SpeciesAPIRetrieval.convertJSONToMap(apiJSON);
+            SpeciesAPIRetrieval.addAPISpeciesInfoToMap(binomialName, apiMap);
         }
         catch (Exception e) {
             System.out.println("Exception occurred.");
             e.printStackTrace();
         }
-
-        addSpeciesToDatastore(animal);
     }
 
-    private static PopulationTrend getPopulationTrend(String trendString) {
-        switch(trendString) {
-            case "Increase":
-                return PopulationTrend.INCREASING;
-            case "Decrease":
-                return PopulationTrend.DECREASING;
-            case "Steady":
-                return PopulationTrend.STEADY;
-            default:
-                return PopulationTrend.UNKNOWN;
-        }
+    /* Adds the passed species to DataCollection's speciesMap with information from Wikipedia
+     * binomialName: non-null species name that isn't already stored in Datastore
+     */
+    public static void addWikipediaSpeciesInfoToMap(String commonName, String binomialName, String status,
+                                                    String trendString, String populationString) { // move to speciesapiretrieval as static
+        PopulationTrend trend = DataCollection.getPopulationTrend(trendString);
+        Animal animal = new Animal(commonName, binomialName, status, trend, populationString, null, null);
+        DataCollection.speciesMap.put(binomialName, animal);
     }
 
-    public static void addSpeciesToDatastore(Animal animal) {
-        // Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-        // KeyFactory keyFactory = datastore.newKeyFactory().setKind("Species");
-
-        try {
-            Key key = keyFactory.newKey(animal.getBinomialName());
-            Entity oldEntity = datastore.get(key);
-            if (oldEntity == null) {
-                Entity animalEntity = Entity.newBuilder(key)
-                    .set("common_name", animal.getCommonName())
-                    .set("binomial_name", animal.getBinomialName())
-                    .set("trend", animal.getTrend().name())
-                    .set("status", animal.getStatus())
-                    .set("kingdom", animal.getTaxonomy().getAnimalKingdom())
-                    .set("phylum", animal.getTaxonomy().getAnimalPhylum())
-                    .set("class", animal.getTaxonomy().getAnimalClass())
-                    .set("order", animal.getTaxonomy().getAnimalOrder())
-                    .set("family", animal.getTaxonomy().getAnimalFamily())
-                    .set("genus", animal.getTaxonomy().getAnimalGenus())
-                    .build();
-                datastore.put(animalEntity);
-                System.out.println(animal.getBinomialName() + " was added to Datastore.");
-            }
-            else {
-                System.out.println(animal.getBinomialName() + " was already in Datastore.");
-            }
-        }
-        catch (Exception e) {
-            System.out.println(animal.getBinomialName() + " was missing field(s).");
+    // Returns true if species is already stored in Datastore, false otherwise
+    private static boolean speciesAlreadyStored(String binomialName) {
+        Key key = keyFactory.newKey(binomialName);
+        Entity speciesEntity = datastore.get(key);
+        if (speciesEntity != null) {
+            System.out.println(binomialName + " was already in Datastore.");
+            return true;
         }
 
-        return;
+        return false;
+    }
+
+    public static void addSpeciesToDatastore(Animal animal) { // move to datacollection
+        if (animal == null) {
+            System.out.println("This animal is null in speciesMap!!");
+            return;
+        }
+
+        Key key = keyFactory.newKey(animal.getBinomialName());
+        Entity oldEntity = datastore.get(key);
+        if (oldEntity == null) {
+            Entity animalEntity = Entity.newBuilder(key)
+                .set("common_name", animal.getCommonName())
+                .set("binomial_name", animal.getBinomialName())
+                .set("trend", animal.getTrend().name())
+                .set("status", animal.getStatus())
+                .set("population", animal.getPopulation())
+                .set("kingdom", animal.getTaxonomy().getAnimalKingdom())
+                .set("phylum", animal.getTaxonomy().getAnimalPhylum())
+                .set("class", animal.getTaxonomy().getAnimalClass())
+                .set("order", animal.getTaxonomy().getAnimalOrder())
+                .set("family", animal.getTaxonomy().getAnimalFamily())
+                .set("genus", animal.getTaxonomy().getAnimalGenus())
+                .build();
+            datastore.put(animalEntity);
+            System.out.println(animal.getBinomialName() + " was added to Datastore.");
+        }
+        else {
+            System.out.println(animal.getBinomialName() + " was already in Datastore.");
+        }
     }
 
 }
