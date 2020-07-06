@@ -211,4 +211,20 @@ public class Animal {
     public String getCitationLink() {
         return citationLink;
     }
+
+    public boolean hasNecessaryInfo() {
+        if (binomialName == null || binomialName.equals("")) {
+            return false;
+        }
+
+        if (population == null || population.equals("")) {
+            return false;
+        }
+
+        if (imageLink == null || imageLink.equals("")) {
+            return false;
+        }
+
+        return true;
+    }
 }
