@@ -83,126 +83,126 @@ public class Animal {
         this.taxonomicNotes = taxonomicNotes;
     }
 
-    public void setCommonName(String commonName) {
-        this.commonName = commonName;
-    }
+    // public void setCommonName(String commonName) {
+    //     this.commonName = commonName;
+    // }
 
-    public void setBinomialName(String binomialName) {
-        this.binomialName = binomialName;
-    }
+    // public void setBinomialName(String binomialName) {
+    //     this.binomialName = binomialName;
+    // }
 
     public void setPopulation(String population) {
         this.population = population;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    // public void setStatus(String status) {
+    //     this.status = status;
+    // }
 
-    public void setImageLink(String link) {
-        this.imageLink = link;
-    }
+    // public void setImageLink(String link) {
+    //     this.imageLink = link;
+    // }
 
-    public void setId(int id) {
-        this.id = id;
+    // public void setId(int id) {
+    //     this.id = id;
 
-        // Currently have the IUCN link automatically added but can change this to be done somewhere else
-        this.citationLinks.add("https://apiv3.iucnredlist.org/api/v3/taxonredirect/" + id);
-    }
+    //     // Currently have the IUCN link automatically added but can change this to be done somewhere else
+    //     this.citationLinks.add("https://apiv3.iucnredlist.org/api/v3/taxonredirect/" + id);
+    // }
 
-    public void setTaxonomy(Taxonomy taxonomy) {
-        this.taxonomy = taxonomy;
-    }
+    // public void setTaxonomy(Taxonomy taxonomy) {
+    //     this.taxonomy = taxonomy;
+    // }
 
     public void setTrend(PopulationTrend trend) {
         this.trend = trend;
     }
 
-    public void setMarineSystem(boolean indicator) {
-        this.marineSystem = indicator;
-    }
+    // public void setMarineSystem(boolean indicator) {
+    //     this.marineSystem = indicator;
+    // }
 
-    public void setFreshwaterSystem(boolean indicator) {
-        this.freshwaterSystem = indicator;
-    }
+    // public void setFreshwaterSystem(boolean indicator) {
+    //     this.freshwaterSystem = indicator;
+    // }
 
-    public void setTerrestrialSystem(boolean indicator) {
-        this.terrestrialSystem = indicator;
-    }
+    // public void setTerrestrialSystem(boolean indicator) {
+    //     this.terrestrialSystem = indicator;
+    // }
 
-    public void setTaxonomicNotes(String taxonomicNotes) {
-        this.taxonomicNotes = taxonomicNotes;
-    }
+    // public void setTaxonomicNotes(String taxonomicNotes) {
+    //     this.taxonomicNotes = taxonomicNotes;
+    // }
 
-    public void addCountry(String country) {
-        this.countries.add(country);
-    }
+    // public void addCountry(String country) {
+    //     this.countries.add(country);
+    // }
 
-    public void addHistory(AnimalHistory history) {
-        this.historySet.add(history);
-    }
+    // public void addHistory(AnimalHistory history) {
+    //     this.historySet.add(history);
+    // }
 
     public void addCitationLink(String link) {
         this.citationLinks.add(link);
     }
 
-    public String getCommonName() {
-        return commonName;
-    }
+    // public String getCommonName() {
+    //     return commonName;
+    // }
 
-    public String getBinomialName() {
-        return binomialName;
-    }
+    // public String getBinomialName() {
+    //     return binomialName;
+    // }
 
     public String getPopulation() {
         return population;
     }
+  
+    // public String getStatus() {
+    //     return status;
+    // }
 
-    public String getStatus() {
-        return status;
-    }
+    // public int getId() {
+    //     return id;
+    // }
 
-    public int getId() {
-        return id;
-    }
+    // public String getImageLink() {
+    //     return imageLink;
+    // }
 
-    public String getImageLink() {
-        return imageLink;
-    }
-
-    public Taxonomy getTaxonomy() {
-        return taxonomy;
-    }
+    // public Taxonomy getTaxonomy() {
+    //     return taxonomy;
+    // }
 
     public PopulationTrend getTrend() {
         return trend;
     }
 
-    public boolean isMarineSystem() {
-        return marineSystem;
-    }
+    // public boolean isMarineSystem() {
+    //     return marineSystem;
+    // }
 
-    public boolean isFreshwaterSystem() {
-        return freshwaterSystem;
-    }
+    // public boolean isFreshwaterSystem() {
+    //     return freshwaterSystem;
+    // }
 
-    public boolean isTerrestrialSystem() {
-        return terrestrialSystem;
-    }
+    // public boolean isTerrestrialSystem() {
+    //     return terrestrialSystem;
+    // }
 
-    public String getTaxonomicnotes() {
-        return taxonomicNotes;
-    }
+    // public String getTaxonomicnotes() {
+    //     return taxonomicNotes;
+    // }
 
-    public Collection<String> getCountries() {
-        return countries;
-    }
+    // public Collection<String> getCountries() {
+    //     return countries;
+    // }
 
-    public Collection<AnimalHistory> getHistory() {
-        return historySet;
-    }
+    // public Collection<AnimalHistory> getHistory() {
+    //     return historySet;
+    // }
 
-    public Collection<String> getCitationLinks() {
-        return citationLinks;
-    }
+    // public Collection<String> getCitationLinks() {
+    //     return citationLinks;
+    // }
 }
