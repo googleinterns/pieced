@@ -4,8 +4,9 @@ public class AnimalHistory {
     private int year;
     private String category;
 
+
     public AnimalHistory() {
-        
+    
     }
 
     public AnimalHistory(int year, String category) {

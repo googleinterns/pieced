@@ -2,6 +2,7 @@ package com.google.sps.utils.data;
 
 import com.google.sps.utils.data.AnimalHistory;
 import com.google.sps.utils.data.Taxonomy;
+import com.google.sps.utils.data.PopulationTrend;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
@@ -9,20 +10,22 @@ import java.util.HashSet;
 
 public class Animal {
     
-    // Cross-referenced
+    // Cross-referenced IUCN/Wikipedia
     private String commonName;
     private String binomialName;
     private String status;
-    private String trend;
+    private PopulationTrend trend;
 
     // Provided by Wikipedia
     private String population;
     private String wikipediaNotes;
     private String imageLink;
 
+    // Provided by GBIF
+    private Taxonomy taxonomy;
+
     // Provided by IUCN API
     private int id;
-    private Taxonomy taxonomy;
     private boolean marineSystem;
     private boolean freshwaterSystem;
     private boolean terrestrialSystem;
@@ -35,12 +38,12 @@ public class Animal {
         commonName = null;
         binomialName = null;
         status = null;
-        trend = null;
+        trend = PopulationTrend.UNKNOWN;
         population = null;
         wikipediaNotes = null;
         imageLink = null;
         id = -1;
-        taxonomy = null;
+        taxonomy = new Taxonomy();
         marineSystem = false;
         freshwaterSystem = false;
         terrestrialSystem = false;
@@ -51,8 +54,8 @@ public class Animal {
     }
 
     // Wikipedia-side creation
-    public Animal(String commonName, String binomialName, String population, String status, String trend, 
-                    String wikipediaNotes, String imageLink) {
+    public Animal(String commonName, String binomialName, String status, PopulationTrend trend,
+                  String population, String wikipediaNotes, String imageLink) {
         this();
         this.commonName = commonName;
         this.binomialName = binomialName;
@@ -63,8 +66,8 @@ public class Animal {
         this.imageLink = imageLink;
     }
 
-    // API-side creation
-    public Animal(String commonName, String binomialName, String status, String trend,
+    // IUCN-side creation
+    public Animal(String commonName, String binomialName, String status, PopulationTrend trend,
                   int id, Taxonomy taxonomy, boolean marineSystem, boolean freshwaterSystem,
                   boolean terrestrialSystem, String taxonomicNotes) {
         this();
@@ -88,9 +91,9 @@ public class Animal {
     //     this.binomialName = binomialName;
     // }
 
-    // public void setPopulation(int population) {
-    //     this.population = population;
-    // }
+    public void setPopulation(String population) {
+        this.population = population;
+    }
 
     // public void setStatus(String status) {
     //     this.status = status;
@@ -111,9 +114,9 @@ public class Animal {
     //     this.taxonomy = taxonomy;
     // }
 
-    // public void setPopulationDecreasing(boolean isPopulationDecreasing) {
-    //     this.isPopulationDecreasing = isPopulationDecreasing;
-    // }
+    public void setTrend(PopulationTrend trend) {
+        this.trend = trend;
+    }
 
     // public void setMarineSystem(boolean indicator) {
     //     this.marineSystem = indicator;
@@ -151,10 +154,10 @@ public class Animal {
     //     return binomialName;
     // }
 
-    // public int getPopulation() {
-    //     return population;
-    // }
-
+    public String getPopulation() {
+        return population;
+    }
+  
     // public String getStatus() {
     //     return status;
     // }
@@ -171,9 +174,9 @@ public class Animal {
     //     return taxonomy;
     // }
 
-    // public boolean getPopulationDecreasing() {
-    //     return isPopulationDecreasing;
-    // }
+    public PopulationTrend getTrend() {
+        return trend;
+    }
 
     // public boolean isMarineSystem() {
     //     return marineSystem;

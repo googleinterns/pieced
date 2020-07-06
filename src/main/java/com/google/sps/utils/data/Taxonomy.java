@@ -10,7 +10,12 @@ public class Taxonomy {
     private String genus_t;
 
     public Taxonomy() {
-
+        kingdom_t = "";
+        phylum_t = "";
+        class_t = "";
+        order_t = "";
+        family_t = "";
+        genus_t = "";
     }
 
     public Taxonomy(String kingdom_t, String phylum_t, String class_t, String order_t, String family_t, String genus_t) {
@@ -68,5 +73,16 @@ public class Taxonomy {
 
     public String getAnimalGenus() {
         return genus_t;
+    }
+
+    public static void printTaxonomy(Taxonomy taxonomy) {
+        System.out.println("===Taxonomy===");
+        System.out.println("Kingdom: " + taxonomy.getAnimalKingdom());
+        System.out.println("Phylum: " + taxonomy.getAnimalPhylum());
+        System.out.println("Class: " + taxonomy.getAnimalClass());
+        System.out.println("Order: " + taxonomy.getAnimalOrder());
+        System.out.println("Family: " + taxonomy.getAnimalFamily());
+        System.out.println("Genus: " + taxonomy.getAnimalGenus());
+        System.out.println("===========");
     }
 }
