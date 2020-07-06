@@ -1,5 +1,6 @@
 package com.google.sps.utils.data;
 
+import com.google.sps.utils.data.Animal;
 import com.google.sps.utils.data.DataCollection;
 import com.google.sps.utils.data.PopulationTrend;
 import com.google.sps.utils.data.SpeciesAPIRetrieval;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+
 import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -66,25 +68,37 @@ public class WebScraper {
     return urls;
   }
 
-  public static void parseSpeciesTable(String url) throws IOException {
+  public static Map<String, Animal> parseSpeciesTable(String url) throws IOException {
     Document doc = Jsoup.connect(url).get();
+    Map<String, Animal> animals = new HashMap<String, Animal>();
 
     Elements table = doc.getElementsByClass("wikitable");
     for (Element head : table.select("tbody")) {
       for (Element row : head.select("tr")) {
         Elements tds = row.select("td");
         if (tds.size() > 6) {
-            String commonName = tds.get(0).text();
-            String binomialName = tds.get(1).text();
-            String populationString = tds.get(2).text(); // @TODO: Clean up this string. Currently has [#] for reference and commas
-            String status = tds.get(3).text();
-            String trend;
-            Element trendImg = tds.select("img").first();
-            if (trendImg != null) {
-                trend = trendImg.attr("alt");
-            } else {
-                trend = "Unknown";
-            }
+          String commonName = tds.get(0).text();
+          String binomialName = tds.get(1).text();
+          String populationString = cleanPopulation(tds.get(2).text());
+          String status = cleanStatus(tds.get(3).text());
+          String trend;
+          Element trendImg = tds.get(4).select("img").first();
+          if (trendImg != null) {
+            trend = trendImg.attr("alt");
+          } else {
+            trend = "Unknown";
+          }
+          String notes = tds.get(5).text();
+          String imgUrl = "";
+          Element image = tds.get(6).select("img").first();
+          if (image != null) {
+            imgUrl = image.absUrl("src");
+          }
+          System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, populationString, status, trend);
+//           Animal animal = new Animal(commonName, binomialName, populationString, status, trend, notes, imgUrl);
+//           animal.addCitationLink(url);
+//           animals.put(binomialName, animal);
+          
         //   System.out.println(commonName + "     " + binomialName + "     " + populationString + "     " + status + "     " + trend);
             // Proceed if we have the binomialName for this species and it isn't stored in Datastore
             if ((binomialName == null) || (binomialName.length() <= 0)) {
@@ -101,6 +115,23 @@ public class WebScraper {
         }
       }
     }
+    return animals;
+  }
+
+  private static String cleanStatus(String statusString) {
+    String status = statusString.replaceAll("Domesticated", "D");
+    status = removeBrackets(status);
+    return status;
+  }
+
+  private static String cleanPopulation(String populationString) {
+    String pop = removeBrackets(populationString);
+    pop = pop.replaceAll("[^0-9.–-]", "");
+    return pop;
+  }
+
+  private static String removeBrackets(String og) {
+    return og.replaceAll("\\s*\\[[^\\]]*\\]\\s*", " ");
   }
 
     /* Retrieves apiMap for the passed species and adds additional info to DataCollection.speciesMap
