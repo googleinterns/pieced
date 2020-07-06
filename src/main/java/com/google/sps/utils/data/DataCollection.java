@@ -115,12 +115,9 @@ public class DataCollection {
       String status = cleanStatus(tds.get(3).text());
       PopulationTrend trend = getTrend(tds.get(4).select("img").first());
       String notes = tds.get(5).text();
-      String imageLink = "";
-      Element image = tds.get(6).select("img").first();
-      if (image != null) {
-        imageLink = image.absUrl("src");
-      }
-    //   System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
+      String imageLink = getImageLink(tds.get(6).select("img").first());
+
+      System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
       Species species = new Species(commonName, binomialName, status, trend, population, notes, imageLink, url);
       return species;
     }
@@ -207,6 +204,14 @@ public class DataCollection {
       trend = "Unknown";
     }
     return convertPopulationTrend(trend);
+  }
+
+  private static String getImageLink(Element image) {
+    String imageLink = "";
+    if (image != null) {
+      imageLink = image.absUrl("src");
+    }
+    return imageLink;
   }
 
   public static PopulationTrend convertPopulationTrend(String trendString) {
