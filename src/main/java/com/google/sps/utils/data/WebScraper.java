@@ -106,7 +106,7 @@ public class WebScraper {
             }
             if (!speciesAlreadyStored(binomialName)) {
                 System.out.println("Processing '" + binomialName + "'...");
-                addWikipediaSpeciesInfoToMap(commonName, binomialName, status, trend, populationString);
+                addWikipediaSpeciesInfoToMap(commonName, binomialName, status, trend, populationString, imgUrl, url, notes);
                 retrieveAndAddAPISpeciesInfoToMap(binomialName);
                 addSpeciesToDatastore(DataCollection.speciesMap.get(binomialName));
                 System.out.println("\n");
@@ -153,9 +153,11 @@ public class WebScraper {
      * binomialName: non-null species name that isn't already stored in Datastore
      */
     public static void addWikipediaSpeciesInfoToMap(String commonName, String binomialName, String status,
-                                                    String trendString, String populationString) { // move to speciesapiretrieval as static
+                                                    String trendString, String populationString, String imageLink,
+                                                    String citationLink, String notes) { // move to speciesapiretrieval as static
         PopulationTrend trend = DataCollection.getPopulationTrend(trendString);
-        Animal animal = new Animal(commonName, binomialName, status, trend, populationString, null, null);
+        Animal animal = new Animal(commonName, binomialName, status, trend, populationString, notes, imageLink, citationLink);
+        animal.addCitationLink(citationLink);
         DataCollection.speciesMap.put(binomialName, animal);
     }
 
@@ -192,6 +194,9 @@ public class WebScraper {
                 .set("order", animal.getTaxonomy().getAnimalOrder())
                 .set("family", animal.getTaxonomy().getAnimalFamily())
                 .set("genus", animal.getTaxonomy().getAnimalGenus())
+                .set("image_link", animal.getImageLink())
+                .set("wikipedia_notes", animal.getWikipediaNotes())
+                .set("citation_link", animal.getCitationLink())
                 .build();
             datastore.put(animalEntity);
             System.out.println(animal.getBinomialName() + " was added to Datastore.");
