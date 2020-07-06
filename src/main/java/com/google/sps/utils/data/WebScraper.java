@@ -24,7 +24,7 @@ public class WebScraper {
   private static final String LIST_URL = "https://en.wikipedia.org/wiki/Lists_of_organisms_by_population";
   private static final String LIST_CONTENT_CLASS = "mw-parser-output";
   private static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-  private static KeyFactory keyFactory = datastore.newKeyFactory().setKind("Species-2");
+  private static KeyFactory keyFactory = datastore.newKeyFactory().setKind("Species");
 
   /**
    * Scrapes LIST_URL to get a list of all the URLs with information about species
@@ -85,7 +85,7 @@ public class WebScraper {
             } else {
                 trend = "Unknown";
             }
-        //   System.out.println(commonName + "     " + binomialName + "     " + populationString + "     " + status + "     " + trend);
+            
             // Proceed if we have the binomialName for this species and it isn't stored in Datastore
             if ((binomialName == null) || (binomialName.length() <= 0)) {
                 System.out.println("'" + commonName + "' did not have a binomialName, skipping.");
