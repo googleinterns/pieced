@@ -1,7 +1,7 @@
 package com.google.sps.utils.data;
 
 import com.google.gson.Gson;
-import com.google.sps.utils.data.Animal;
+import com.google.sps.utils.data.Species;
 import com.google.sps.utils.data.Taxonomy;
 import java.io.IOException;
 import java.net.URI;
@@ -53,18 +53,18 @@ public class SpeciesAPIRetrieval {
     } catch (NullPointerException e) {
       return null;
     }
-    
+
     return null;
   }
 
   /**
-   * Updates Animal with fields from converted JSON map
-   * @param animal: animal to add fields to
+   * Updates Species with fields from converted JSON map
+   * @param species: species to add fields to
    * @param apiMap: map of the JSON returned from API call to this species
    */
-  public static void addAPISpeciesInfo(Animal animal, Map apiMap) {
+  public static void addAPISpeciesInfo(Species species, Map apiMap) {
     if (apiMap == null) {
-      System.out.println("No results found in GBIF API for '" + animal.getBinomialName() + "'.");
+      System.out.println("No results found in GBIF API for '" + species.getBinomialName() + "'.");
       return;
     }
 
@@ -77,8 +77,8 @@ public class SpeciesAPIRetrieval {
     String genus = apiMap.get("genus").toString();
     Taxonomy taxonomy = new Taxonomy(kingdom, phylum, class_t, order, family, genus);
     
-    if (animal != null) {
-      animal.setTaxonomy(taxonomy);
+    if (species != null) {
+      species.setTaxonomy(taxonomy);
     }
     return;
   }  
