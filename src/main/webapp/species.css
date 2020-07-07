@@ -1,0 +1,62 @@
+html {
+    --image-container-color: #AEDFDB;
+    --info-container-color: #75C9CC;
+    --link-hover-color: #111111;
+    --link-color: white;
+    --list-color: #333333;
+}
+
+#species-page {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    padding: 0 !important;
+}
+
+#species-image-container {
+    background: var(--image-container-color);
+    flex-grow: 1;
+}
+
+#species-name, #species-image, #canvas, #pixel_factor {
+    display: block;
+    margin: auto;
+}
+
+#species-info-container {
+    background: var(--info-container-color);
+    flex-grow: 3;
+}
+
+canvas {
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -o-crisp-edges;
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: var(--link-color) !important;
+  padding: 16px;
+  text-align: center;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: var(--link-hover-color);
+}
+
+ul {
+  background-color: var(--list-color);
+  list-style-type: none;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+}
