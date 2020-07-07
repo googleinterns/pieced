@@ -1,31 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang = "en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
+        <meta charset = "UTF-8">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name = "description" content = "">
+        <meta name = "author" content = "">
         <title>Capstone</title>
 
-        <link rel="stylesheet" href="species.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel = "stylesheet" href = "species.css">
+        <link rel = "stylesheet" href = "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
 
-    <body onload="fetchSpeciesData()">
+    <body onload = "fetchSpeciesData()">
         <!-- Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-            <div class="container">
-                <a class="navbar-brand" href="#"> Pieced </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+        <nav class = "navbar navbar-expand-lg navbar-dark bg-dark static-top">
+            <div class = "container">
+                <a class = "navbar-brand" href = "#"> Pieced </a>
+                <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#navbarResponsive" aria-controls = "navbarResponsive" aria-expanded = "false" aria-label = "Toggle navigation">
+                    <span class = "navbar-toggler-icon"> </span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#"> Home <span class="sr-only"> (current) </span> </a>
+                <div class = "collapse navbar-collapse" id = "navbarResponsive">
+                    <ul class = "navbar-nav ml-auto">
+                        <li class = "nav-item active">
+                            <a class = "nav-link" href = "#"> Home <span class = "sr-only"> (current) </span> </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="gallery.html">Gallery</a>
+                        <li class = "nav-item">
+                            <a class = "nav-link" href = "gallery.html"> Gallery </a>
                         </li>
                     </ul>
                 </div>
@@ -37,44 +37,44 @@
             <div id = "species-image-container">
                 <!-- Debug nav bar to select different species and load from JSON -->
                 <ul>
-                    <li> <a onclick="fetchSpeciesData('Aepyceros melampus')"> Impala </a></li>
-                    <li> <a onclick="fetchSpeciesData('Addax nasomaculatus')"> Addax </a></li>
-                    <li> <a onclick="fetchSpeciesData('Capricornis crispus')"> Japanese serow </a></li>
-                    <li> <a onclick="fetchSpeciesData('Tragelaphus eurycerus')"> Bongo </a></li>
+                    <li> <a onclick = "fetchSpeciesData('Aepyceros melampus')"> Impala </a> </li>
+                    <li> <a onclick = "fetchSpeciesData('Addax nasomaculatus')"> Addax </a> </li>
+                    <li> <a onclick = "fetchSpeciesData('Capricornis crispus')"> Japanese serow </a> </li>
+                    <li> <a onclick = "fetchSpeciesData('Tragelaphus eurycerus')"> Bongo </a> </li>
                 </ul>
 
                 <!-- Canvas for pixelation -->
                 <div>
-                    <canvas onmouseover = "animateFullResolution()" onmouseout = "animateOldResolution()" id="canvas" width="500" height="400"></canvas>
-                    <img id = "species-image" class="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Royal_Bengal_Tiger_at_Kanha_National_Park.jpg/800px-Royal_Bengal_Tiger_at_Kanha_National_Park.jpg" alt="Tiger" style = "display: none;" height = "512px" width = "256px">
-                    <input id="pixel_factor" type="number" min="1"  value = "100">
+                    <canvas onmouseover = "animateFullResolution()" onmouseout = "animateOldResolution()" id = "canvas" width = "500" height = "400"> </canvas>
+                    <img id = "species-image" class = "image" src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Royal_Bengal_Tiger_at_Kanha_National_Park.jpg/800px-Royal_Bengal_Tiger_at_Kanha_National_Park.jpg" alt = "Tiger" style = "display: none;" height = "512px" width = "256px">
+                    <input id = "pixel_factor" type = "number" min = "1"  value = "100">
                 </div>
             </div>
 
             <!-- Containers for species-specific info -->
             <div id = "species-info-container">
-                <h1 class="text-center"> Name </h1>
-                <div id = "common-name-container" class = "text-center"></div>
+                <h1 class = "text-center"> Name </h1>
+                <div id = "common-name-container" class = "text-center"> </div>
 
-                <h1 class="text-center"> Scientific Name </h1>
-                <div id = "scientific-name-container" class = "text-center"></div>
+                <h1 class = "text-center"> Scientific Name </h1>
+                <div id = "scientific-name-container" class = "text-center"> </div>
 
-                <h1 class="text-center"> Status </h1>
-                <div id = "status-container" class = "text-center"></div>
+                <h1 class = "text-center"> Status </h1>
+                <div id = "status-container" class = "text-center"> </div>
                 
-                <h1 class="text-center"> Description </h1>
-                <div id = "description-container" class = "text-center"></div>
+                <h1 class = "text-center"> Description </h1>
+                <div id = "description-container" class = "text-center"> </div>
                 
-                <h1 class="text-center"> Citations </h1>
-                <div id = "citations-container" class = "text-center"></div>
+                <h1 class = "text-center"> Citations </h1>
+                <div id = "citations-container" class = "text-center"> </div>
             </div>
         </div>
 
         <!-- Access to test JSON file; remove later -->
-        <script src="test.json"></script>
-        <script src="species.js"></script>
+        <script src = "test.json"></script>
+        <script src = "species.js"></script>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>   
-        <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>   
+        <script src = "bootstrap/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
