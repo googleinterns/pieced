@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Gallery</title>
+
+        <link rel="stylesheet" href="gallery.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+
+    <body>
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+            <div class="container">
+                <a class="navbar-brand" href="#">Pieced</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="species.html">Species</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"> Gallery <span class="sr-only"> (current) </span> </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Page Content -->
+        <div id = "species-page" class = "container-fluid">
+            
+            <div class="grid">
+            <div class="grid-sizer"></div>
+            <div class="grid-item"> <img src="test-images/deer.jpg" /> </div>
+            <div class="grid-item"> <img src="test-images/giraffe.jpg" /> </div>
+            <div class="grid-item"> <img src="test-images/owl.jpg" /> </div>
+            <div class="grid-item"> <img src="test-images/pangolin.jpg" /> </div>
+            <div class="grid-item"> <img src="test-images/peacock.jpeg" /> </div>
+            <div class="grid-item"> <img src="test-images/porcupine.jpg" /> </div>
+            <div class="grid-item"> <img src="test-images/red-panda.png" /> </div>
+            <div class="grid-item"> <img src="test-images/seal.jpg" /> </div>
+            <div class="grid-item"> <img src="test-images/snake.jpg" /> </div>
+            <div class="grid-item"> <img src="test-images/squirrel.jpeg" /> </div>
+            <div class="grid-item"> <img src="test-images/tiger.jpeg" /> </div>
+            <div class="grid-item"> <img src="test-images/toucan.jpg" /> </div>
+            </div>
+
+        </div>
+
+        <!-- JavaScript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+        <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+        <script src="gallery.js"></script>
+    </body>
+</html>

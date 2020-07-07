@@ -1,24 +1,23 @@
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
-/* force scrollbar */
-html { overflow-y: scroll; }
+html {
+    overflow-y: scroll;
+}
 
-body { font-family: sans-serif; }
-
-/* ---- grid ---- */
+body { font-family: sans-serif;
+}
 
 .grid {
   background: #DDD;
 }
 
-/* clear fix */
 .grid:after {
   content: '';
   display: block;
   clear: both;
 }
-
-/* ---- .grid-item ---- */
 
 .grid-sizer,
 .grid-item {

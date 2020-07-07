@@ -1,8 +1,8 @@
 #species-page {
     display: flex;
     flex-direction: row;
-    padding: 0 !important;
     height: 100vh;
+    padding: 0 !important;
 }
 
 #species-image-container {
@@ -27,4 +27,28 @@ canvas {
     image-rendering: -o-crisp-edges;
     image-rendering: crisp-edges;
     -ms-interpolation-mode: nearest-neighbor;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white !important;
+  padding: 16px;
+  text-align: center;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #111111;
+}
+
+ul {
+  background-color: #333333;
+  list-style-type: none;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
 }
