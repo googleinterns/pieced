@@ -111,13 +111,13 @@ public class DataCollection {
     if (tds.size() > 6) {
       String commonName = tds.get(0).text();
       String binomialName = tds.get(1).text();
-      String population = cleanPopulation(tds.get(2).text());
-      String status = cleanStatus(tds.get(3).text());
-      PopulationTrend trend = getTrend(tds.get(4).select("img").first());
+      String population = scrapePopulation(tds.get(2).text());
+      String status = scrapeStatus(tds.get(3).text());
+      PopulationTrend trend = scrapeTrend(tds.get(4).select("img").first());
       String notes = tds.get(5).text();
-      String imageLink = getImageLink(tds.get(6).select("img").first());
+      String imageLink = scrapeImageLink(tds.get(6).select("img").first());
 
-      System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
+    //   System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
       Species species = new Species(commonName, binomialName, status, trend, population, notes, imageLink, url);
       return species;
     }
@@ -141,7 +141,7 @@ public class DataCollection {
   public static void addApiInfo(Species species) {
     // Add API-side fields if available
     try {
-      String apiJSON = SpeciesAPIRetrieval.getJSON(DataCollection.API_URL, species.getBinomialName());
+      String apiJSON = SpeciesAPIRetrieval.getJSON(API_URL, species.getBinomialName());
       Map apiMap = SpeciesAPIRetrieval.convertJSONToMap(apiJSON);
       SpeciesAPIRetrieval.addAPISpeciesInfo(species, apiMap);
     } catch (Exception e) {
@@ -184,19 +184,19 @@ public class DataCollection {
   }
 
   // ------------------------------  SCRAPING HELPER FUNCTIONS  ------------------------------ //
-  private static String cleanStatus(String statusString) {
+  private static String scrapeStatus(String statusString) {
     String status = statusString.replaceAll("Domesticated", "D");
     status = removeBrackets(status);
     return status;
   }
 
-  private static String cleanPopulation(String populationString) {
+  private static String scrapePopulation(String populationString) {
     String pop = removeBrackets(populationString);
     pop = pop.replaceAll("[^0-9.–-]", "");
     return pop;
   }
 
-  private static PopulationTrend getTrend(Element trendImg) {
+  private static PopulationTrend scrapeTrend(Element trendImg) {
     String trend;
     if (trendImg != null) {
       trend = trendImg.attr("alt");
@@ -206,7 +206,7 @@ public class DataCollection {
     return convertPopulationTrend(trend);
   }
 
-  private static String getImageLink(Element image) {
+  private static String scrapeImageLink(Element image) {
     String imageLink = "";
     if (image != null) {
       imageLink = image.absUrl("src");
