@@ -117,7 +117,7 @@ public class DataCollection {
       String notes = tds.get(5).text();
       String imageLink = scrapeImageLink(tds.get(6).select("img").first());
 
-    //   System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
+      System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
       Species species = new Species(commonName, binomialName, status, trend, population, notes, imageLink, url);
       return species;
     }
@@ -185,7 +185,7 @@ public class DataCollection {
 
   // ------------------------------  SCRAPING HELPER FUNCTIONS  ------------------------------ //
   private static String scrapeStatus(String statusString) {
-    String status = statusString.replaceAll("Domesticated", "D");
+    String status = statusString.replaceAll("Domesticated", "DO");
     status = removeBrackets(status);
     return status;
   }
@@ -203,7 +203,7 @@ public class DataCollection {
     } else {
       trend = "Unknown";
     }
-    return convertPopulationTrend(trend);
+    return convertToPopulationTrendEnum(trend);
   }
 
   private static String scrapeImageLink(Element image) {
@@ -214,7 +214,7 @@ public class DataCollection {
     return imageLink;
   }
 
-  public static PopulationTrend convertPopulationTrend(String trendString) {
+  public static PopulationTrend convertToPopulationTrendEnum(String trendString) {
     switch(trendString) {
       case "Increase":
         return PopulationTrend.INCREASING;
