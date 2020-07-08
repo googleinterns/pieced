@@ -1,3 +1,5 @@
+// This class retrieves data from the GBIF.org species API. License: CC0 & CC BY.
+
 package com.google.sps.utils.data;
 
 import com.google.sps.utils.data.Species;
