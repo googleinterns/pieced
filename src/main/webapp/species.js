@@ -156,9 +156,9 @@ window.requestAnimationFrame = (function () {
 
 // Test function that fetches sample JSON and modifies page to display information for one species
 function fetchSpeciesData(name) {
-    // const URL = '/data?species=' + name;
-    // fetch(URL).then(response => response.json()).then(speciesData => {
-    fetch("test.json").then(response => response.json()).then(speciesData => {
+    const URL = '/data?species=' + name;
+    fetch(URL).then(response => response.json()).then(speciesData => {
+    // fetch("test.json").then(response => response.json()).then(speciesData => {
         // console.log(speciesData);
         // console.log(name);
 
@@ -191,7 +191,7 @@ function fetchSpeciesData(name) {
                                 "NT" : "Near Threatened",
                                 "LC" : "Least Concern",
                                 "DD" : "Data Deficient",
-                                "DO" : "Domesticated",                      // Might be "D" in JSON
+                                "DO" : "Domesticated",
                                 "NE" : "Not Evaluated"
                             };
         statusContainer.innerText = statusMap[statusCode] === undefined ? "unknown" : statusCode + ": " + statusMap[statusCode];
