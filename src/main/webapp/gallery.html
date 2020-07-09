@@ -3,17 +3,19 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Gallery</title>
+        <title>Pieced - Gallery</title>
 
         <link rel="stylesheet" href="gallery.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <!-- <script src="gallery.js"></script> -->
     </head>
 
     <body>
         <!-- Navigation -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
             <div class="container">
-                <a class="navbar-brand" href="#">Pieced</a>
+                <a class="navbar-brand" href="index.html">Pieced</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 </button>
@@ -26,7 +28,7 @@
                             <a class="nav-link" href="#"> Gallery <span class="sr-only"> (current) </span> </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-btn btn btn-outline-warning" href="/refresh-data" role="button">Refresh Data</a>
+                            <a id="refresh-button" class="nav-btn btn btn-outline-warning" href="/refresh-data" role="button">Refresh Data</a>
                         </li>
                     </ul>
                 </div>
@@ -35,24 +37,22 @@
         
 
         <!-- Page Content -->
-        <div id = "species-page" class = "container-fluid">
-            
-            <div class="grid">
-                <div class="grid-sizer"></div>
-                <div class="grid-item"> <img src="test-images/deer.jpg" /> </div>
-                <div class="grid-item"> <img src="test-images/giraffe.jpg" /> </div>
-                <div class="grid-item"> <img src="test-images/owl.jpg" /> </div>
-                <div class="grid-item"> <img src="test-images/pangolin.jpg" /> </div>
-                <div class="grid-item"> <img src="test-images/peacock.jpeg" /> </div>
-                <div class="grid-item"> <img src="test-images/porcupine.jpg" /> </div>
-                <div class="grid-item"> <img src="test-images/red-panda.png" /> </div>
-                <div class="grid-item"> <img src="test-images/seal.jpg" /> </div>
-                <div class="grid-item"> <img src="test-images/snake.jpg" /> </div>
-                <div class="grid-item"> <img src="test-images/squirrel.jpeg" /> </div>
-                <div class="grid-item"> <img src="test-images/tiger.jpeg" /> </div>
-                <div class="grid-item"> <img src="test-images/toucan.jpg" /> </div>
-            </div>
-
+        <div id="gallery-page" class="container-fluid">
+        <div class="grid">
+            <div class="grid-sizer"></div>
+            <div class="grid-item"> <img src="test-images/deer.jpg" /> </div>
+            <div class="grid-item"> <img src="test-images/giraffe.jpg" /> </div>
+            <div class="grid-item"> <img src="test-images/owl.jpg" /> </div>
+            <div class="grid-item"> <img src="test-images/pangolin.jpg" /> </div>
+            <div class="grid-item"> <img src="test-images/snake.jpg" /> </div>
+            <div class="grid-item"> <img src="test-images/squirrel.jpeg" /> </div>
+            <div class="grid-item"> <img src="test-images/tiger.jpeg" /> </div>
+            <div class="grid-item"> <img src="test-images/toucan.jpg" /> </div>
+            <div class="grid-item"> <img src="test-images/peacock.jpeg" /> </div>
+            <div class="grid-item"> <img src="test-images/porcupine.jpg" /> </div>
+            <div class="grid-item"> <img src="test-images/red-panda.png" /> </div>
+            <div class="grid-item"> <img src="test-images/seal.jpg" /> </div>
+        </div>
         </div>
 
         <!-- JavaScript -->
@@ -60,6 +60,7 @@
         <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
 
         <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+        <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
         <script src="gallery.js"></script>
     </body>
 </html>

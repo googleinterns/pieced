@@ -10,8 +10,16 @@ body {
     font-family: sans-serif;
 }
 
+#refresh-button {
+    margin-left: 7px;
+}
+
+#gallery-page {
+    padding: 0 !important;
+}
+
 .grid {
-  background: #DDD;
+  max-width: 100%;
 }
 
 .grid:after {
@@ -22,14 +30,21 @@ body {
 
 .grid-sizer,
 .grid-item {
-  width: 33.333%;
+  width: 25%;
 }
 
 .grid-item {
   float: left;
+  height: auto;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .grid-item img {
   display: block;
   max-width: 100%;
+  width: 100%;
+  height: auto;
+  padding: 0 !important;
+  margin: 0 !important;
 }
