@@ -36,7 +36,7 @@ canvas {
     image-rendering: crisp-edges;
     -ms-interpolation-mode: nearest-neighbor;
 }
-
+/* 
 li {
   float: left;
 }
@@ -59,4 +59,4 @@ ul {
   margin: 0;
   overflow: hidden;
   padding: 0;
-}
+} */
