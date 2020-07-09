@@ -14,13 +14,24 @@
 
 package com.google.sps.servlets;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.appengine.api.datastore.FetchOptions;
+import com.google.sps.utils.data.Species;
+import com.google.sps.utils.data.PopulationTrend;
+import com.google.sps.utils.data.DataCollection;
+
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreException;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.EntityQuery;
+import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.KeyFactory;
+import com.google.cloud.datastore.Query;
+import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StringValue;
+import com.google.cloud.datastore.StructuredQuery;
+import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
+import com.google.cloud.datastore.StructuredQuery.OrderBy;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -28,34 +39,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-import com.google.sps.classes.Comment;
 import com.google.gson.Gson;
 import java.util.*;
 
 /** Servlet that grabs data on individual species. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  PreparedQuery queriedSpeciesData;
+  Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String speciesName = "Accipiter bicolor";
-    Query query = new Query("Species").setFilter(PropertyFilter.eq("binomial_name", speciesName));
-    queriedSpeciesData = datastore.prepare(query);
+    Query<Entity> query = Query.newEntityQueryBuilder().setKind("Species").setFilter(PropertyFilter.eq("binomial_name", speciesName)).build();
+    QueryResults<Entity> queriedSpecies = datastore.run(query);
 
-    String commonName =     (String) queriedSpeciesData.getProperty("common_name");
-    String binomialName =   (String) queriedSpeciesData.getProperty("binomial_name");
-    String status =         (String) queriedSpeciesData.getProperty("status");
-    String population =     (String) queriedSpeciesData.getProperty("population");
-    String wikipediaNotes = (String) queriedSpeciesData.getProperty("wikipedia_notes");
-    String imageLink =      (String) queriedSpeciesData.getProperty("image_link");
-    String citationLink =   (String) queriedSpeciesData.getProperty("citation_link");
-    PopulationTrend trend = (PopulationTrend) queriedSpeciesData.getProperty("trend");
+    Entity species = queriedSpecies.next();
 
-    Species queriedSpecies = new Species(commonName,
+    String commonName =     species.getString("common_name");
+    String binomialName =   species.getString("binomial_name");
+    String status =         species.getString("status");
+    String population =     species.getString("population");
+    String wikipediaNotes = species.getString("wikipedia_notes");
+    String imageLink =      species.getString("image_link");
+    String citationLink =   species.getString("citation_link");
+    PopulationTrend trend = DataCollection.convertToPopulationTrendEnum(species.getString("trend"));
+
+    Species speciesData = new Species(commonName,
                                          binomialName,
                                          status,
                                          trend,
@@ -64,21 +73,23 @@ public class DataServlet extends HttpServlet {
                                          imageLink,
                                          citationLink);
 
-    String json = convertToJson(queriedSpecies);
+    System.out.println(speciesData);
+    String json = convertToJson(speciesData);
+    System.out.println(json);
     response.setContentType("application/json; charset=UTF-8");
     response.setCharacterEncoding("UTF-8");
     response.getWriter().println(json);
   }
 
-  // Convert List to JSON using Gson library.
-  private String convertToJson(List<Comment> msgs) {
+  // Convert species data to JSON using Gson library.
+  private String convertToJson(Species data) {
     Gson gson = new Gson();
-    String json = gson.toJson(msgs);
+    String json = gson.toJson(data);
     return json;
   }
  
- // Extracts comment text from request and returns it.
-  private String getComment(HttpServletRequest request) {
+ // Extracts species name from request and returns it.
+  private String getSpeciesName(HttpServletRequest request) {
     String speciesName = request.getParameter("species");
 
     // Prevent accidental/blank submissions.
