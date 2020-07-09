@@ -12,12 +12,7 @@ body {
   background-color: var(--main);
 }
 
-a {
-  color: var(--body);
-}
-
-
-/*--- NAVIGATION BAR ---*/
+/**************** NAVBAR *******************/
 .bg-nav {
   background: #fff;
 }
@@ -32,16 +27,13 @@ a {
 .navbar-collapse {
   justify-content: flex-end;
   margin-right: 20px;
-  /* background: blue; */
 }
 
 .nav-item {
-  /* background: green; */
   margin-left: 10px;
 }
 
 .nav-link {
-  /* background: red; */
   text-transform: uppercase;
   padding: 10px;
 }
