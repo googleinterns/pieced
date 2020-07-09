@@ -29,7 +29,7 @@ public class DataCollection {
   private static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
   private static KeyFactory keyFactory = datastore.newKeyFactory().setKind("Species");
 
-  public static void main (String[] args) throws IOException {
+  public static void collectData() throws IOException {
     List<String> urls = parseListofPages();
     for (String url: urls) {
       parseSpeciesTable(url);
