@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <meta charset = "UTF-8">
-        <meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name = "description" content = "">
-        <meta name = "author" content = "">
-        <title>Capstone</title>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Pieced - Species</title>
 
-        <link rel="stylesheet" href="styles/style.css">
-        <link rel = "stylesheet" href = "styles/species.css">
-        <link rel = "stylesheet" href = "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    </head>
-
-    <body onload = "fetchSpeciesData()">
-         <div class="navigation"></div>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/species.css">
+    <link rel="stylesheet" href="styles/style.css">
+  </head>
+  
+  <body onload = "fetchSpeciesData()">
+    <div id="navigation"></div>
 
         <!-- Page Content -->
         <div id = "species-page" class = "container-fluid">
@@ -53,17 +52,12 @@
             </div>
         </div>
 
-        <!-- Access to test JSON file; remove later -->
-        <script src = "test.json"></script>
-        <script src = "species.js"></script>
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+    <script src="bootstrap/js/bootstrap.min.js"></script>
 
-        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>   
-        <script src = "bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script>
-          // Load navigation bar
-          $(function() {
-            $(".navigation").load("navigation.html");
-          });
-        </script>
-    </body>
+    <script src="test.json"></script>
+    <script src="scripts/species.js"></script>
+    <script src="scripts/script.js"></script>
+  </body>
 </html>
