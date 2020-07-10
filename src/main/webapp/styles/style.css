@@ -15,8 +15,13 @@ body {
 }
 
 /**************** NAVBAR *******************/
+.navbar {
+  border-bottom: 2px solid var(--body);
+}
+
 .bg-nav {
   background: #fff;
+  border-bottom-color: #fff;
 }
 
 .navbar-brand {
@@ -53,6 +58,6 @@ header {
   background-size: cover;
   background-position: center;
   position: relative;
-  margin-top: 70px;
+  margin-top: 75px;
   text-align: center;
 }
