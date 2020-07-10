@@ -10,6 +10,8 @@ body {
   margin: 0;
   color: var(--body);
   background-color: var(--main);
+  background-image: url('https://images.alphacoders.com/887/887559.jpg'); /* just as a filler */
+
 }
 
 /**************** NAVBAR *******************/
@@ -44,4 +46,13 @@ body {
 
 .nav-btn:hover {
   background: var(--main);
+}
+
+/**************** HEADER *******************/
+header {
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  margin-top: 70px;
+  text-align: center;
 }
