@@ -58,14 +58,14 @@ public class DataServlet extends HttpServlet {
         Entity speciesData = queriedSpecies.next();
 
         // Grab information from Datastore entry and construct Species object
-        String commonName =     speciesData.getString("common_name");
-        String binomialName =   speciesData.getString("binomial_name");
-        String status =         speciesData.getString("status");
-        String population =     speciesData.getString("population");
-        String wikipediaNotes = speciesData.getString("wikipedia_notes");
-        String imageLink =      speciesData.getString("image_link");
-        String citationLink =   speciesData.getString("citation_link");
-        PopulationTrend trend = DataCollection.convertToPopulationTrendEnum(speciesData.getString("trend"));
+        String commonName       = speciesData.getString("common_name");
+        String binomialName     = speciesData.getString("binomial_name");
+        String status           = speciesData.getString("status");
+        String population       = speciesData.getString("population");
+        String wikipediaNotes   = speciesData.getString("wikipedia_notes");
+        String imageLink        = speciesData.getString("image_link");
+        String citationLink     = speciesData.getString("citation_link");
+        PopulationTrend trend   = DataCollection.convertToPopulationTrendEnum(speciesData.getString("trend"));
 
         Species species = new Species(commonName,
                                             binomialName,
