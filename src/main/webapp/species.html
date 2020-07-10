@@ -1,36 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <!-- <meta name = "description" content = "">
-        <meta name = "author" content = ""> -->
-        <title>Pieced - Species</title>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Pieced - Species</title>
 
-        <link rel="stylesheet" href="species.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    </head>
-
-    <body onload="fetchSpeciesData()">
-        <!-- Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-            <div class="container">
-                <a class="navbar-brand" href="/">Pieced</a>
-                <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#navbarResponsive" aria-controls = "navbarResponsive" aria-expanded = "false" aria-label = "Toggle navigation">
-                    <span class = "navbar-toggler-icon"> </span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#"> Species <span class="sr-only"> (current) </span> </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="gallery.html">Gallery</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/species.css">
+    <link rel="stylesheet" href="styles/style.css">
+  </head>
+  
+  <body onload = "fetchSpeciesData()">
+    <div id="navigation"></div>
 
         <!-- Page Content -->
         <div id="species-page" class="container-fluid">
@@ -71,6 +53,7 @@
             </div>
         </div>
 
+<<<<<<< HEAD
         <!-- Access to test JSON file; remove later -->
         <script src="test.json"></script>
         <script src="species.js"></script>
@@ -78,4 +61,14 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>   
         <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
     </body>
+=======
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="test.json"></script>
+    <script src="scripts/species.js"></script>
+    <script src="scripts/script.js"></script>
+  </body>
+>>>>>>> dev
 </html>
