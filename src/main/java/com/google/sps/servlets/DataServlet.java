@@ -71,7 +71,6 @@ public class DataServlet extends HttpServlet {
                                          citationLink);
 
     String json = convertToJson(speciesData);
-    System.out.println(json);
     response.setContentType("application/json; charset=UTF-8");
     response.setCharacterEncoding("UTF-8");
     response.getWriter().println(json);

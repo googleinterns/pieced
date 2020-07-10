@@ -162,7 +162,7 @@ function fetchSpeciesData(name) {
         // Parse name (remove upon integration w. gallery page and backend)
         // Defaults to Impala; Impala looks weird due to image resolution
 
-        console.log(speciesData);
+        // console.log(speciesData);
         name = name === undefined ? "Aepyceros melampus" : name;
         var species = speciesData[name];
 
