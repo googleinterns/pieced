@@ -42,55 +42,62 @@ import java.util.*;
 /** Servlet that grabs data on individual species. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-  
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String speciesName = getSpeciesName(request);
-    Query<Entity> query = Query.newEntityQueryBuilder().setKind("Species").setFilter(PropertyFilter.eq("binomial_name", speciesName)).build();
-    QueryResults<Entity> queriedSpecies = datastore.run(query);
+    Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+    
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Parse identifying species name from query string
+        String speciesName = getSpeciesName(request);
 
-    Entity species = queriedSpecies.next();
+        // Initialize and run a query that will select the specific species from Datastore by filtering by scientific name
+        Query<Entity> query = Query.newEntityQueryBuilder().setKind("Species").setFilter(PropertyFilter.eq("binomial_name", speciesName)).build();
+        QueryResults<Entity> queriedSpecies = datastore.run(query);
+        
+        // There will only ever be one entry returned by any query due to how we add and modify species to Datastore,
+        // so we only need to call queriedSpecies.next() a single time
+        Entity speciesData = queriedSpecies.next();
 
-    String commonName =     species.getString("common_name");
-    String binomialName =   species.getString("binomial_name");
-    String status =         species.getString("status");
-    String population =     species.getString("population");
-    String wikipediaNotes = species.getString("wikipedia_notes");
-    String imageLink =      species.getString("image_link");
-    String citationLink =   species.getString("citation_link");
-    PopulationTrend trend = DataCollection.convertToPopulationTrendEnum(species.getString("trend"));
+        // Grab information from Datastore entry and construct Species object
+        String commonName =     speciesData.getString("common_name");
+        String binomialName =   speciesData.getString("binomial_name");
+        String status =         speciesData.getString("status");
+        String population =     speciesData.getString("population");
+        String wikipediaNotes = speciesData.getString("wikipedia_notes");
+        String imageLink =      speciesData.getString("image_link");
+        String citationLink =   speciesData.getString("citation_link");
+        PopulationTrend trend = DataCollection.convertToPopulationTrendEnum(speciesData.getString("trend"));
 
-    Species speciesData = new Species(commonName,
-                                         binomialName,
-                                         status,
-                                         trend,
-                                         population,
-                                         wikipediaNotes,
-                                         imageLink,
-                                         citationLink);
+        Species species = new Species(commonName,
+                                            binomialName,
+                                            status,
+                                            trend,
+                                            population,
+                                            wikipediaNotes,
+                                            imageLink,
+                                            citationLink);
 
-    String json = convertToJson(speciesData);
-    response.setContentType("application/json; charset=UTF-8");
-    response.setCharacterEncoding("UTF-8");
-    response.getWriter().println(json);
-  }
-
-  // Convert species data to JSON using Gson library.
-  private String convertToJson(Species data) {
-    Gson gson = new Gson();
-    String json = gson.toJson(data);
-    return json;
-  }
- 
- // Extracts species name from request and returns it.
-  private String getSpeciesName(HttpServletRequest request) {
-    String speciesName = request.getParameter("species");
-
-    // Prevent accidental/blank submissions.
-    if (speciesName.equals("")) {
-        return null;
+        // Convert Species object to JSON and send it back to caller
+        String json = convertToJson(species);
+        response.setContentType("application/json; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().println(json);
     }
-    return speciesName;
-  }
+
+    // Convert species data to JSON using Gson library.
+    private String convertToJson(Species data) {
+        Gson gson = new Gson();
+        String json = gson.toJson(data);
+        return json;
+    }
+    
+    // Extracts species name from request and returns it.
+    private String getSpeciesName(HttpServletRequest request) {
+        String speciesName = request.getParameter("species");
+
+        // Prevent accidental/blank submissions.
+        if (speciesName.equals("")) {
+            return null;
+        }
+        return speciesName;
+    }
 }
