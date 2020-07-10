@@ -157,6 +157,7 @@ window.requestAnimationFrame = (function () {
 // Test function that fetches sample JSON and modifies page to display information for one species
 function fetchSpeciesData(name) {
     const URL = '/data?species=' + name;
+    console.log("FETCHING FROM " + URL);
     fetch(URL).then(response => response.json()).then(speciesData => {
     // fetch("test.json").then(response => response.json()).then(speciesData => {
         // console.log(speciesData);
@@ -164,6 +165,9 @@ function fetchSpeciesData(name) {
 
         // Parse name (remove upon integration w. gallery page and backend)
         // Defaults to Impala; Impala looks weird due to image resolution
+
+        console.log("FETCHED DATA:");
+        console.log(speciesData);
         name = name === undefined ? "Aepyceros melampus" : name;
         var species = speciesData[name];
 
