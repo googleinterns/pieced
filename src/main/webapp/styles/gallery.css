@@ -1,13 +1,5 @@
 * {
-    box-sizing: border-box;
-}
-
-html {
-    overflow-y: scroll;
-}
-
-body {
-    font-family: sans-serif;
+  box-sizing: border-box;
 }
 
 .grid {

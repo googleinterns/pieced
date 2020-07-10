@@ -10,4 +10,4 @@ var $grid = $('.grid').masonry({
 // Layout Masonry after each image finishes loading
 $grid.imagesLoaded().progress( function() {
   $grid.masonry();
-});  
+});
