@@ -157,16 +157,11 @@ window.requestAnimationFrame = (function () {
 // Test function that fetches sample JSON and modifies page to display information for one species
 function fetchSpeciesData(name) {
     const URL = '/data?species=' + name;
-    console.log("FETCHING FROM " + URL);
     fetch(URL).then(response => response.json()).then(speciesData => {
-    // fetch("test.json").then(response => response.json()).then(speciesData => {
-        // console.log(speciesData);
-        // console.log(name);
 
         // Parse name (remove upon integration w. gallery page and backend)
         // Defaults to Impala; Impala looks weird due to image resolution
 
-        console.log("FETCHED DATA:");
         console.log(speciesData);
         name = name === undefined ? "Aepyceros melampus" : name;
         var species = speciesData[name];
@@ -180,11 +175,11 @@ function fetchSpeciesData(name) {
         var pixelSlider =               document.getElementById('pixel_factor');
 
         // Update names for species
-        commonNameContainer.innerText =     species.commonName;
-        scientificNameContainer.innerText = species.binomialName;
+        commonNameContainer.innerText =     speciesData.commonName;
+        scientificNameContainer.innerText = speciesData.binomialName;
 
         // Map conservation status code to term and update entry
-        var statusCode =    species.status;
+        var statusCode =    speciesData.status;
         statusCode =        statusCode.substr(0, statusCode.indexOf('['));
         var statusMap =     {
                                 "EX" : "Extinct",
@@ -201,16 +196,16 @@ function fetchSpeciesData(name) {
         statusContainer.innerText = statusMap[statusCode] === undefined ? "unknown" : statusCode + ": " + statusMap[statusCode];
 
         // Update description entry
-        var notes = species.wikipediaNotes;
+        var notes = speciesData.wikipediaNotes;
         notes = notes.substr(0, notes.indexOf('['));
         descriptionContainer.innerText = notes.length == 0 ? "N/A" : notes;
-        citationsContainer.innerText = species.citationLinks;
+        citationsContainer.innerText = speciesData.citationLinks;
 
         // Update image source
-        img.src = species.imageLink;
+        img.src = speciesData.imageLink;
 
         // Manipulate pixelation value based on species population
-        var pop = species.population;
+        var pop = speciesData.population;
         pop = pop.substr(0, pop.indexOf('[')); 
         pixelSlider.value = pop;
         pixelSlider.max = img.width * img.height;
