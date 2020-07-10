@@ -15,43 +15,53 @@
     <div id="navigation"></div>
 
         <!-- Page Content -->
-        <div id = "species-page" class = "container-fluid">
-            <div id = "species-image-container">
+        <div id="species-page" class="container-fluid">
+            <div id="species-image-container">
                 <!-- Debug nav bar to select different species and load from JSON -->
                 <ul>
-                    <li> <a onclick = "fetchSpeciesData('Aepyceros melampus')"> Impala </a> </li>
-                    <li> <a onclick = "fetchSpeciesData('Addax nasomaculatus')"> Addax </a> </li>
-                    <li> <a onclick = "fetchSpeciesData('Capricornis crispus')"> Japanese serow </a> </li>
-                    <li> <a onclick = "fetchSpeciesData('Tragelaphus eurycerus')"> Bongo </a> </li>
+                    <li> <a onclick="fetchSpeciesData('Aepyceros melampus')"> Impala </a> </li>
+                    <li> <a onclick="fetchSpeciesData('Addax nasomaculatus')"> Addax </a> </li>
+                    <li> <a onclick="fetchSpeciesData('Capricornis crispus')"> Japanese serow </a> </li>
+                    <li> <a onclick="fetchSpeciesData('Tragelaphus eurycerus')"> Bongo </a> </li>
                 </ul>
 
                 <!-- Canvas for pixelation -->
                 <div>
-                    <canvas onmouseover = "animateFullResolution()" onmouseout = "animateOldResolution()" id = "canvas" width = "500" height = "400"> </canvas>
-                    <img id = "species-image" class = "image" src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Royal_Bengal_Tiger_at_Kanha_National_Park.jpg/800px-Royal_Bengal_Tiger_at_Kanha_National_Park.jpg" alt = "Tiger" style = "display: none;" height = "512px" width = "256px">
-                    <input id = "pixel_factor" type = "number" min = "1"  value = "100">
+                    <canvas onmouseover="animateFullResolution()" onmouseout="animateOldResolution()" id="canvas" width="500" height="400"> </canvas>
+                    <img id="species-image" class="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Royal_Bengal_Tiger_at_Kanha_National_Park.jpg/800px-Royal_Bengal_Tiger_at_Kanha_National_Park.jpg"
+                        alt="Tiger" style="display: none;" height = "512px" width = "256px">
+                    <input id="pixel_factor" type="number" min="1"  value="100">
                 </div>
             </div>
 
             <!-- Containers for species-specific info -->
-            <div id = "species-info-container">
-                <h1 class = "text-center"> Name </h1>
-                <div id = "common-name-container" class = "text-center"> </div>
+            <div id="species-info-container">
+                <h1 class="text-center"> Name </h1>
+                <div id="common-name-container" class="text-center"> </div>
 
-                <h1 class = "text-center"> Scientific Name </h1>
-                <div id = "scientific-name-container" class = "text-center"> </div>
+                <h1 class="text-center"> Scientific Name </h1>
+                <div id="scientific-name-container" class="text-center"> </div>
 
-                <h1 class = "text-center"> Status </h1>
-                <div id = "status-container" class = "text-center"> </div>
+                <h1 class="text-center"> Status </h1>
+                <div id="status-container" class="text-center"> </div>
                 
-                <h1 class = "text-center"> Description </h1>
-                <div id = "description-container" class = "text-center"> </div>
+                <h1 class="text-center"> Description </h1>
+                <div id="description-container" class="text-center"> </div>
                 
-                <h1 class = "text-center"> Citations </h1>
-                <div id = "citations-container" class = "text-center"> </div>
+                <h1 class="text-center"> Citations </h1>
+                <div id="citations-container" class="text-center"> </div>
             </div>
         </div>
 
+<<<<<<< HEAD
+        <!-- Access to test JSON file; remove later -->
+        <script src="test.json"></script>
+        <script src="species.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>   
+        <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    </body>
+=======
     <!-- JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
     <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -60,4 +70,5 @@
     <script src="scripts/species.js"></script>
     <script src="scripts/script.js"></script>
   </body>
+>>>>>>> dev
 </html>
