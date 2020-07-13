@@ -34,8 +34,7 @@ function pixelate(v) {
     // Grab number of total pixels the image should have
     var numPixels = animated? v : pixel_factor.value;
 
-    // Rough creation of pixels that takes square root of numPixels
-    // Assumption that image is "square"; could be updated w. math for rectangular images
+    // Creation of pixels that takes square root of numPixels
     var w = Math.sqrt(numPixels);
     var h = Math.sqrt(numPixels);
 
@@ -64,14 +63,14 @@ function animate_update(endpoint) {
 
         if (PIXEL_FACTOR_CURR < target) {
             PIXEL_FACTOR_CURR += dx;
-            // "Binary Search" appraoch to hone in on exact value since dx > 1
+            // "Binary Search" approach to home in on exact value since dx > 1
             if (!underTarget) {
                 dx -= 1;
             }
             underTarget = true;
         } else if (PIXEL_FACTOR_CURR > target) {
             PIXEL_FACTOR_CURR -= dx;
-            // "Binary Search" appraoch to hone in on exact value since dx > 1
+            // "Binary Search" approach to home in on exact value since dx > 1
             if (underTarget) {
                 dx -= 1;
             }

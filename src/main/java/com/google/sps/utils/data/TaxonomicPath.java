@@ -1,6 +1,6 @@
 package com.google.sps.utils.data;
 
-public class Taxonomy {
+public class TaxonomicPath {
 
     private String kingdom_t;
     private String phylum_t;
@@ -9,7 +9,7 @@ public class Taxonomy {
     private String family_t;
     private String genus_t;
 
-    public Taxonomy() {
+    public TaxonomicPath() {
         kingdom_t = "";
         phylum_t = "";
         class_t = "";
@@ -18,7 +18,7 @@ public class Taxonomy {
         genus_t = "";
     }
 
-    public Taxonomy(String kingdom_t, String phylum_t, String class_t, String order_t, String family_t, String genus_t) {
+    public TaxonomicPath(String kingdom_t, String phylum_t, String class_t, String order_t, String family_t, String genus_t) {
         this.kingdom_t = kingdom_t;
         this.phylum_t = phylum_t;
         this.class_t = class_t;
@@ -75,14 +75,14 @@ public class Taxonomy {
         return genus_t;
     }
 
-    public static void printTaxonomy(Taxonomy taxonomy) {
-        System.out.println("===Taxonomy===");
-        System.out.println("Kingdom: " + taxonomy.getAnimalKingdom());
-        System.out.println("Phylum: " + taxonomy.getAnimalPhylum());
-        System.out.println("Class: " + taxonomy.getAnimalClass());
-        System.out.println("Order: " + taxonomy.getAnimalOrder());
-        System.out.println("Family: " + taxonomy.getAnimalFamily());
-        System.out.println("Genus: " + taxonomy.getAnimalGenus());
+    public static void printTaxonomicPath(TaxonomicPath taxonomicPath) {
+        System.out.println("===TaxonomicPath===");
+        System.out.println("Kingdom: " + taxonomicPath.getAnimalKingdom());
+        System.out.println("Phylum: " + taxonomicPath.getAnimalPhylum());
+        System.out.println("Class: " + taxonomicPath.getAnimalClass());
+        System.out.println("Order: " + taxonomicPath.getAnimalOrder());
+        System.out.println("Family: " + taxonomicPath.getAnimalFamily());
+        System.out.println("Genus: " + taxonomicPath.getAnimalGenus());
         System.out.println("===========");
     }
 }

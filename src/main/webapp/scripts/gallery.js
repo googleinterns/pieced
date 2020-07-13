@@ -11,11 +11,11 @@ var $grid = $('.grid').masonry({
     horizontalOrder: true
 });
 
-fetchAllSpeciesData();
+fetchAllSpeciesData("test.json");
 
 // Test function that fetches sample JSON and appends each species to the gallery
-function fetchAllSpeciesData() {
-    fetch("test.json").then(response => response.json()).then(speciesData => {
+function fetchAllSpeciesData(data) {
+    fetch(data).then(response => response.json()).then(speciesData => {
         for (var species in speciesData) {
             // Append images to grid
             var $html = $('<div class="grid-item"> <img src="'+ speciesData[species].imageLink +
