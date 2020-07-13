@@ -116,6 +116,7 @@ public class DataCollection {
       String population = scrapePopulation(tds.get(2).text());
       String status = scrapeStatus(tds.get(3).text());
       PopulationTrend trend = scrapeTrend(tds.get(4).select("img").first());
+      System.out.println(trend);
       String notes = tds.get(5).text();
       String imageLink = scrapeImageLink(tds.get(6).select("img").first());
 
@@ -227,7 +228,7 @@ public class DataCollection {
     if (trendImg != null) {
       trend = trendImg.attr("alt");
     } else {
-      trend = "Unknown";
+      return PopulationTrend.UNKNOWN;
     }
     return convertToPopulationTrendEnum(trend);
   }
@@ -240,7 +241,6 @@ public class DataCollection {
    * @param trendImg html for the species image in the table
    */
   private static String scrapeImageLink(Element image) {
-    System.out.println(image);
     String imageLink = "";
     if (image != null) {
       imageLink = image.absUrl("src");
@@ -249,15 +249,10 @@ public class DataCollection {
   }
 
   public static PopulationTrend convertToPopulationTrendEnum(String trendString) {
-    switch(trendString) {
-      case "Increase":
-        return PopulationTrend.INCREASING;
-      case "Decrease":
-        return PopulationTrend.DECREASING;
-      case "Steady":
-        return PopulationTrend.STEADY;
-      default:
-        return PopulationTrend.UNKNOWN;
+    try {
+      return PopulationTrend.valueOf(trendString.trim().toUpperCase());
+    } catch(IllegalArgumentException ex) {
+      return PopulationTrend.UNKNOWN;
     }
   }
 
