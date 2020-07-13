@@ -19,12 +19,9 @@ import com.google.sps.utils.data.PopulationTrend;
 import com.google.sps.utils.data.DataCollection;
 
 import com.google.cloud.datastore.Datastore;
-// import com.google.cloud.datastore.DatastoreException;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.EntityQuery;
-// import com.google.cloud.datastore.Key;
-// import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery;
@@ -46,13 +43,29 @@ public class DataServlet extends HttpServlet {
     
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
         // Parse identifying species name from query string
         String speciesName = getSpeciesName(request);
+        
+        // Return invalid data if species name is null or empty
+        if (speciesName == null) {
+            String json = generateInvalidResponse(response, "No species name requested.");
+            response.getWriter().println(json);
+            return;
+        }
 
         // Initialize and run a query that will select the specific species from Datastore by filtering by scientific name
         Query<Entity> query = Query.newEntityQueryBuilder().setKind("Species").setFilter(PropertyFilter.eq("binomial_name", speciesName)).build();
         QueryResults<Entity> queriedSpecies = datastore.run(query);
-        
+
+        if (!queriedSpecies.hasNext()) {
+            String json = generateInvalidResponse(response, "No results in datastore.");
+            response.getWriter().println(json);
+            return;
+        }
+
         // There will only ever be one entry returned by any query due to how we add and modify species to Datastore,
         // so we only need to call queriedSpecies.next() a single time
         Entity speciesData = queriedSpecies.next();
@@ -78,8 +91,6 @@ public class DataServlet extends HttpServlet {
 
         // Convert Species object to JSON and send it back to caller
         String json = convertToJson(species);
-        response.setContentType("application/json; charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
         response.getWriter().println(json);
     }
 
@@ -99,5 +110,21 @@ public class DataServlet extends HttpServlet {
             return null;
         }
         return speciesName;
+    }
+
+    // Builds an invalid JSON response when the request is invalid or misses in the datastore.
+    private String generateInvalidResponse(HttpServletResponse response, String errorMessage) {
+        System.err.println("Invalid fetch request: " + errorMessage);
+        Species species = new Species(null,
+                                null,
+                                null,
+                                PopulationTrend.UNKNOWN,
+                                null,
+                                null,
+                                null,
+                                null);
+
+        String json = convertToJson(species);
+        return json;
     }
 }
