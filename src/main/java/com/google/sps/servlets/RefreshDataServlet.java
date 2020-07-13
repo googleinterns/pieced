@@ -24,8 +24,7 @@ import com.google.sps.utils.data.DataCollection;
 
 
 /**
- * Servlet responsible for deleting comment data
- * Extends DataServlet to keep Entity type
+ * Servlet responsible for refreshing data collection. This is just used for developer purposes for now
  */
 @WebServlet("/refresh-data")
 public class RefreshDataServlet extends HttpServlet {
