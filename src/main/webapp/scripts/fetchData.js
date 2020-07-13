@@ -1,14 +1,8 @@
 // Test function that fetches sample JSON and modifies page to display information for one species
 function fetchSpeciesData(name) {
-    const URL = '/data?species=' + name;
+    const URL = '/speciesData?species=' + name;
     fetch(URL).then(response => response.json()).then(speciesData => {
-
-        // Parse name (remove upon integration w. gallery page and backend)
-        // Defaults to Impala; Impala looks weird due to image resolution
-
-        name = name === undefined ? "Aepyceros melampus" : name;
-        var species = speciesData[name];
-
+        console.log("HERE");
         var commonNameContainer     = document.getElementById('common-name-container');
         var scientificNameContainer = document.getElementById('scientific-name-container');
         var statusContainer         = document.getElementById('status-container');
@@ -16,6 +10,8 @@ function fetchSpeciesData(name) {
         var citationsContainer      = document.getElementById('citations-container');
         var img                     = document.getElementById('species-image');
         var pixelSlider             = document.getElementById('pixel_factor');
+
+        console.log(speciesData.taxonomicPath);
 
         // Update names for species
         commonNameContainer.innerText       = speciesData.commonName;
