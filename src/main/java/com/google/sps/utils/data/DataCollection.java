@@ -119,7 +119,7 @@ public class DataCollection {
       String notes = tds.get(5).text();
       String imageLink = scrapeImageLink(tds.get(6).select("img").first());
 
-      System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
+    //   System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
       Species species = new Species(commonName, binomialName, status, trend, population, notes, imageLink, url);
       return species;
     }
@@ -186,18 +186,42 @@ public class DataCollection {
   }
 
   // ------------------------------  SCRAPING HELPER FUNCTIONS  ------------------------------ //
+
+  /**
+   * Takes in the status information from wikipedia and cleans it.
+   * 
+   * The first two letters are its status according to IUCN and then a parenthesis holds its 
+   * wikipedia reference number. An edge case is "Domesticated" being written out, which is
+   * rewritten as "DO" to match the others.
+   * @param statusString string formatted like EN[#] that needs to be cleaned
+   */
   private static String scrapeStatus(String statusString) {
     String status = statusString.replaceAll("Domesticated", "DO");
     status = removeBrackets(status);
     return status;
   }
 
+  /**
+   * Takes in the population information from wikipedia and cleans it.
+   * 
+   * Input comes in two main formats (excluding any commas or white space characters):
+   *    1. a[b] where a is the population count and b is the reference number
+   *    2. a-b[c] where a is the lower bound population, b is the upper bound, and c is the reference number
+   * @param populationString string that needs to be cleaned
+   */
   private static String scrapePopulation(String populationString) {
     String pop = removeBrackets(populationString);
-    pop = pop.replaceAll("[^0-9.–-]", "");
+    pop = pop.replaceAll("[^0-9.–-]", ""); // remove any characters other than numbers and '-'
     return pop;
   }
 
+  /**
+   * Takes in the trendImg element from wikipedia and extracts the trend
+   * 
+   * If the species has trend information, the format is:
+   *    <img alt="TREND" src="image" title="TREND">
+   * @param trendImg html for the trend box in the table
+   */
   private static PopulationTrend scrapeTrend(Element trendImg) {
     String trend;
     if (trendImg != null) {
@@ -208,7 +232,15 @@ public class DataCollection {
     return convertToPopulationTrendEnum(trend);
   }
 
+  /**
+   * Takes in the image element from wikipedia and extracts the url
+   * 
+   * If the species has an image, the format is:
+   *    <img src="IMAGE_URL" srcset="IMAGE_URL_SIZE:1.5x, IMAGE_URL_SIZE:2x">
+   * @param trendImg html for the species image in the table
+   */
   private static String scrapeImageLink(Element image) {
+    System.out.println(image);
     String imageLink = "";
     if (image != null) {
       imageLink = image.absUrl("src");
