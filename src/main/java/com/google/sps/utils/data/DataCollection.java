@@ -116,7 +116,6 @@ public class DataCollection {
       String population = scrapePopulation(tds.get(2).text());
       String status = scrapeStatus(tds.get(3).text());
       PopulationTrend trend = scrapeTrend(tds.get(4).select("img").first());
-      System.out.println(trend);
       String notes = tds.get(5).text();
       String imageLink = scrapeImageLink(tds.get(6).select("img").first());
 
