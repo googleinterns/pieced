@@ -10,11 +10,18 @@ body {
   margin: 0;
   color: var(--body);
   background-color: var(--main);
+  background-image: url('https://images.alphacoders.com/887/887559.jpg'); /* just as a filler */
+
 }
 
 /**************** NAVBAR *******************/
+.navbar {
+  border-bottom: 2px solid var(--body);
+}
+
 .bg-nav {
   background: #fff;
+  border-bottom-color: #fff;
 }
 
 .navbar-brand {
@@ -44,4 +51,13 @@ body {
 
 .nav-btn:hover {
   background: var(--main);
+}
+
+/**************** HEADER *******************/
+header {
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  margin-top: 75px;
+  text-align: center;
 }
