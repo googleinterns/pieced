@@ -2,7 +2,7 @@ package com.google.sps.utils.data;
 
 import com.google.gson.Gson;
 import com.google.sps.utils.data.Species;
-import com.google.sps.utils.data.Taxonomy;
+import com.google.sps.utils.data.TaxonomicPath;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -63,6 +63,9 @@ public class SpeciesAPIRetrieval {
    * @param apiMap: map of the JSON returned from API call to this species
    */
   public static void addAPISpeciesInfo(Species species, Map apiMap) {
+    if (species == null) {
+      return;
+    }
     if (apiMap == null) {
       System.out.println("No results found in GBIF API for '" + species.getBinomialName() + "'.");
       return;
@@ -75,11 +78,9 @@ public class SpeciesAPIRetrieval {
     String order = apiMap.get("order").toString();
     String family = apiMap.get("family").toString();
     String genus = apiMap.get("genus").toString();
-    Taxonomy taxonomy = new Taxonomy(kingdom, phylum, class_t, order, family, genus);
+    TaxonomicPath taxonomicPath = new TaxonomicPath(kingdom, phylum, class_t, order, family, genus);
     
-    if (species != null) {
-      species.setTaxonomy(taxonomy);
-    }
+    species.setTaxonomicPath(taxonomicPath);
     return;
   }  
 }
