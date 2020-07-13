@@ -159,36 +159,27 @@ public class DataCollection {
     Entity oldEntity = datastore.get(key);
     
     if (oldEntity == null) {
-      Entity speciesEntity;
-      if (species.getTaxonomicPath()) {
-        speciesEntity = Entity.newBuilder(key)
+      Entity speciesEntity = Entity.newBuilder(key)
         .set("common_name", species.getCommonName())
         .set("binomial_name", species.getBinomialName())
-        .set("trend", species.getTrend().name())
         .set("status", species.getStatus())
         .set("population", species.getPopulation())
-        .set("kingdom", species.getTaxonomicPath().getAnimalKingdom())
-        .set("phylum", species.getTaxonomicPath().getAnimalPhylum())
-        .set("class", species.getTaxonomicPath().getAnimalClass())
-        .set("order", species.getTaxonomicPath().getAnimalOrder())
-        .set("family", species.getTaxonomicPath().getAnimalFamily())
-        .set("genus", species.getTaxonomicPath().getAnimalGenus())
         .set("image_link", species.getImageLink())
         .set("wikipedia_notes", species.getWikipediaNotes())
         .set("citation_link", species.getCitationLink())
         .build();
+    
+      if (species.getTaxonomicPath() != null) {
+        speciesEntity = Entity.newBuilder(speciesEntity).set("kingdom", species.getTaxonomicPath().getAnimalKingdom()).build();
+        speciesEntity = Entity.newBuilder(speciesEntity).set("phylum", species.getTaxonomicPath().getAnimalPhylum()).build();
+        speciesEntity = Entity.newBuilder(speciesEntity).set("class", species.getTaxonomicPath().getAnimalClass()).build();
+        speciesEntity = Entity.newBuilder(speciesEntity).set("order", species.getTaxonomicPath().getAnimalOrder()).build();
+        speciesEntity = Entity.newBuilder(speciesEntity).set("family", species.getTaxonomicPath().getAnimalFamily()).build();
+        speciesEntity = Entity.newBuilder(speciesEntity).set("genus", species.getTaxonomicPath().getAnimalGenus()).build();
       }
-      else {
-        speciesEntity = Entity.newBuilder(key)
-        .set("common_name", species.getCommonName())
-        .set("binomial_name", species.getBinomialName())
-        .set("trend", species.getTrend().name())
-        .set("status", species.getStatus())
-        .set("population", species.getPopulation())
-        .set("image_link", species.getImageLink())
-        .set("wikipedia_notes", species.getWikipediaNotes())
-        .set("citation_link", species.getCitationLink())
-        .build();
+    
+      if (species.getTrend() != null) {
+        speciesEntity = Entity.newBuilder(speciesEntity).set("trend", species.getTrend().name()).build();
       }
       
       datastore.put(speciesEntity);
