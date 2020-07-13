@@ -94,9 +94,7 @@ public class DataCollection {
         }
 
         if (!speciesAlreadyStored(species.getBinomialName())) {
-        //   System.out.println("Processing '" + species.getBinomialName() + "'...");
           addApiInfo(species);
-        //   System.out.println(species.getTaxonomy().getAnimalKingdom());
           addSpeciesToDatastore(species);
         }
       }
@@ -147,7 +145,7 @@ public class DataCollection {
       Map apiMap = SpeciesAPIRetrieval.convertJSONToMap(apiJSON);
       SpeciesAPIRetrieval.addAPISpeciesInfo(species, apiMap);
     } catch (Exception e) {
-      System.out.println("Exception occurred.");
+      System.err.println("Exception occurred retrieving API data: " + e);
       e.printStackTrace();
     }
   }
@@ -161,27 +159,39 @@ public class DataCollection {
     Entity oldEntity = datastore.get(key);
     
     if (oldEntity == null) {
-      Entity speciesEntity = Entity.newBuilder(key)
+      Entity speciesEntity;
+      if (species.getTaxonomicPath()) {
+        speciesEntity = Entity.newBuilder(key)
         .set("common_name", species.getCommonName())
         .set("binomial_name", species.getBinomialName())
         .set("trend", species.getTrend().name())
         .set("status", species.getStatus())
         .set("population", species.getPopulation())
-        .set("kingdom", species.getTaxonomy().getAnimalKingdom())
-        .set("phylum", species.getTaxonomy().getAnimalPhylum())
-        .set("class", species.getTaxonomy().getAnimalClass())
-        .set("order", species.getTaxonomy().getAnimalOrder())
-        .set("family", species.getTaxonomy().getAnimalFamily())
-        .set("genus", species.getTaxonomy().getAnimalGenus())
+        .set("kingdom", species.getTaxonomicPath().getAnimalKingdom())
+        .set("phylum", species.getTaxonomicPath().getAnimalPhylum())
+        .set("class", species.getTaxonomicPath().getAnimalClass())
+        .set("order", species.getTaxonomicPath().getAnimalOrder())
+        .set("family", species.getTaxonomicPath().getAnimalFamily())
+        .set("genus", species.getTaxonomicPath().getAnimalGenus())
         .set("image_link", species.getImageLink())
         .set("wikipedia_notes", species.getWikipediaNotes())
         .set("citation_link", species.getCitationLink())
         .build();
+      }
+      else {
+        speciesEntity = Entity.newBuilder(key)
+        .set("common_name", species.getCommonName())
+        .set("binomial_name", species.getBinomialName())
+        .set("trend", species.getTrend().name())
+        .set("status", species.getStatus())
+        .set("population", species.getPopulation())
+        .set("image_link", species.getImageLink())
+        .set("wikipedia_notes", species.getWikipediaNotes())
+        .set("citation_link", species.getCitationLink())
+        .build();
+      }
       
       datastore.put(speciesEntity);
-    //   System.out.println(species.getBinomialName() + " was added to Datastore.");
-    // } else {
-    //   System.out.println(species.getBinomialName() + " was already in Datastore.");
     }
   }
 

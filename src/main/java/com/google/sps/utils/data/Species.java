@@ -1,6 +1,6 @@
 package com.google.sps.utils.data;
 
-import com.google.sps.utils.data.Taxonomy;
+import com.google.sps.utils.data.TaxonomicPath;
 import com.google.sps.utils.data.PopulationTrend;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class Species {
   private String citationLink;
 
   // Provided by GBIF
-  private Taxonomy taxonomy;
+  private TaxonomicPath taxonomicPath;
 
   public Species() {
     commonName = null;
@@ -33,7 +33,7 @@ public class Species {
     wikipediaNotes = null;
     imageLink = null;
     citationLink = null;
-    taxonomy = null;
+    taxonomicPath = null;
   }
 
   // Wikipedia-side creation
@@ -50,8 +50,8 @@ public class Species {
     this.citationLink = citationLink;
   }
 
-  public void setTaxonomy(Taxonomy taxonomy) {
-    this.taxonomy = taxonomy;
+  public void setTaxonomicPath(TaxonomicPath taxonomicPath) {
+    this.taxonomicPath = taxonomicPath;
   }
 
   public String getCommonName() {
@@ -74,8 +74,8 @@ public class Species {
     return imageLink;
   }
 
-  public Taxonomy getTaxonomy() {
-    return taxonomy;
+  public TaxonomicPath getTaxonomicPath() {
+    return taxonomicPath;
   }
 
   public PopulationTrend getTrend() {
