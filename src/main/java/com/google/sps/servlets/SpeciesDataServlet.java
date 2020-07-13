@@ -58,6 +58,7 @@ public class SpeciesDataServlet extends HttpServlet {
         }
 
         // Initialize and run a query that will select the specific species from Datastore by filtering by scientific name
+        System.out.println(speciesName);
         Query<Entity> query = Query.newEntityQueryBuilder().setKind("Species").setFilter(PropertyFilter.eq("common_name", speciesName)).build();
         QueryResults<Entity> queriedSpecies = datastore.run(query);
 

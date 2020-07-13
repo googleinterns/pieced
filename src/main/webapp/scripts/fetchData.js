@@ -2,7 +2,6 @@
 function fetchSpeciesData(name) {
     const URL = '/speciesData?species=' + name;
     fetch(URL).then(response => response.json()).then(speciesData => {
-        console.log("HERE");
         var commonNameContainer     = document.getElementById('common-name-container');
         var scientificNameContainer = document.getElementById('scientific-name-container');
         var statusContainer         = document.getElementById('status-container');
@@ -10,8 +9,6 @@ function fetchSpeciesData(name) {
         var citationsContainer      = document.getElementById('citations-container');
         var img                     = document.getElementById('species-image');
         var pixelSlider             = document.getElementById('pixel_factor');
-
-        console.log(speciesData.taxonomicPath);
 
         // Update names for species
         commonNameContainer.innerText       = speciesData.commonName;
