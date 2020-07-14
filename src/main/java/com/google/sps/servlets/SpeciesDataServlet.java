@@ -88,14 +88,18 @@ public class SpeciesDataServlet extends HttpServlet {
                                                     speciesData.getString("family"),
                                                     speciesData.getString("genus"));
 
-        Species species = new Species(commonName,
-                                            binomialName,
-                                            status,
-                                            trend,
-                                            population,
-                                            wikipediaNotes,
-                                            imageLink,
-                                            citationLink);
+        // Species species = new Species(commonName, binomialName, status, trend, population, wikipediaNotes, imageLink, citationLink);
+
+        Species species = new Species.Builder()
+                                    .withCommonName(commonName)
+                                    .withBinomialName(binomialName)
+                                    .withStatus(status)
+                                    .withPopulationTrend(trend)
+                                    .withPopulation(population)
+                                    .withWikipediaNotes(wikipediaNotes)
+                                    .withImageLink(imageLink)
+                                    .withCitationLink(citationLink)
+                                    .build();
                                             
         species.setTaxonomicPath(taxonomy);
 
@@ -125,14 +129,18 @@ public class SpeciesDataServlet extends HttpServlet {
     // Builds an invalid JSON response when the request is invalid or misses in the datastore.
     private String generateInvalidResponse(HttpServletResponse response, String errorMessage) {
         System.err.println("Invalid fetch request: " + errorMessage);
-        Species species = new Species(null,
-                                null,
-                                null,
-                                PopulationTrend.UNKNOWN,
-                                null,
-                                null,
-                                null,
-                                null);
+        // Species species = new Species(null, null, null, PopulationTrend.UNKNOWN, null, null, null, null);
+        Species species = new Species.Builder()
+                                    .withCommonName(null)
+                                    .withBinomialName(null)
+                                    .withStatus(null)
+                                    .withPopulationTrend(PopulationTrend.UNKNOWN)
+                                    .withPopulation(null)
+                                    .withWikipediaNotes(null)
+                                    .withImageLink(null)
+                                    .withCitationLink(null)
+                                    .build();
+
 
         species.setTaxonomicPath(null);
         String json = convertToJson(species);

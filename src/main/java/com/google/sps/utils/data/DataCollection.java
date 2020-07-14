@@ -118,7 +118,17 @@ public class DataCollection {
       String imageLink = scrapeImageLink(tds.get(6).select("img").first());
 
     //   System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
-      Species species = new Species(commonName, binomialName, status, trend, population, notes, imageLink, url);
+    //   Species species = new Species(commonName, binomialName, status, trend, population, notes, imageLink, url);
+      Species species = new Species.Builder()
+                                    .withCommonName(commonName)
+                                    .withBinomialName(binomialName)
+                                    .withStatus(status)
+                                    .withPopulationTrend(trend)
+                                    .withPopulation(population)
+                                    .withWikipediaNotes(notes)
+                                    .withImageLink(imageLink)
+                                    .withCitationLink(url)
+                                    .build();
       return species;
     }
     return null;
