@@ -17,6 +17,7 @@ package com.google.sps.servlets;
 import com.google.sps.utils.data.Species;
 import com.google.sps.utils.data.PopulationTrend;
 import com.google.sps.utils.data.DataCollection;
+import com.google.sps.utils.data.TaxonomicPath;
 
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
@@ -34,11 +35,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
 
 /** Servlet that grabs data on individual species. */
-@WebServlet("/data")
-public class DataServlet extends HttpServlet {
+@WebServlet("/speciesData")
+public class SpeciesDataServlet extends HttpServlet {
     Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
     
     @Override
@@ -57,7 +59,7 @@ public class DataServlet extends HttpServlet {
         }
 
         // Initialize and run a query that will select the specific species from Datastore by filtering by scientific name
-        Query<Entity> query = Query.newEntityQueryBuilder().setKind("Species").setFilter(PropertyFilter.eq("binomial_name", speciesName)).build();
+        Query<Entity> query = Query.newEntityQueryBuilder().setKind("Species").setFilter(PropertyFilter.eq("common_name", speciesName)).build();
         QueryResults<Entity> queriedSpecies = datastore.run(query);
 
         if (!queriedSpecies.hasNext()) {
@@ -66,7 +68,7 @@ public class DataServlet extends HttpServlet {
             return;
         }
 
-        // There will only ever be one entry returned by any query due to how we add and modify species to Datastore,
+        // There will be at most one entry returned by any query due to how we add and modify species to Datastore,
         // so we only need to call queriedSpecies.next() a single time
         Entity speciesData = queriedSpecies.next();
 
@@ -79,6 +81,12 @@ public class DataServlet extends HttpServlet {
         String imageLink        = speciesData.getString("image_link");
         String citationLink     = speciesData.getString("citation_link");
         PopulationTrend trend   = DataCollection.convertToPopulationTrendEnum(speciesData.getString("trend"));
+        TaxonomicPath taxonomy  = new TaxonomicPath(speciesData.getString("kingdom"),
+                                                    speciesData.getString("phylum"),
+                                                    speciesData.getString("class"),
+                                                    speciesData.getString("order"),
+                                                    speciesData.getString("family"),
+                                                    speciesData.getString("genus"));
 
         Species species = new Species(commonName,
                                             binomialName,
@@ -88,6 +96,8 @@ public class DataServlet extends HttpServlet {
                                             wikipediaNotes,
                                             imageLink,
                                             citationLink);
+                                            
+        species.setTaxonomicPath(taxonomy);
 
         // Convert Species object to JSON and send it back to caller
         String json = convertToJson(species);
@@ -124,6 +134,7 @@ public class DataServlet extends HttpServlet {
                                 null,
                                 null);
 
+        species.setTaxonomicPath(null);
         String json = convertToJson(species);
         return json;
     }
