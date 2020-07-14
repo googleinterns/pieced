@@ -16,7 +16,7 @@ function fetchSpeciesData(name) {
 
         // Map conservation status code to term and update entry
         var statusCode  = speciesData.status;
-        statusCode      = statusCode.substr(0, statusCode.indexOf('['));
+        statusCode      = statusCode == null ? null : statusCode.substr(0, statusCode.indexOf('['));
         var statusMap   = {
                             "EX" : "Extinct",
                             "EW" : "Extinct in the Wild",
@@ -33,17 +33,18 @@ function fetchSpeciesData(name) {
 
         // Update description entry
         var notes = speciesData.wikipediaNotes;
-        notes = notes.substr(0, notes.indexOf('['));
-        descriptionContainer.innerText = notes.length == 0 ? "N/A" : notes;
-        citationsContainer.innerText = speciesData.citationLinks;
+        descriptionContainer.innerText = notes == null ? "N/A" : notes.substr(0, notes.indexOf('['));
+        citationsContainer.innerText = speciesData.citationLink;
 
         // Update image source
         img.src = speciesData.imageLink;
 
         // Manipulate pixelation value based on species population
-        var pop = speciesData.population;
-        pop = pop.substr(0, pop.indexOf('[')); 
-        pixelSlider.value = pop;
         pixelSlider.max = img.width * img.height;
+
+        var pop = speciesData.population;
+        pop = pop == null ? pixelSlider.max : pop.substr(0, pop.indexOf('['));
+        pixelSlider.value = pop;
+
     });
 }

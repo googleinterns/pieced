@@ -35,7 +35,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
 
 /** Servlet that grabs data on individual species. */
 @WebServlet("/speciesData")
@@ -58,7 +59,6 @@ public class SpeciesDataServlet extends HttpServlet {
         }
 
         // Initialize and run a query that will select the specific species from Datastore by filtering by scientific name
-        System.out.println(speciesName);
         Query<Entity> query = Query.newEntityQueryBuilder().setKind("Species").setFilter(PropertyFilter.eq("common_name", speciesName)).build();
         QueryResults<Entity> queriedSpecies = datastore.run(query);
 
@@ -96,6 +96,7 @@ public class SpeciesDataServlet extends HttpServlet {
                                             wikipediaNotes,
                                             imageLink,
                                             citationLink);
+                                            
         species.setTaxonomicPath(taxonomy);
 
         // Convert Species object to JSON and send it back to caller
