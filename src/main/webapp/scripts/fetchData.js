@@ -22,12 +22,7 @@ function fetchSpeciesData(name) {
 
         // Map conservation status code to term and update entry
         var statusCode  = speciesData.status;
-        switch(statusCode) {
-            case null:
-                break;
-            default:
-                statusCode = statusCode.substring(0, 2);
-        }
+        statusCode      = (statusCode == null) ? null : statusCode.substr(0, 2);
         var statusMap   = {
                             "EX" : "Extinct",
                             "EW" : "Extinct in the Wild",
@@ -52,7 +47,12 @@ function fetchSpeciesData(name) {
                 descriptionContainer.innerText = "N/A";
                 break;
             default:
-                descriptionContainer.innerText = notes.substr(0, notes.indexOf('['));
+                if (notes.indexOf('[') > 0) {
+                    descriptionContainer.innerText = notes.substr(0, notes.indexOf('['));
+                }
+                else {
+                    descriptionContainer.innerText = notes;
+                }
         }
         citationsContainer.innerText = speciesData.citationLink;
 
@@ -67,7 +67,7 @@ function fetchSpeciesData(name) {
                 pop = pixelSlider.max;
                 break;
             case (pop.indexOf('–') > 0):
-                // Pixelation population is currently set to the lower bound if a range is given.
+                // Pixelation population is set to the lower bound if population range is given (ex: "300–500").
                 pop = pop.substr(0, pop.indexOf('–'));
                 break;
             default:
