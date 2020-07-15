@@ -19,9 +19,13 @@ html {
     flex-grow: 1;
 }
 
-#species-name, #species-image, #canvas, #pixel_factor {
+#species-name, #species-image, #canvas, #pixel_factor, #pixel_label {
     display: block;
     margin: auto;
+}
+
+label {
+    text-align: center;
 }
 
 #species-info-container {
