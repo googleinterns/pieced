@@ -68,9 +68,9 @@ public class AllDataServlet extends HttpServlet {
         // Initialize and run a query that will select the specific species from Datastore by filtering by scientific name
         Query<Entity> query = Query.newEntityQueryBuilder()
             .setKind("Species")
-            .setFilter(CompositeFilter.and(
-        PropertyFilter.eq("status", "LC"), PropertyFilter.eq("class", "Mammalia")))
-            .setLimit(30)
+        //     .setFilter(CompositeFilter.and(
+        // PropertyFilter.eq("status", "CR"), PropertyFilter.eq("class", "Mammalia")))
+            // .setLimit(50)
             .build();
         QueryResults<Entity> queriedSpecies = datastore.run(query);
 
