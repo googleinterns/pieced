@@ -62,7 +62,7 @@ function fetchSpeciesData(name) {
         // Manipulate pixelation value based on species population
         pixelSlider.max = img.width * img.height;
         var pop = speciesData.population;
-        pixelSlider.value = (pop == undefined) ? pixelSlider.max : pop;
+        pixelSlider.value = (pop === undefined) ? pixelSlider.max : pop;
 
         // Update species taxonomic path
         if (speciesData.taxonomicPath != null) {
