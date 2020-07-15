@@ -2,6 +2,15 @@
   box-sizing: border-box;
 }
 
+a {
+    color: white;
+}
+
+a:hover {
+    color: whitesmoke;
+    text-decoration: underline;
+}
+
 #refresh-button {
   margin-left: 7px;
 }

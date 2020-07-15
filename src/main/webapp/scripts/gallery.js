@@ -24,9 +24,12 @@ function fetchAllSpeciesData(status, animal_class) {
                 '<div class="grid-filters">' +
                   '<div class="grid-item">' +
                     '<img src="'+ speciesData[species].imageLink +'" />' +
-                    '<div class="overlay">' + speciesData[species].commonName + '</div> ' +
+                    '<div class="overlay">' + 
+                      '<a href="/species-template.html?species=' + speciesData[species].commonName + '"> ' + speciesData[species].commonName + '</a> +
+                    '</div> ' +
                   '</div>' +
                 '</div>'); 
+
             $grid.append($html)
                 // add and lay out newly appended items
                 .masonry('appended', $html);

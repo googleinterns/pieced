@@ -4,14 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Pieced - Species</title>
 
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/species.css">
     <link rel="stylesheet" href="styles/style.css">
   </head>
   
-  <body onload="fetchSpeciesData()">
+  <body>
     <div id="navigation"></div>
 
     <!--------------- HEADER ---------------->
@@ -24,14 +23,6 @@
         <!-- Page Content -->
         <div id="species-page" class="container-fluid"> 
             <div id="species-image-container">
-                <!-- Debug nav bar to select different species and load from JSON -->
-                <ul>
-                    <li> <a onclick="fetchSpeciesData('Impala')"> Impala </a> </li>
-                    <li> <a onclick="fetchSpeciesData('Addax')"> Addax </a> </li>
-                    <li> <a onclick="fetchSpeciesData('Japanese serow')"> Japanese serow </a> </li>
-                    <li> <a onclick="fetchSpeciesData('Bongo')"> Bongo </a> </li>
-                </ul>
-
                 <!-- Canvas for pixelation -->
                 <div>
                     <canvas onmouseover="animateFullResolution()" onmouseout="animateOldResolution()" id="canvas" width="500" height="400"> </canvas>
@@ -57,6 +48,24 @@
                 
                 <h1 class="text-center"> Citations </h1>
                 <div id="citations-container" class="text-center"> </div>
+
+                <h1 class="text-center"> Kingdom </h1>
+                <div id="kingdom-container" class="text-center"> </div>
+
+                <h1 class="text-center"> Phylum </h1>
+                <div id="phylum-container" class="text-center"> </div>
+
+                <h1 class="text-center"> Class </h1>
+                <div id="class-container" class="text-center"> </div>
+
+                <h1 class="text-center"> Order </h1>
+                <div id="order-container" class="text-center"> </div>
+
+                <h1 class="text-center"> Family </h1>
+                <div id="family-container" class="text-center"> </div>
+
+                <h1 class="text-center"> Genus </h1>
+                <div id="genus-container" class="text-center"> </div>
             </div>
         </div>
     </div>
@@ -69,5 +78,6 @@
     <script src="scripts/pixelation.js"></script>
     <script src="scripts/fetchData.js"></script>
     <script src="scripts/script.js"></script>
+    <script src="scripts/species-template.js"></script>
   </body>
 </html>
