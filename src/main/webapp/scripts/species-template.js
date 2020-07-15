@@ -9,4 +9,4 @@ else {
     console.log("Error: no species was passed.");
 }
 
-//TODO: capitalize species name, fix general formatting
+//TODO: capitalize species name, improve general formatting
