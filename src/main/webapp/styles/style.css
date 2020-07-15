@@ -44,6 +44,7 @@ body {
 .nav-link {
   text-transform: uppercase;
   padding: 10px;
+  color: var(--body);
 }
 
 .nav-btn {
