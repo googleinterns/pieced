@@ -83,4 +83,24 @@ public class SpeciesAPIRetrieval {
     species.setTaxonomicPath(taxonomicPath);
     return;
   }  
+  
+  /**
+   * Updates Species with geographical coordinates from converted JSON map
+   * @param species: species to add fields to
+   * @param apiMap: map of the JSON returned from API call to this species
+   */
+  public static void addAPIGeoInfo(Species species, Map apiMap) {
+    if (species == null) {
+      return;
+    }
+    if (apiMap == null) {
+      System.out.println("No results found in GBIF API for '" + species.getBinomialName() + "'.");
+      return;
+    }
+    
+    System.out.println(apiMap);
+    // System.out.println(apiMap.get());
+    // species.setGeoData(apiMap);
+    return;
+  }  
 }

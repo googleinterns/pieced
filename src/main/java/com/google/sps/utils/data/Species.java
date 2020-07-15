@@ -113,22 +113,7 @@ public class Species {
     citationLink = null;
     taxonomicPath = null;
     geoData = null;
-
   }
-
-  // Wikipedia-side creation
-//   public Species(String commonName, String binomialName, String status, PopulationTrend trend,
-//                 String population, String wikipediaNotes, String imageLink, String citationLink) {
-//     this();
-//     this.commonName = commonName;
-//     this.binomialName = binomialName;
-//     this.status = status;
-//     this.trend = trend;
-//     this.population = population;
-//     this.wikipediaNotes = wikipediaNotes;
-//     this.imageLink = imageLink;
-//     this.citationLink = citationLink;
-//   }
 
   public void setTaxonomicPath(TaxonomicPath taxonomicPath) {
     this.taxonomicPath = taxonomicPath;

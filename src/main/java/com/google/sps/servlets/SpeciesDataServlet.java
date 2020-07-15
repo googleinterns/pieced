@@ -130,19 +130,21 @@ public class SpeciesDataServlet extends HttpServlet {
     private String generateInvalidResponse(HttpServletResponse response, String errorMessage) {
         System.err.println("Invalid fetch request: " + errorMessage);
         // Species species = new Species(null, null, null, PopulationTrend.UNKNOWN, null, null, null, null);
-        Species species = new Species.Builder()
-                                    .withCommonName(null)
-                                    .withBinomialName(null)
-                                    .withStatus(null)
-                                    .withPopulationTrend(PopulationTrend.UNKNOWN)
-                                    .withPopulation(null)
-                                    .withWikipediaNotes(null)
-                                    .withImageLink(null)
-                                    .withCitationLink(null)
-                                    .build();
+        Species species = new Species();
+        // Species species = new Species.Builder()
+        //                             .withCommonName(null)
+        //                             .withBinomialName(null)
+        //                             .withStatus(null)
+        //                             .withPopulationTrend(PopulationTrend.UNKNOWN)
+        //                             .withPopulation(null)
+        //                             .withWikipediaNotes(null)
+        //                             .withImageLink(null)
+        //                             .withCitationLink(null)
+        //                             .build();
+        
+        // species.setTaxonomicPath(null);
+        // species.setGeoData(null);
 
-
-        species.setTaxonomicPath(null);
         String json = convertToJson(species);
         return json;
     }

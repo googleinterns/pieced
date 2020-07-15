@@ -24,6 +24,8 @@ html {
 }
 
 #species-info-container {
+    display: flex;
+    flex-direction: column;
     background: var(--info-container-color);
     flex-grow: 3;
 }
@@ -36,6 +38,12 @@ canvas {
     image-rendering: crisp-edges;
     -ms-interpolation-mode: nearest-neighbor;
 }
+
+#map-section {
+    height: 100%;
+    width: 100%;
+}
+
 /* 
 li {
   float: left;
