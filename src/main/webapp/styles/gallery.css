@@ -38,6 +38,10 @@ a:hover {
     width: 25%;
 }
 
+/* .grid-filters {
+  display: none;
+} */
+
 .grid-item {
     float: left;
     height: auto;

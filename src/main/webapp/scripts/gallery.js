@@ -13,15 +13,15 @@ var $grid = $('.grid').masonry({
 fetchAllSpeciesData();
 
 // Test function that fetches sample JSON and appends each species to the gallery
-function fetchAllSpeciesData(status, animal_class) {
-    const parameters = {'status': status, 'class': animal_class};
-    const url = createQueryString("/allData", parameters);
+function fetchAllSpeciesData() {
+    // const parameters = {'status': status, 'class': animal_class};
+    // const url = createQueryString("/allData", parameters);
 
-    fetch(url).then(response => response.json()).then(speciesData => {
+    fetch("/allData").then(response => response.json()).then(speciesData => {
         for (var species in speciesData) {
             // Append images to grid
             var $html = $(
-                '<div class="grid-filters">' +
+                '<div class="grid-filters ' + speciesData[species].status + '">' +
                   '<div class="grid-item">' +
                     '<img src="'+ speciesData[species].imageLink +'" />' +
                     '<div class="overlay">' + 
@@ -50,4 +50,30 @@ function createQueryString(url, parameters) {
         .map(pair => pair.map(encodeURIComponent).join('='))
         .join('&');
   return url + "?" + query;
+}
+
+function showClass(class_name) {
+  $('.' + class_name).show();
+}
+
+function hideAllClasses() {
+  $('.grid-filters').hide();
+}
+
+function showAllClasses() {
+  $('.grid-filters').show();
+}
+
+function filterSelection(class_name) {
+  if (class_name === "all") {
+    showAllClasses();
+  } else {
+    hideAllClasses();
+    showClass(class_name);
+  }
+
+  // Update the masonry layout
+  $grid.imagesLoaded().progress( function() {
+    $grid.masonry('layout');
+  });
 }

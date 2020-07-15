@@ -53,10 +53,12 @@ public class AllDataServlet extends HttpServlet {
         */
         public String commonName;
         public String imageLink;
+        public String status;
 
-        public RequiredData(String commonName, String imageLink) {
+        public RequiredData(String commonName, String imageLink, String status) {
             this.commonName = commonName;
             this.imageLink = imageLink;
+            this.status = status;
         }
     }
     
@@ -80,8 +82,9 @@ public class AllDataServlet extends HttpServlet {
             // Grab information from Datastore entry and construct Species object
             String commonName       = speciesData.getString("common_name");
             String imageLink        = speciesData.getString("image_link");
+            String status           = speciesData.getString("status");
 
-            RequiredData species = new RequiredData(commonName, imageLink);
+            RequiredData species = new RequiredData(commonName, imageLink, status);
             data.add(species);
         });
         // Convert Species object to JSON and send it back to caller
