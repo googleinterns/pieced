@@ -70,7 +70,7 @@ public class AllDataServlet extends HttpServlet {
             .setKind("Species")
         //     .setFilter(CompositeFilter.and(
         // PropertyFilter.eq("status", "CR"), PropertyFilter.eq("class", "Mammalia")))
-            // .setLimit(50)
+            .setLimit(100)
             .build();
         QueryResults<Entity> queriedSpecies = datastore.run(query);
 
