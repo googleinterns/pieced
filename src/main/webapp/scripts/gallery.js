@@ -7,7 +7,8 @@ console.log("initializing masonry");
 var $grid = $('.grid').masonry({
     itemSelector: '.grid-item',
     percentPosition: true,
-    horizontalOrder: true
+    horizontalOrder: true,
+    columnWidth: '.grid-sizer'
 });
 
 fetchAllSpeciesData();
@@ -22,6 +23,7 @@ function fetchAllSpeciesData() {
             // Append images to grid
             var $html = $(
                 '<div class="grid-filters ' + speciesData[species].status + '">' +
+                  '<div class="grid-sizer"></div>' +
                   '<div class="grid-item">' +
                     '<img src="'+ speciesData[species].imageLink +'" />' +
                     '<div class="overlay">' + 
@@ -73,7 +75,5 @@ function filterSelection(class_name) {
   }
 
   // Update the masonry layout
-  $grid.imagesLoaded().progress( function() {
-    $grid.masonry('layout');
-  });
+  $grid.masonry();
 }

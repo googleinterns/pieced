@@ -23,15 +23,15 @@ a:hover {
 .grid {
     max-width: 100%;
     width: 100%;
-    padding: 0 !important;
-    margin: 0 !important;
+    /* padding: 0 !important;
+    margin: 0 !important; */
 }
 
-.grid:after {
+/* .grid:after {
     content: '';
     display: block;
     clear: both;
-}
+} */
 
 .grid-sizer,
 .grid-item {
