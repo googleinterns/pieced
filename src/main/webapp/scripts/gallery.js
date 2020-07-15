@@ -18,8 +18,9 @@ function fetchAllSpeciesData() {
     fetch("/allData").then(response => response.json()).then(speciesData => {
         for (var species in speciesData) {
             // Append images to grid
-            var $html = $('<div class="grid-item"> <a href="/species-template.html?species=' + speciesData[species].commonName + '"> <img src="'+ speciesData[species].imageLink +
-                          '" /> <div class="overlay">' + speciesData[species].commonName + '</div> </a> </div>'); 
+            var $html = $('<div class="grid-item"> <img src="'+ speciesData[species].imageLink +
+                          '"/> <div class="overlay"> <a href="/species-template.html?species=' +
+                          speciesData[species].commonName + '"> ' + speciesData[species].commonName + '</a> </div> </div>'); 
             $grid.append($html)
                 // add and lay out newly appended items
                 .masonry('appended', $html);

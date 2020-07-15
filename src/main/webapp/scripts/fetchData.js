@@ -9,6 +9,12 @@ function fetchSpeciesData(name) {
         var citationsContainer      = document.getElementById('citations-container');
         var img                     = document.getElementById('species-image');
         var pixelSlider             = document.getElementById('pixel_factor');
+        var kingdomContainer     = document.getElementById('kingdom-container');
+        var phylumContainer     = document.getElementById('phylum-container');
+        var classContainer     = document.getElementById('class-container');
+        var orderContainer     = document.getElementById('order-container');
+        var familyContainer     = document.getElementById('family-container');
+        var genusContainer     = document.getElementById('genus-container');
 
         // Update names for species
         commonNameContainer.innerText       = speciesData.commonName;
@@ -16,7 +22,7 @@ function fetchSpeciesData(name) {
 
         // Map conservation status code to term and update entry
         var statusCode  = speciesData.status;
-        statusCode      = statusCode == null ? null : statusCode.substr(0, statusCode.indexOf('['));
+        statusCode      = statusCode.substring(0, 2);
         var statusMap   = {
                             "EX" : "Extinct",
                             "EW" : "Extinct in the Wild",
@@ -33,7 +39,17 @@ function fetchSpeciesData(name) {
 
         // Update description entry
         var notes = speciesData.wikipediaNotes;
-        descriptionContainer.innerText = notes == null ? "N/A" : notes.substr(0, notes.indexOf('['));
+        switch(notes) {
+            case null:
+                descriptionContainer.innerText = "N/A";
+                break;
+            case "":
+                descriptionContainer.innerText = "N/A";
+                break;
+            default:
+                descriptionContainer.innerText = notes.substr(0, notes.indexOf('['));
+        }
+        // descriptionContainer.innerText = notes == null ? "N/A" : notes.substr(0, notes.indexOf('['));
         citationsContainer.innerText = speciesData.citationLink;
 
         // Update image source
@@ -43,8 +59,28 @@ function fetchSpeciesData(name) {
         pixelSlider.max = img.width * img.height;
 
         var pop = speciesData.population;
-        pop = pop == null ? pixelSlider.max : pop.substr(0, pop.indexOf('['));
+        switch(true) {
+            case (pop == null):
+                pop = pixelSlider.max;
+                break;
+            case (pop.indexOf('–') > 0):
+                pop = pop.substr(0, pop.indexOf('–'));
+                break;
+            default:
+                console.log("Error: '" + speciesData.commonName + "' population is not correctly formatted.");
+                break;
+        }
+        // pop = pop == null ? pixelSlider.max : pop.substr(0, pop.indexOf('-'));
         pixelSlider.value = pop;
 
+        // Update species taxonomic path
+        if (speciesData.taxonomicPath != null) {
+            kingdomContainer.innerText      = speciesData.taxonomicPath.kingdom_t;
+            phylumContainer.innerText       = speciesData.taxonomicPath.phylum_t;
+            classContainer.innerText        = speciesData.taxonomicPath.class_t;
+            orderContainer.innerText        = speciesData.taxonomicPath.order_t;
+            familyContainer.innerText       = speciesData.taxonomicPath.family_t;
+            genusContainer.innerText        = speciesData.taxonomicPath.genus_t;
+        }
     });
 }
