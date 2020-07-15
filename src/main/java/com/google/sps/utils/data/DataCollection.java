@@ -11,6 +11,8 @@ import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.KeyFactory;
 
+import java.util.Iterator;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +30,10 @@ public class DataCollection {
   private static final String LIST_CONTENT_CLASS = "mw-parser-output";
   private static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
   private static KeyFactory keyFactory = datastore.newKeyFactory().setKind("Species");
+
+  public static void main(String[] args) throws IOException {
+        collectData();
+    }
 
   public static void collectData() throws IOException {
     List<String> urls = parseListofPages();
@@ -116,6 +122,9 @@ public class DataCollection {
       PopulationTrend trend = scrapeTrend(tds.get(4).select("img").first());
       String notes = tds.get(5).text();
       String imageLink = scrapeImageLink(tds.get(6).select("img").first());
+      if (imageLink == null) {
+        return null;
+      }
 
     //   System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
       Species species = new Species(commonName, binomialName, status, trend, population, notes, imageLink, url);
@@ -241,10 +250,26 @@ public class DataCollection {
    * @param trendImg html for the species image in the table
    */
   private static String scrapeImageLink(Element image) {
-    String imageLink = "";
-    if (image != null) {
-      imageLink = image.absUrl("src");
+    if (image == null) {
+      return null;
     }
+    String src = image.attr("src");
+    String srcset = image.attr("srcset");
+
+    // remove size descriptions and only keep image urls
+    ArrayList<String> images = new ArrayList<>(Arrays.asList(srcset.split(" ")));
+    images.add(0, src);
+    Iterator<String> itr = images.iterator(); 
+    while (itr.hasNext()) {
+      String url = itr.next();
+      if (url.charAt(0) != '/') {
+        itr.remove();
+      }
+    }
+
+    String imageLink = images.get(images.size() - 1); // get largest image in srcset
+    imageLink = "https:" + imageLink;
+
     return imageLink;
   }
 
