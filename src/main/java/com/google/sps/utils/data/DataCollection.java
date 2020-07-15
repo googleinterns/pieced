@@ -25,7 +25,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class DataCollection {
-  private static final String API_URL = "https://api.gbif.org/v1/species/match?name=";
+  private static final String DATA_URL = "https://api.gbif.org/v1/species/match?name=";
+  private static final String GEO_URL = "https://api.gbif.org/v1/species/match?name=";
   private static final String LIST_URL = "https://en.wikipedia.org/wiki/Lists_of_organisms_by_population";
   private static final String LIST_CONTENT_CLASS = "mw-parser-output";
   private static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
@@ -39,6 +40,14 @@ public class DataCollection {
     List<String> urls = parseListofPages();
     for (String url: urls) {
       parseSpeciesTable(url);
+    }
+  }
+
+  public static void collectGeoData() throws IOException {
+    List<String> urls = parseListofPages();
+    for (String url: urls) {
+      parseSpeciesTable(url);
+      break;
     }
   }
 
@@ -161,9 +170,13 @@ public class DataCollection {
   public static void addApiInfo(Species species) {
     // Add API-side fields if available
     try {
-      String apiJSON = SpeciesAPIRetrieval.getJSON(API_URL, species.getBinomialName());
-      Map apiMap = SpeciesAPIRetrieval.convertJSONToMap(apiJSON);
-      SpeciesAPIRetrieval.addAPISpeciesInfo(species, apiMap);
+      String apiDataJSON = SpeciesAPIRetrieval.getJSON(DATA_URL, species.getBinomialName());
+      Map apiDataMap = SpeciesAPIRetrieval.convertJSONToMap(apiDataJSON);
+      SpeciesAPIRetrieval.addAPISpeciesInfo(species, apiDataMap);
+
+      String apiGeoJSON = SpeciesAPIRetrieval.getJSON(GEO_URL, species.getBinomialName());
+      Map apiGeoMap = SpeciesAPIRetrieval.convertJSONToMap(apiGeoJSON);
+      SpeciesAPIRetrieval.addAPIGeoInfo(species, apiGeoMap);
     } catch (Exception e) {
       System.err.println("Exception occurred retrieving API data: " + e);
       e.printStackTrace();
