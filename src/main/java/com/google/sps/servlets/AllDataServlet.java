@@ -64,7 +64,7 @@ public class AllDataServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         // Initialize and run a query that will select the specific species from Datastore by filtering by scientific name
-        Query<Entity> query = Query.newEntityQueryBuilder().setKind("Species").build();
+        Query<Entity> query = Query.newEntityQueryBuilder().setKind("Species").setLimit(30).build();
         QueryResults<Entity> queriedSpecies = datastore.run(query);
 
         List<RequiredData> data = new ArrayList<>();
