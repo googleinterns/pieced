@@ -11,6 +11,8 @@ import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.KeyFactory;
 
+import java.util.Iterator;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +30,10 @@ public class DataCollection {
   private static final String LIST_CONTENT_CLASS = "mw-parser-output";
   private static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
   private static KeyFactory keyFactory = datastore.newKeyFactory().setKind("Species");
+
+  public static void main(String[] args) throws IOException {
+        collectData();
+    }
 
   public static void collectData() throws IOException {
     List<String> urls = parseListofPages();
@@ -109,15 +115,19 @@ public class DataCollection {
    */
   private static Species processSpecies(Elements tds, String url) {
     if (tds.size() > 6) {
-      String commonName = tds.get(0).text();
-      String binomialName = tds.get(1).text();
-      String population = scrapePopulation(tds.get(2).text());
-      String status = scrapeStatus(tds.get(3).text());
+      String commonName = tds.get(0).text().trim();
+      String binomialName = tds.get(1).text().trim();
+      String populationString = scrapePopulation(tds.get(2).text()).trim();
+      long population = convertPopulationLong(populationString);
+      String status = scrapeStatus(tds.get(3).text()).trim();
       PopulationTrend trend = scrapeTrend(tds.get(4).select("img").first());
-      String notes = tds.get(5).text();
+      String notes = removeBrackets(tds.get(5).text()).trim();
       String imageLink = scrapeImageLink(tds.get(6).select("img").first());
+      if (imageLink == null) {
+        return null;
+      }
 
-    //   System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
+      System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
     //   Species species = new Species(commonName, binomialName, status, trend, population, notes, imageLink, url);
       Species species = new Species.Builder()
                                     .withCommonName(commonName)
@@ -209,6 +219,9 @@ public class DataCollection {
   private static String scrapeStatus(String statusString) {
     String status = statusString.replaceAll("Domesticated", "DO");
     status = removeBrackets(status);
+    if (status.length() > 2) {
+        status = status.substring(0, 2);
+    }
     return status;
   }
 
@@ -251,10 +264,26 @@ public class DataCollection {
    * @param trendImg html for the species image in the table
    */
   private static String scrapeImageLink(Element image) {
-    String imageLink = "";
-    if (image != null) {
-      imageLink = image.absUrl("src");
+    if (image == null) {
+      return null;
     }
+    String src = image.attr("src");
+    String srcset = image.attr("srcset");
+
+    // remove size descriptions and only keep image urls
+    ArrayList<String> images = new ArrayList<>(Arrays.asList(srcset.split(" ")));
+    images.add(0, src);
+    Iterator<String> itr = images.iterator(); 
+    while (itr.hasNext()) {
+      String url = itr.next();
+      if (url.charAt(0) != '/') {
+        itr.remove();
+      }
+    }
+
+    String imageLink = images.get(images.size() - 1); // get largest image in srcset
+    imageLink = "https:" + imageLink;
+
     return imageLink;
   }
 
@@ -268,5 +297,22 @@ public class DataCollection {
 
   private static String removeBrackets(String og) {
     return og.replaceAll("\\s*\\[[^\\]]*\\]\\s*", " ");
+  }
+
+  private static long convertPopulationLong(String populationString) {
+    String popValues[]= populationString.split("–|-");
+    try {
+        if (popValues.length == 1) {
+            return Long.parseLong(populationString);
+        }
+        else {
+            long popAverage = (Long.parseLong(popValues[0]) + Long.parseLong(popValues[1])) / 2;
+            return popAverage;
+        }
+    }
+    catch (NumberFormatException n) {
+        System.out.println("Error: Wikipedia population '" + populationString + "' had incorrect format.");
+        return -1;
+    }
   }
 }

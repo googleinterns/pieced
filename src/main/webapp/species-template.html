@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/species.css">
+    <link rel="stylesheet" href="styles/style.css">
+  </head>
+  
+  <body>
+    <div id="navigation"></div>
+
+    <!--------------- HEADER ---------------->
+    <header class="container-fluid">
+      <h1>SPECIES</h1>
+    </header>
+
+    <!--------------- CONTENT ---------------->
+    <div id="content">
+        <!-- Page Content -->
+        <div id="species-page" class="container-fluid"> 
+            <div id="species-image-container">
+                <!-- Canvas for pixelation -->
+                <div>
+                    <canvas onmouseover="animateFullResolution()" onmouseout="animateOldResolution()" id="canvas" width="500" height="400"> </canvas>
+                    <img id="species-image" class="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Royal_Bengal_Tiger_at_Kanha_National_Park.jpg/800px-Royal_Bengal_Tiger_at_Kanha_National_Park.jpg"
+                        alt="Tiger" style="display: none;" height = "512px" width = "256px">
+                    <label id="pixel_label" for="pixel_factor">Current Population</label>
+                    <input id="pixel_factor" type="number" min="1"  value="100">
+                </div>
+            </div>
+
+            <!-- Containers for species-specific info -->
+            <div id="species-info-container">
+                <h1 class="text-center"> Name </h1>
+                <div id="common-name-container" class="text-center"> </div>
+
+                <h1 class="text-center"> Scientific Name </h1>
+                <div id="scientific-name-container" class="text-center"> </div>
+
+                <h1 class="text-center"> Status </h1>
+                <div id="status-container" class="text-center"> </div>
+                
+                <h1 class="text-center"> Description </h1>
+                <div id="description-container" class="text-center"> </div>
+                
+                <h1 class="text-center"> Citations </h1>
+                <div id="citations-container" class="text-center"> </div>
+
+                <h1 class="text-center"> Kingdom </h1>
+                <div id="kingdom-container" class="text-center"> </div>
+
+                <h1 class="text-center"> Phylum </h1>
+                <div id="phylum-container" class="text-center"> </div>
+
+                <h1 class="text-center"> Class </h1>
+                <div id="class-container" class="text-center"> </div>
+
+                <h1 class="text-center"> Order </h1>
+                <div id="order-container" class="text-center"> </div>
+
+                <h1 class="text-center"> Family </h1>
+                <div id="family-container" class="text-center"> </div>
+
+                <h1 class="text-center"> Genus </h1>
+                <div id="genus-container" class="text-center"> </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- <script src="test.json"></script> -->
+    <script src="scripts/pixelation.js"></script>
+    <script src="scripts/fetchData.js"></script>
+    <script src="scripts/script.js"></script>
+    <script src="scripts/species-template.js"></script>
+  </body>
+</html>

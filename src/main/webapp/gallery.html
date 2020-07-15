@@ -16,16 +16,72 @@
 
     <!--------------- HEADER ---------------->
     <header class="container-fluid">
-      <h1>GALLERY</h1>
+      <div class="gallery-heading">
+        <h1>GALLERY</h1>
+      </div>
     </header>
 
     <!--------------- CONTENT ---------------->
-    <div id="content">
-      <!-- Page Content -->
-      <div id="gallery-page" class="container-fluid">
-        <div class="grid bg-dark">
-          <div class="grid-sizer"></div>
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+          <div class="sidebar-sticky">
+            <h2 class="sidebar-heading d-flex justify-content-between align-items-center mt-4 mb-1">
+              <span>Filters</span>
+            </h2>
+            <!-- <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+              <span>Kingdom</span>
+            </h6>
+            <ul class="nav flex-column mb-2">
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  Carnivora
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  Carnivora
+                </a>
+              </li>
+            </ul> -->
+
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+              <span>Status</span>
+            </h6>
+            <ul class="nav flex-column mb-2">
+              <li class="nav-item">
+                <a class="nav-link" href="#">Critically Endangered</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Endangered</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Vulnerable</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Near Threatened</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Least Concern</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Domesticated</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Data Deficient</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <div class="col-md-9 ml-sm-auto col-lg-10 px-4">
+          <div id="content">
+            <div id="gallery-page" class="container-fluid">
+              <div class="grid"></div>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
 

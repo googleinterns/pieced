@@ -76,7 +76,7 @@ public class SpeciesDataServlet extends HttpServlet {
         String commonName       = speciesData.getString("common_name");
         String binomialName     = speciesData.getString("binomial_name");
         String status           = speciesData.getString("status");
-        String population       = speciesData.getString("population");
+        long population         = speciesData.getLong("population");
         String wikipediaNotes   = speciesData.getString("wikipedia_notes");
         String imageLink        = speciesData.getString("image_link");
         String citationLink     = speciesData.getString("citation_link");
@@ -129,21 +129,19 @@ public class SpeciesDataServlet extends HttpServlet {
     // Builds an invalid JSON response when the request is invalid or misses in the datastore.
     private String generateInvalidResponse(HttpServletResponse response, String errorMessage) {
         System.err.println("Invalid fetch request: " + errorMessage);
-        // Species species = new Species(null, null, null, PopulationTrend.UNKNOWN, null, null, null, null);
-        Species species = new Species();
-        // Species species = new Species.Builder()
-        //                             .withCommonName(null)
-        //                             .withBinomialName(null)
-        //                             .withStatus(null)
-        //                             .withPopulationTrend(PopulationTrend.UNKNOWN)
-        //                             .withPopulation(null)
-        //                             .withWikipediaNotes(null)
-        //                             .withImageLink(null)
-        //                             .withCitationLink(null)
-        //                             .build();
-        
-        // species.setTaxonomicPath(null);
-        // species.setGeoData(null);
+        Species species = new Species.Builder()
+                                    .withCommonName(null)
+                                    .withBinomialName(null)
+                                    .withStatus(null)
+                                    .withPopulationTrend(PopulationTrend.UNKNOWN)
+                                    .withPopulation(-1)
+                                    .withWikipediaNotes(null)
+                                    .withImageLink(null)
+                                    .withCitationLink(null)
+                                    .build();        
+
+        species.setTaxonomicPath(null);
+        species.setGeoData(null);
 
         String json = convertToJson(species);
         return json;

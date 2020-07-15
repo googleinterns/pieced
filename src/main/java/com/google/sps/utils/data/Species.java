@@ -107,7 +107,7 @@ public class Species {
     binomialName = null;
     status = null;
     trend = PopulationTrend.UNKNOWN;
-    population = null;
+    population = -1;
     wikipediaNotes = null;
     imageLink = null;
     citationLink = null;
@@ -131,7 +131,7 @@ public class Species {
     return binomialName;
   }
 
-  public String getPopulation() {
+  public long getPopulation() {
     return population;
   }
   
@@ -164,7 +164,7 @@ public class Species {
       return false;
     }
 
-    if (population == null || population.equals("")) {
+    if (population < 0) {
       return false;
     }
 
