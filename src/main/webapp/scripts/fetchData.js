@@ -62,23 +62,24 @@ function fetchSpeciesData(name) {
         // Manipulate pixelation value based on species population
         pixelSlider.max = img.width * img.height;
         var pop = speciesData.population;
+        console.log("pop is of type " + typeof pop);
 
-        /*
-         * Examples of population format:
-         *      null, 500, 30-30,000
-         * Pixelation is set to the lower bound if a range is given.
-         */
-        switch(true) {
-            case (pop == null):
-                pop = pixelSlider.max;
-                break;
-            case (pop.indexOf('–') > 0):
-                pop = pop.substr(0, pop.indexOf('–'));
-                break;
-            default:
-                break;
-        }
-        pixelSlider.value = pop;
+        // /*
+        //  * Examples of population format:
+        //  *      null, 500, 30-30,000
+        //  * Pixelation is set to the lower bound if a range is given.
+        //  */
+        // switch(true) {
+        //     case (pop == null):
+        //         pop = pixelSlider.max;
+        //         break;
+        //     case (pop.indexOf('–') > 0):
+        //         pop = pop.substr(0, pop.indexOf('–'));
+        //         break;
+        //     default:
+        //         break;
+        // }
+        pixelSlider.value = (pop == null) ? pixelSlider.max : pop;
 
         // Update species taxonomic path
         if (speciesData.taxonomicPath != null) {
