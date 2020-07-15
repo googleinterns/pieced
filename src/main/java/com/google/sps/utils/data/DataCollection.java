@@ -115,18 +115,19 @@ public class DataCollection {
    */
   private static Species processSpecies(Elements tds, String url) {
     if (tds.size() > 6) {
-      String commonName = tds.get(0).text();
-      String binomialName = tds.get(1).text();
-      String population = scrapePopulation(tds.get(2).text());
-      String status = scrapeStatus(tds.get(3).text());
+      String commonName = tds.get(0).text().trim();
+      String binomialName = tds.get(1).text().trim();
+      String populationString = scrapePopulation(tds.get(2).text()).trim();
+      long population = convertPopulationLong(populationString);
+      String status = scrapeStatus(tds.get(3).text()).trim();
       PopulationTrend trend = scrapeTrend(tds.get(4).select("img").first());
-      String notes = tds.get(5).text();
+      String notes = removeBrackets(tds.get(5).text()).trim();
       String imageLink = scrapeImageLink(tds.get(6).select("img").first());
       if (imageLink == null) {
         return null;
       }
 
-    //   System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
+      System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
       Species species = new Species(commonName, binomialName, status, trend, population, notes, imageLink, url);
       return species;
     }
@@ -208,6 +209,9 @@ public class DataCollection {
   private static String scrapeStatus(String statusString) {
     String status = statusString.replaceAll("Domesticated", "DO");
     status = removeBrackets(status);
+    if (status.length() > 2) {
+        status = status.substring(0, 2);
+    }
     return status;
   }
 
@@ -283,5 +287,22 @@ public class DataCollection {
 
   private static String removeBrackets(String og) {
     return og.replaceAll("\\s*\\[[^\\]]*\\]\\s*", " ");
+  }
+
+  private static long convertPopulationLong(String populationString) {
+    String popValues[]= populationString.split("–|-");
+    try {
+        if (popValues.length == 1) {
+            return Long.parseLong(populationString);
+        }
+        else {
+            long popAverage = (Long.parseLong(popValues[0]) + Long.parseLong(popValues[1])) / 2;
+            return popAverage;
+        }
+    }
+    catch (NumberFormatException n) {
+        System.out.println("Error: Wikipedia population '" + populationString + "' had incorrect format.");
+        return -1;
+    }
   }
 }

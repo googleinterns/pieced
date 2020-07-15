@@ -76,7 +76,7 @@ public class SpeciesDataServlet extends HttpServlet {
         String commonName       = speciesData.getString("common_name");
         String binomialName     = speciesData.getString("binomial_name");
         String status           = speciesData.getString("status");
-        String population       = speciesData.getString("population");
+        long population         = speciesData.getLong("population");
         String wikipediaNotes   = speciesData.getString("wikipedia_notes");
         String imageLink        = speciesData.getString("image_link");
         String citationLink     = speciesData.getString("citation_link");
@@ -129,7 +129,7 @@ public class SpeciesDataServlet extends HttpServlet {
                                 null,
                                 null,
                                 PopulationTrend.UNKNOWN,
-                                null,
+                                -1,
                                 null,
                                 null,
                                 null);
