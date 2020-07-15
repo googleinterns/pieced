@@ -115,7 +115,7 @@ public class DataCollection {
       long population = convertPopulationLong(populationString);
       String status = scrapeStatus(tds.get(3).text()).trim();
       PopulationTrend trend = scrapeTrend(tds.get(4).select("img").first());
-      String notes = tds.get(5).text().trim();
+      String notes = removeBrackets(tds.get(5).text()).trim();
       String imageLink = scrapeImageLink(tds.get(6).select("img").first());
 
       System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
