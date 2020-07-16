@@ -11,110 +11,21 @@
     <link rel="stylesheet" href="styles/style.css">
   </head>
   
-  <body onload="">
+  <body>
     <div id="navigation"></div>
 
     <!--------------- HEADER ---------------->
     <header class="container-fluid">
-      <div class="gallery-heading">
-        <h1>GALLERY</h1>
-      </div>
+      <h1>GALLERY</h1>
     </header>
 
     <!--------------- CONTENT ---------------->
-    <div class="container-fluid">
-      <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-          <div class="sidebar-sticky">
-            <h2 class="sidebar-heading d-flex justify-content-between align-items-center mt-4 mb-1">
-              <span>Filters</span>
-            </h2>
-
-            <!-- STATUS -->
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-              <span>Status</span>
-            </h6>
-            <ul class="nav flex-column mb-2">
-              <li class="nav-item">
-                <button class="btn active" onclick="filterSelection('all')"> Show all</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('CR')"> Critically Endangered</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('EN')"> Endangered</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('VU')"> Vulnerable</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('NT')"> Near Threatened</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('LC')"> Least Concern</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('DO')"> Domesticated</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('DD')"> Data Deficient</button>
-              </li>
-            </ul>
-
-            <!-- TREND -->
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-              <span>Trend</span>
-            </h6>
-            <ul class="nav flex-column mb-2">
-              <li class="nav-item">
-                <button class="btn active" onclick="filterSelection('all')"> Show all</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('DECREASE')"> Decreasing</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('INCREASE')"> Increasing</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('STEADY')"> Steady</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('UNKNOWN')"> Unknown</button>
-              </li>
-            </ul>
-
-            <!-- ANIMAL CLASS -->
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-              <span>Animal Class</span>
-            </h6>
-            <ul class="nav flex-column mb-2">
-              <li class="nav-item">
-                <button class="btn active" onclick="filterSelection('all')"> Show all</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('Aves')"> Birds</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('Mammalia')"> Mammals</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('Amphibia')"> Amphibians</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('Reptilia')"> Reptiles</button>
-              </li>
-            </ul>
-          </div>
-        </nav>
-
-        <div class="col-md-9 ml-sm-auto col-lg-10 px-4">
-          <div id="content">
-            <div id="gallery-page" class="container-fluid">
-              <div class="grid"></div>
-            </div>
-          </div>
+    <div id="content">
+      <!-- Page Content -->
+      <div id="gallery-page" class="container-fluid">
+        <div class="grid bg-dark">
+          <div class="grid-sizer"></div>
         </div>
-
       </div>
     </div>
 

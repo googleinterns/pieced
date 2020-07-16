@@ -2,18 +2,9 @@
   box-sizing: border-box;
 }
 
-a {
-    color: white;
+#refresh-button {
+    margin-left: 7px;
 }
-
-a:hover {
-    color: whitesmoke;
-    text-decoration: underline;
-}
-
-/* #refresh-button {
-  margin-left: 7px;
-} */
 
 #gallery-page {
     padding: 0 !important;
@@ -23,24 +14,20 @@ a:hover {
 .grid {
     max-width: 100%;
     width: 100%;
-    /* padding: 0 !important;
-    margin: 0 !important; */
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
-/* .grid:after {
+.grid:after {
     content: '';
     display: block;
     clear: both;
-} */
+}
 
 .grid-sizer,
 .grid-item {
     width: 25%;
 }
-
-/* .grid-filters {
-  display: none;
-} */
 
 .grid-item {
     float: left;
