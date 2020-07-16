@@ -16,7 +16,7 @@ public class Species {
   private PopulationTrend trend;
 
   // Provided by Wikipedia
-  private long population;
+  private String population;
   private String wikipediaNotes;
   private String imageLink;
   private String citationLink;
@@ -29,7 +29,7 @@ public class Species {
     binomialName = null;
     status = null;
     trend = PopulationTrend.UNKNOWN;
-    population = -1;
+    population = null;
     wikipediaNotes = null;
     imageLink = null;
     citationLink = null;
@@ -38,7 +38,7 @@ public class Species {
 
   // Wikipedia-side creation
   public Species(String commonName, String binomialName, String status, PopulationTrend trend,
-                long population, String wikipediaNotes, String imageLink, String citationLink) {
+                String population, String wikipediaNotes, String imageLink, String citationLink) {
     this();
     this.commonName = commonName;
     this.binomialName = binomialName;
@@ -62,7 +62,7 @@ public class Species {
     return binomialName;
   }
 
-  public long getPopulation() {
+  public String getPopulation() {
     return population;
   }
   
@@ -95,7 +95,7 @@ public class Species {
       return false;
     }
 
-    if (population < 0) {
+    if (population == null || population.equals("")) {
       return false;
     }
 
