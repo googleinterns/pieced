@@ -66,3 +66,9 @@ header {
   padding: 10%;
   color: #fff;
 }
+
+/**************** MAIN *******************/
+#map {      	
+    height: 100%;
+    width: 100%;
+}
