@@ -82,15 +82,15 @@ public class AllDataServlet extends HttpServlet {
         String imageLink = speciesData.getString("image_link");
         String citationLink = speciesData.getString("citation_link");
         PopulationTrend trend = DataCollection.convertToPopulationTrendEnum(speciesData.getString("trend"));
-        // TaxonomicPath taxonomy = new TaxonomicPath(speciesData.getString("kingdom"),
-        //                                             speciesData.getString("phylum"),
-        //                                             speciesData.getString("class"),
-        //                                             speciesData.getString("order"),
-        //                                             speciesData.getString("family"),
-        //                                             speciesData.getString("genus"));
+        TaxonomicPath taxonomy = new TaxonomicPath(speciesData.getString("kingdom"),
+                                                    speciesData.getString("phylum"),
+                                                    speciesData.getString("class"),
+                                                    speciesData.getString("order"),
+                                                    speciesData.getString("family"),
+                                                    speciesData.getString("genus"));
 
         Species species = new Species(commonName, binomialName, status, trend, population, wikipediaNotes, imageLink, citationLink);                           
-        // species.setTaxonomicPath(taxonomy);
+        species.setTaxonomicPath(taxonomy);
         return species;
     }
 
