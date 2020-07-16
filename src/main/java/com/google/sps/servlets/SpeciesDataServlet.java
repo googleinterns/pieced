@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.servlets.AllDataServlet;
+
 import com.google.sps.utils.data.Species;
 import com.google.sps.utils.data.PopulationTrend;
 import com.google.sps.utils.data.DataCollection;
@@ -40,7 +42,7 @@ import java.util.ArrayList;
 
 /** Servlet that grabs data on individual species. */
 @WebServlet("/speciesData")
-public class SpeciesDataServlet extends HttpServlet {
+public class SpeciesDataServlet extends AllDataServlet {
     Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
     
     @Override
@@ -71,33 +73,7 @@ public class SpeciesDataServlet extends HttpServlet {
         // There will be at most one entry returned by any query due to how we add and modify species to Datastore,
         // so we only need to call queriedSpecies.next() a single time
         Entity speciesData = queriedSpecies.next();
-
-        // Grab information from Datastore entry and construct Species object
-        String commonName       = speciesData.getString("common_name");
-        String binomialName     = speciesData.getString("binomial_name");
-        String status           = speciesData.getString("status");
-        String population       = speciesData.getString("population");
-        String wikipediaNotes   = speciesData.getString("wikipedia_notes");
-        String imageLink        = speciesData.getString("image_link");
-        String citationLink     = speciesData.getString("citation_link");
-        PopulationTrend trend   = DataCollection.convertToPopulationTrendEnum(speciesData.getString("trend"));
-        TaxonomicPath taxonomy  = new TaxonomicPath(speciesData.getString("kingdom"),
-                                                    speciesData.getString("phylum"),
-                                                    speciesData.getString("class"),
-                                                    speciesData.getString("order"),
-                                                    speciesData.getString("family"),
-                                                    speciesData.getString("genus"));
-
-        Species species = new Species(commonName,
-                                            binomialName,
-                                            status,
-                                            trend,
-                                            population,
-                                            wikipediaNotes,
-                                            imageLink,
-                                            citationLink);
-                                            
-        species.setTaxonomicPath(taxonomy);
+        Species species = convertEntityToSpecies(speciesData);
 
         // Convert Species object to JSON and send it back to caller
         String json = convertToJson(species);
@@ -125,14 +101,7 @@ public class SpeciesDataServlet extends HttpServlet {
     // Builds an invalid JSON response when the request is invalid or misses in the datastore.
     private String generateInvalidResponse(HttpServletResponse response, String errorMessage) {
         System.err.println("Invalid fetch request: " + errorMessage);
-        Species species = new Species(null,
-                                null,
-                                null,
-                                PopulationTrend.UNKNOWN,
-                                null,
-                                null,
-                                null,
-                                null);
+        Species species = new Species(null, null, null, PopulationTrend.UNKNOWN, -1, null, null, null);
 
         species.setTaxonomicPath(null);
         String json = convertToJson(species);
