@@ -32,8 +32,7 @@ public class RefreshDataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("RUN GEO DATA!");
-    DataCollection.collectGeoData();
+    DataCollection.collectData();
     response.sendRedirect(REDIRECT_URL_HOME);
   }
 }

@@ -39,7 +39,6 @@ public class Species {
         private String geoData;
 
         public Builder() {
-
         }
 
         public Builder withCommonName(String commonName) {

@@ -111,7 +111,6 @@ public class SpeciesAPIRetrieval {
       return;
     }
     
-    // System.out.println(apiMap);
     // System.out.println(apiMap.get("results").getClass());
     // System.out.println(((ArrayList) apiMap.get("results")).get(0));
     // System.out.println(((ArrayList) apiMap.get("results")).get(0).getClass());

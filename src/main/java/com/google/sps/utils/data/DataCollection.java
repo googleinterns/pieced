@@ -33,20 +33,14 @@ public class DataCollection {
     private static KeyFactory keyFactory = datastore.newKeyFactory().setKind("Species");
 
     public static void main(String[] args) throws IOException {
-            collectGeoData();
+            collectData();
         }
 
     public static void collectData() throws IOException {
         List<String> urls = parseListofPages();
         for (String url: urls) {
-            System.out.println("BAD");
             parseSpeciesTable(url);
         }
-    }
-
-    public static void collectGeoData() throws IOException {
-        List<String> urls = parseListofPages();
-        parseSpeciesTable(urls.get(0));
     }
 
     /**
@@ -105,7 +99,7 @@ public class DataCollection {
                 }
 
                 if (!speciesAlreadyStored(species.getBinomialName())) {
-                    System.out.println("ADD INFO");
+                    // System.out.println("ADD INFO");
                     addApiInfo(species);
                     addSpeciesToDatastore(species);
                 }
@@ -162,9 +156,6 @@ public class DataCollection {
         Key key = keyFactory.newKey(binomialName);
         Entity speciesEntity = datastore.get(key);
         return speciesEntity != null;
-    //   System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
-      Species species = new Species(commonName, binomialName, status, trend, population, notes, imageLink, url);
-      return species;
     }
 
     /**
@@ -238,42 +229,8 @@ public class DataCollection {
       
       datastore.put(speciesEntity);
     }
+  }
 
-    /**
-    * Store species in Datastore
-    * @param species: species to store
-    */
-    public static void addSpeciesToDatastore(Species species) {
-        Key key = keyFactory.newKey(species.getBinomialName());
-        Entity oldEntity = datastore.get(key);
-        
-        if (oldEntity == null) {
-        Entity speciesEntity = Entity.newBuilder(key)
-            .set("common_name", species.getCommonName())
-            .set("binomial_name", species.getBinomialName())
-            .set("status", species.getStatus())
-            .set("population", species.getPopulation())
-            .set("image_link", species.getImageLink())
-            .set("wikipedia_notes", species.getWikipediaNotes())
-            .set("citation_link", species.getCitationLink())
-            .build();
-        
-        if (species.getTaxonomicPath() != null) {
-            speciesEntity = Entity.newBuilder(speciesEntity).set("kingdom", species.getTaxonomicPath().getAnimalKingdom()).build();
-            speciesEntity = Entity.newBuilder(speciesEntity).set("phylum", species.getTaxonomicPath().getAnimalPhylum()).build();
-            speciesEntity = Entity.newBuilder(speciesEntity).set("class", species.getTaxonomicPath().getAnimalClass()).build();
-            speciesEntity = Entity.newBuilder(speciesEntity).set("order", species.getTaxonomicPath().getAnimalOrder()).build();
-            speciesEntity = Entity.newBuilder(speciesEntity).set("family", species.getTaxonomicPath().getAnimalFamily()).build();
-            speciesEntity = Entity.newBuilder(speciesEntity).set("genus", species.getTaxonomicPath().getAnimalGenus()).build();
-        }
-        
-        if (species.getTrend() != null) {
-            speciesEntity = Entity.newBuilder(speciesEntity).set("trend", species.getTrend().name()).build();
-        }
-        
-        datastore.put(speciesEntity);
-        }
-    }
 
     // ------------------------------  SCRAPING HELPER FUNCTIONS  ------------------------------ //
 
