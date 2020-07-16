@@ -34,7 +34,58 @@ label {
 
 #species-info-container {
     background: var(--info-container-color);
+
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-auto-rows: 1fr 1fr 1fr 1fr;
+    grid-template-areas: "name name kingdom phylum class"
+                        "status status order family genus"
+                        "description description description description description"
+                        "citations citations citations citations citations";
+    justify-content: space-between;
+
     flex-grow: 3;
+}
+
+#name-wrapper {
+    grid-area: name;
+}
+
+#status-wrapper {
+    grid-area: status;
+}
+
+#description-wrapper {
+    grid-area: description;
+}
+
+#citations-wrapper {
+    grid-area: citations;
+}
+
+#kingdom-wrapper {
+    grid-area: kindgom;
+}
+
+#phylum-wrapper {
+    grid-area: phylum;
+}
+
+#class-wrapper {
+    grid-area: class;
+}
+
+#order-wrapper {
+    grid-area: order;
+}
+
+#family-wrapper {
+    grid-area: family;
+}
+
+#genus-wrapper {
+    grid-area: genus;
 }
 
 canvas {
