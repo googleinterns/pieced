@@ -28,6 +28,7 @@ import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
+import com.google.cloud.datastore.StructuredQuery.OrderBy;
 
 
 import java.io.IOException;
@@ -44,21 +45,6 @@ import java.util.ArrayList;
 @WebServlet("/allData")
 public class AllDataServlet extends HttpServlet {
     Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-
-    // Lightweight dummy class containing only the necessary parameters for gallery.html
-    public class RequiredData {
-        /*
-        String commonName   : common name for species
-        String imageLink    : url for image
-        */
-        public String commonName;
-        public String imageLink;
-
-        public RequiredData(String commonName, String imageLink) {
-            this.commonName = commonName;
-            this.imageLink = imageLink;
-        }
-    }
     
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -68,29 +54,60 @@ public class AllDataServlet extends HttpServlet {
         // Initialize and run a query that will select the specific species from Datastore by filtering by scientific name
         Query<Entity> query = Query.newEntityQueryBuilder()
             .setKind("Species")
+            .setOrderBy(OrderBy.asc("common_name"))
         //     .setFilter(CompositeFilter.and(
         // PropertyFilter.eq("status", "CR"), PropertyFilter.eq("class", "Mammalia")))
-            // .setLimit(50)
+            .setLimit(250)
             .build();
         QueryResults<Entity> queriedSpecies = datastore.run(query);
 
-        List<RequiredData> data = new ArrayList<>();
+        List<Species> data = new ArrayList<>();
 
         queriedSpecies.forEachRemaining( speciesData -> {
             // Grab information from Datastore entry and construct Species object
-            String commonName       = speciesData.getString("common_name");
-            String imageLink        = speciesData.getString("image_link");
-
-            RequiredData species = new RequiredData(commonName, imageLink);
+            Species species = convertEntityToSpecies(speciesData);
             data.add(species);
         });
+
         // Convert Species object to JSON and send it back to caller
         String json = convertToJson(data);
         response.getWriter().println(json);
     }
 
+    // Grab information from Datastore entry and construct Species object
+    protected Species convertEntityToSpecies(Entity speciesData) {
+        String commonName       = speciesData.getString("common_name");
+        String binomialName     = speciesData.getString("binomial_name");
+        String status           = speciesData.getString("status");
+        long population         = speciesData.getLong("population");
+        String wikipediaNotes   = speciesData.getString("wikipedia_notes");
+        String imageLink        = speciesData.getString("image_link");
+        String citationLink     = speciesData.getString("citation_link");
+        PopulationTrend trend   = DataCollection.convertToPopulationTrendEnum(speciesData.getString("trend"));
+        TaxonomicPath taxonomy  = new TaxonomicPath(speciesData.getString("kingdom"),
+                                                    speciesData.getString("phylum"),
+                                                    speciesData.getString("class"),
+                                                    speciesData.getString("order"),
+                                                    speciesData.getString("family"),
+                                                    speciesData.getString("genus"));
+
+        Species species = new Species.Builder()
+                                    .withCommonName(commonName)
+                                    .withBinomialName(binomialName)
+                                    .withStatus(status)
+                                    .withPopulationTrend(trend)
+                                    .withPopulation(population)
+                                    .withWikipediaNotes(wikipediaNotes)
+                                    .withImageLink(imageLink)
+                                    .withCitationLink(citationLink)
+                                    .build();
+                                            
+        species.setTaxonomicPath(taxonomy);
+        return species;
+    }
+
     // Convert List of data to JSON using Gson library.
-    private String convertToJson(List<RequiredData> data) {
+    private String convertToJson(List<Species> data) {
         Gson gson = new Gson();
         String json = gson.toJson(data);
         return json;

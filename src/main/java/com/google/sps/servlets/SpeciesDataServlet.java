@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.servlets.AllDataServlet;
+
 import com.google.sps.utils.data.Species;
 import com.google.sps.utils.data.PopulationTrend;
 import com.google.sps.utils.data.DataCollection;
@@ -40,7 +42,7 @@ import java.util.ArrayList;
 
 /** Servlet that grabs data on individual species. */
 @WebServlet("/speciesData")
-public class SpeciesDataServlet extends HttpServlet {
+public class SpeciesDataServlet extends AllDataServlet {
     Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
     
     @Override
@@ -72,36 +74,7 @@ public class SpeciesDataServlet extends HttpServlet {
         // so we only need to call queriedSpecies.next() a single time
         Entity speciesData = queriedSpecies.next();
 
-        // Grab information from Datastore entry and construct Species object
-        String commonName       = speciesData.getString("common_name");
-        String binomialName     = speciesData.getString("binomial_name");
-        String status           = speciesData.getString("status");
-        long population         = speciesData.getLong("population");
-        String wikipediaNotes   = speciesData.getString("wikipedia_notes");
-        String imageLink        = speciesData.getString("image_link");
-        String citationLink     = speciesData.getString("citation_link");
-        PopulationTrend trend   = DataCollection.convertToPopulationTrendEnum(speciesData.getString("trend"));
-        TaxonomicPath taxonomy  = new TaxonomicPath(speciesData.getString("kingdom"),
-                                                    speciesData.getString("phylum"),
-                                                    speciesData.getString("class"),
-                                                    speciesData.getString("order"),
-                                                    speciesData.getString("family"),
-                                                    speciesData.getString("genus"));
-
-        // Species species = new Species(commonName, binomialName, status, trend, population, wikipediaNotes, imageLink, citationLink);
-
-        Species species = new Species.Builder()
-                                    .withCommonName(commonName)
-                                    .withBinomialName(binomialName)
-                                    .withStatus(status)
-                                    .withPopulationTrend(trend)
-                                    .withPopulation(population)
-                                    .withWikipediaNotes(wikipediaNotes)
-                                    .withImageLink(imageLink)
-                                    .withCitationLink(citationLink)
-                                    .build();
-                                            
-        species.setTaxonomicPath(taxonomy);
+        Species species = convertEntityToSpecies(speciesData);
 
         // Convert Species object to JSON and send it back to caller
         String json = convertToJson(species);

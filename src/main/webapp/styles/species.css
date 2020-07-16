@@ -1,6 +1,7 @@
 html {
     --image-container-color: #AEDFDB;
     --info-container-color: #75C9CC;
+    --info-container-color: #F8F8F8;
     --link-hover-color: #111111;
     --link-color: white;
     --list-color: #333333;
@@ -14,13 +15,17 @@ html {
 }
 
 #species-image-container {
-    background: var(--image-container-color);
+    /* background: var(--image-container-color); */
     flex-grow: 1;
 }
 
 #species-name, #species-image, #canvas, #pixel_factor, #pixel_label {
     display: block;
     margin: auto;
+}
+
+.species-attribute {
+    padding-bottom: 1.5em;
 }
 
 label {
