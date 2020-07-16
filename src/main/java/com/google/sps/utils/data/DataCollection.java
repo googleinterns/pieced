@@ -99,11 +99,10 @@ public class DataCollection {
                 }
 
                 if (!speciesAlreadyStored(species.getBinomialName())) {
-                    // System.out.println("ADD INFO");
                     addApiInfo(species);
                     addSpeciesToDatastore(species);
                 }
-                addGeoInfo(species);
+                // addGeoInfo(species);
                 break;
             }
             break;

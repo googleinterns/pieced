@@ -110,10 +110,6 @@ public class SpeciesAPIRetrieval {
       System.out.println("No results found in GBIF API for '" + species.getBinomialName() + "'.");
       return;
     }
-    
-    // System.out.println(apiMap.get("results").getClass());
-    // System.out.println(((ArrayList) apiMap.get("results")).get(0));
-    // System.out.println(((ArrayList) apiMap.get("results")).get(0).getClass());
 
     for (Object i : (ArrayList) apiMap.get("results")) {
         System.out.println(((Map) i).getOrDefault("decimalLatitude", null));
