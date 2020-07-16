@@ -21,14 +21,12 @@ public class SpeciesAPIRetrieval {
   // Retrieves JSON response from given url with the species parameter
   public static String getJSON(String base, String species) throws IOException, InterruptedException {
     String uri = base + encode(species);
-    System.out.println(uri);
     HttpClient client = HttpClient.newHttpClient();
     HttpRequest request = HttpRequest.newBuilder()
       .uri(URI.create(uri))
       .build();
     
     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-    System.out.println(response);
     return response.body();
   }
 
