@@ -28,6 +28,7 @@ import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
+import com.google.cloud.datastore.StructuredQuery.OrderBy;
 
 
 import java.io.IOException;
@@ -53,9 +54,10 @@ public class AllDataServlet extends HttpServlet {
         // Initialize and run a query that will select the specific species from Datastore by filtering by scientific name
         Query<Entity> query = Query.newEntityQueryBuilder()
             .setKind("Species")
+            .setOrderBy(OrderBy.asc("common_name"))
         //     .setFilter(CompositeFilter.and(
         // PropertyFilter.eq("status", "CR"), PropertyFilter.eq("class", "Mammalia")))
-            .setLimit(200)
+            .setLimit(250)
             .build();
         QueryResults<Entity> queriedSpecies = datastore.run(query);
 

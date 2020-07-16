@@ -7,7 +7,7 @@ console.log("initializing masonry");
 var $grid = $('.grid').masonry({
     itemSelector: '.grid-item',
     percentPosition: true,
-    horizontalOrder: true,
+    // horizontalOrder: true,
     columnWidth: '.grid-sizer'
 });
 
@@ -21,8 +21,10 @@ function fetchAllSpeciesData() {
     fetch("/allData").then(response => response.json()).then(speciesData => {
         for (var species in speciesData) {
             // Append images to grid
+            console.log(speciesData[species].taxonomicPath.order_t);
+            console.log(speciesData[species].taxonomicPath.class_t);
             var $html = $(
-                '<div class="grid-filters ' + speciesData[species].status + '">' +
+                '<div class="grid-filters ' + speciesData[species].status + ' ' + speciesData[species].trend + ' ' + speciesData[species].taxonomicPath.order_t + ' ' + speciesData[species].taxonomicPath.class_t + '">' +
                   '<div class="grid-sizer"></div>' +
                   '<div class="grid-item">' +
                     '<img src="'+ speciesData[species].imageLink +'" />' +
