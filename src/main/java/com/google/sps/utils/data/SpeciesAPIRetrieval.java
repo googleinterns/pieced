@@ -13,18 +13,22 @@ import java.nio.charset.StandardCharsets;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 public class SpeciesAPIRetrieval {
 
   // Retrieves JSON response from given url with the species parameter
   public static String getJSON(String base, String species) throws IOException, InterruptedException {
     String uri = base + encode(species);
+    System.out.println(uri);
     HttpClient client = HttpClient.newHttpClient();
     HttpRequest request = HttpRequest.newBuilder()
       .uri(URI.create(uri))
       .build();
     
     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+    System.out.println(response);
     return response.body();
   }
 
@@ -45,7 +49,6 @@ public class SpeciesAPIRetrieval {
   public static Map convertJSONToMap(String jsonString) {
     Gson gson = new Gson();
     Map map = gson.fromJson(jsonString, Map.class);
-
     try {
       if (map.get("matchType").equals("EXACT")) {
         return map;
@@ -55,6 +58,16 @@ public class SpeciesAPIRetrieval {
     }
 
     return null;
+  }
+
+    /**
+   * Will be used to convert API JSON to a Map for easier access
+   * @return converted map of JSON, or null if incorrect JSON format
+   */
+  public static HashMap convertGeoToMap(String jsonString) {
+    Gson gson = new Gson();
+    HashMap map = gson.fromJson(jsonString, HashMap.class);
+    return map;
   }
 
   /**
@@ -98,8 +111,16 @@ public class SpeciesAPIRetrieval {
       return;
     }
     
-    System.out.println(apiMap);
-    // System.out.println(apiMap.get());
+    // System.out.println(apiMap);
+    // System.out.println(apiMap.get("results").getClass());
+    // System.out.println(((ArrayList) apiMap.get("results")).get(0));
+    // System.out.println(((ArrayList) apiMap.get("results")).get(0).getClass());
+
+    for (Object i : (ArrayList) apiMap.get("results")) {
+        System.out.println(((Map) i).getOrDefault("decimalLatitude", null));
+        System.out.println(((Map) i).getOrDefault("decimalLongitude", null));
+    }
+
     // species.setGeoData(apiMap);
     return;
   }  

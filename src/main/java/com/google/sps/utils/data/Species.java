@@ -15,7 +15,7 @@ public class Species {
     private PopulationTrend trend;
 
     // Provided by Wikipedia
-    private String population;
+    private long population;
     private String wikipediaNotes;
     private String imageLink;
     private String citationLink;
@@ -30,7 +30,7 @@ public class Species {
         private String status;
         private PopulationTrend trend;
 
-        private String population;
+        private long population;
         private String wikipediaNotes;
         private String imageLink;
         private String citationLink;
@@ -62,7 +62,7 @@ public class Species {
             return this;
         }
         
-        public Builder withPopulation(String population) {
+        public Builder withPopulation(long population) {
             this.population = population;
             return this;
         }
