@@ -186,10 +186,20 @@ public class DataCollection {
         speciesEntity = Entity.newBuilder(speciesEntity).set("order", species.getTaxonomicPath().getAnimalOrder()).build();
         speciesEntity = Entity.newBuilder(speciesEntity).set("family", species.getTaxonomicPath().getAnimalFamily()).build();
         speciesEntity = Entity.newBuilder(speciesEntity).set("genus", species.getTaxonomicPath().getAnimalGenus()).build();
+      } else {
+        speciesEntity = Entity.newBuilder(speciesEntity).set("kingdom", "Not Available").build();
+        speciesEntity = Entity.newBuilder(speciesEntity).set("phylum", "Not Available").build();
+        speciesEntity = Entity.newBuilder(speciesEntity).set("class", "Not Available").build();
+        speciesEntity = Entity.newBuilder(speciesEntity).set("order", "Not Available").build();
+        speciesEntity = Entity.newBuilder(speciesEntity).set("family", "Not Available").build();
+        speciesEntity = Entity.newBuilder(speciesEntity).set("genus", "Not Available").build();
+      
       }
     
       if (species.getTrend() != null) {
         speciesEntity = Entity.newBuilder(speciesEntity).set("trend", species.getTrend().name()).build();
+      } else {
+        speciesEntity = Entity.newBuilder(speciesEntity).set("trend", "UNKNOWN").build();
       }
       
       datastore.put(speciesEntity);
