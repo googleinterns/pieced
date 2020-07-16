@@ -1,0 +1,12 @@
+#home-container {
+    padding: 3em 16em;
+    background: #AEDFDB;
+}
+
+a {
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+}
