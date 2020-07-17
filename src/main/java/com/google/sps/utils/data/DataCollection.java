@@ -29,6 +29,7 @@ public class DataCollection {
     private static final String GEO_URL = "https://api.gbif.org/v1/occurrence/search?scientificName=";
     private static final String LIST_URL = "https://en.wikipedia.org/wiki/Lists_of_organisms_by_population";
     private static final String LIST_CONTENT_CLASS = "mw-parser-output";
+    private static final String ERROR_STRING = "Exception occurred retrieving API data: ";
     private static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
     private static KeyFactory keyFactory = datastore.newKeyFactory().setKind("Species");
 
@@ -168,7 +169,7 @@ public class DataCollection {
             Map apiDataMap = SpeciesAPIRetrieval.convertJSONToMap(apiDataJSON);
             SpeciesAPIRetrieval.addAPISpeciesInfo(species, apiDataMap);
         } catch (Exception e) {
-            System.err.println("Exception occurred retrieving API data: " + e);
+            System.err.println(ERROR_STRING + e);
             e.printStackTrace();
         }
     }
@@ -179,7 +180,7 @@ public class DataCollection {
             Map apiGeoMap = SpeciesAPIRetrieval.convertGeoToMap(apiGeoJSON);
             SpeciesAPIRetrieval.addAPIGeoInfo(species, apiGeoMap);
         } catch (Exception e) {
-            System.err.println("Exception occurred retrieving API data: " + e);
+            System.err.println(ERROR_STRING + e);
             e.printStackTrace();
         }
   }
