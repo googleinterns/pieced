@@ -10,7 +10,7 @@ html {
 #species-page {
     display: flex;
     flex-direction: row;
-    height: 100vh;
+    min-height: 100%;
     padding: 0 !important;
 }
 
@@ -25,7 +25,7 @@ html {
 }
 
 .species-attribute {
-    padding-bottom: 1.5em;
+    padding-bottom: 0.5em;
 }
 
 label {
@@ -35,15 +35,80 @@ label {
 #species-info-container {
     background: var(--info-container-color);
     flex-grow: 3;
+
+    display: grid;
+    grid-gap: .5rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-areas: "name name kingdom phylum class"
+                        "status status order family genus"
+                        "description description description description description"
+                        "citations citations citations citations citations";
+    justify-content: space-between;
+
+    height: 450px;
+    padding: 25px 25px 0px 25px;
+}
+
+.info-wrapper {
+    border-radius: .25rem;
+    background: #7EC8C2;
+    padding-top: 10px;
+}
+
+#name-wrapper {
+    grid-area: name;
+}
+
+#status-wrapper {
+    grid-area: status;
+}
+
+#description-wrapper {
+    grid-area: description;
+}
+
+#citations-wrapper {
+    grid-area: citations;
+}
+
+#kingdom-wrapper {
+    grid-area: kingdom;
+}
+
+#phylum-wrapper {
+    grid-area: phylum;
+}
+
+#class-wrapper {
+    grid-area: class;
+}
+
+#order-wrapper {
+    grid-area: order;
+}
+
+#family-wrapper {
+    grid-area: family;
+}
+
+#genus-wrapper {
+    grid-area: genus;
 }
 
 canvas {
+    padding-top: 25px;
     image-rendering: optimizeSpeed;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-optimize-contrast;
     image-rendering: -o-crisp-edges;
     image-rendering: crisp-edges;
     -ms-interpolation-mode: nearest-neighbor;
+}
+
+.container-fluid {
+    padding-top: 100px;
+    padding-bottom: 100px;
 }
 /* 
 li {
