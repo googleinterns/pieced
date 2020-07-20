@@ -61,8 +61,14 @@ function fetchSpeciesData(name) {
         img.src = speciesData.imageLink;
         // img.width = Math.round(img.naturalWidth/100)*100;
         // img.height = Math.round(img.naturalHeight/100)*100;
-        img.width = img.naturalWidth;
-        img.height = img.naturalHeight;
+        canvas.width = img.width = img.naturalWidth;
+        canvas.height = img.height = img.naturalHeight;
+
+        var ctx = canvas.getContext('2d');
+        // Turn off image smoothing again, since modifying the canvas attributes reenables smoothing
+        ctx.mozImageSmoothingEnabled = false;
+        ctx.webkitImageSmoothingEnabled = false;
+        ctx.imageSmoothingEnabled = false;
 
         // Manipulate pixelation value based on species population
         pixelSlider.max = img.width * img.height;
