@@ -73,6 +73,7 @@ public class SpeciesDataServlet extends AllDataServlet {
         // There will be at most one entry returned by any query due to how we add and modify species to Datastore,
         // so we only need to call queriedSpecies.next() a single time
         Entity speciesData = queriedSpecies.next();
+
         Species species = convertEntityToSpecies(speciesData);
 
         // Convert Species object to JSON and send it back to caller
@@ -101,9 +102,20 @@ public class SpeciesDataServlet extends AllDataServlet {
     // Builds an invalid JSON response when the request is invalid or misses in the datastore.
     private String generateInvalidResponse(HttpServletResponse response, String errorMessage) {
         System.err.println("Invalid fetch request: " + errorMessage);
-        Species species = new Species(null, null, null, PopulationTrend.UNKNOWN, -1, null, null, null);
+        Species species = new Species.Builder()
+                                    .withCommonName(null)
+                                    .withBinomialName(null)
+                                    .withStatus(null)
+                                    .withPopulationTrend(PopulationTrend.UNKNOWN)
+                                    .withPopulation(-1)
+                                    .withWikipediaNotes(null)
+                                    .withImageLink(null)
+                                    .withCitationLink(null)
+                                    .build();        
 
         species.setTaxonomicPath(null);
+        species.setGeoData(null);
+
         String json = convertToJson(species);
         return json;
     }

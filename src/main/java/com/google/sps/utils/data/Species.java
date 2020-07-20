@@ -8,22 +8,99 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class Species {
+    // Cross-referenced IUCN/Wikipedia
+    private String commonName;
+    private String binomialName;
+    private String status;
+    private PopulationTrend trend;
+
+    // Provided by Wikipedia
+    private long population;
+    private String wikipediaNotes;
+    private String imageLink;
+    private String citationLink;
+
+    // Provided by GBIF
+    private TaxonomicPath taxonomicPath;
+    private String geoData;
+    
+    public static class Builder {
+        private String commonName;
+        private String binomialName;
+        private String status;
+        private PopulationTrend trend;
+
+        private long population;
+        private String wikipediaNotes;
+        private String imageLink;
+        private String citationLink;
+
+        private TaxonomicPath taxonomicPath;
+        private String geoData;
+
+        public Builder() {
+        }
+
+        public Builder withCommonName(String commonName) {
+            this.commonName = commonName;
+            return this;
+        }
+        
+        public Builder withBinomialName(String binomialName) {
+            this.binomialName = binomialName;
+            return this;
+        }
+        
+        public Builder withStatus(String status) {
+            this.status = status;
+            return this;
+        }
+        
+        public Builder withPopulationTrend(PopulationTrend trend) {
+            this.trend = trend;
+            return this;
+        }
+        
+        public Builder withPopulation(long population) {
+            this.population = population;
+            return this;
+        }
+        
+        public Builder withWikipediaNotes(String wikipediaNotes) {
+            this.wikipediaNotes = wikipediaNotes;
+            return this;
+        }
+        
+        public Builder withImageLink(String imageLink) {
+            this.imageLink = imageLink;
+            return this;
+        }
+        
+        public Builder withCitationLink(String citationLink) {
+            this.citationLink = citationLink;
+            return this;
+        }
+        
+        public Builder withTaxonomicPath(TaxonomicPath taxonomicPath) {
+            this.taxonomicPath = taxonomicPath;
+            return this;
+        }
+
+        public Species build() {
+            Species s = new Species();
+            s.commonName = this.commonName;
+            s.binomialName = this.binomialName;
+            s.status = this.status;
+            s.trend = this.trend;
+            s.population = this.population;
+            s.wikipediaNotes = this.wikipediaNotes;
+            s.imageLink = this.imageLink;
+            s.citationLink = this.citationLink;
+
+            return s;
+        }      
+    }
   
-  // Cross-referenced IUCN/Wikipedia
-  private String commonName;
-  private String binomialName;
-  private String status;
-  private PopulationTrend trend;
-
-  // Provided by Wikipedia
-  private long population;
-  private String wikipediaNotes;
-  private String imageLink;
-  private String citationLink;
-
-  // Provided by GBIF
-  private TaxonomicPath taxonomicPath;
-
   public Species() {
     commonName = null;
     binomialName = null;
@@ -34,24 +111,15 @@ public class Species {
     imageLink = null;
     citationLink = null;
     taxonomicPath = null;
-  }
-
-  // Wikipedia-side creation
-  public Species(String commonName, String binomialName, String status, PopulationTrend trend,
-                long population, String wikipediaNotes, String imageLink, String citationLink) {
-    this();
-    this.commonName = commonName;
-    this.binomialName = binomialName;
-    this.status = status;
-    this.trend = trend;
-    this.population = population;
-    this.wikipediaNotes = wikipediaNotes;
-    this.imageLink = imageLink;
-    this.citationLink = citationLink;
+    geoData = null;
   }
 
   public void setTaxonomicPath(TaxonomicPath taxonomicPath) {
     this.taxonomicPath = taxonomicPath;
+  }
+
+  public void setGeoData(String geoData) {
+    this.geoData = geoData;
   }
 
   public String getCommonName() {
