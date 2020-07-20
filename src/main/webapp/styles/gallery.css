@@ -15,9 +15,6 @@ a:hover {
   margin-left: 7px;
 } */
 
-.filters {
-  background: blue;
-}
 #gallery-page {
     padding: 0 !important;
     margin: 0 !important;
@@ -74,4 +71,15 @@ a:hover {
     font-size: 20px;
     padding: 0.5em;
     text-align: center;
+}
+
+/**************** ACTIVE FILTER LIST *******************/
+.active-filter {
+  background: black;
+  color: white;
+}
+
+.filters {
+  width: 100%;
+  background: whitesmoke;
 }
