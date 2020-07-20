@@ -17,8 +17,8 @@ function fetchSpeciesData(name) {
         var genusContainer          = document.getElementById('genus-container');
 
         // Update names for species
-        commonNameContainer.innerText       = speciesData.commonName;
-        scientificNameContainer.innerText   = speciesData.binomialName;
+        commonNameContainer.innerText       = capitalizeSpeciesName(speciesData.commonName);
+        scientificNameContainer.innerText   = capitalizeSpeciesName(speciesData.binomialName);
 
         // Map conservation status code to term and update entry
         var statusCode  = speciesData.status;
@@ -74,4 +74,12 @@ function fetchSpeciesData(name) {
             genusContainer.innerText        = speciesData.taxonomicPath.genus_t;
         }
     });
+}
+
+// Capitalize each word in species' names
+function capitalizeSpeciesName(name) {
+    wordsArray = name.toLowerCase().split(' ');
+    capitalizedArray = wordsArray.map(w => w.substring(0,1).toUpperCase() + w.substring(1));
+    capitalizedName = capitalizedArray.join(' ');
+    return capitalizedName;
 }

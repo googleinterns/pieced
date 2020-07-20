@@ -2,11 +2,10 @@
 var urlParams = new URLSearchParams(window.location.search);
 if (urlParams.has('species')) {
     const species = urlParams.get('species');
-    document.title += "Pieced - " + species;
+    var x = capitalizeSpeciesName(species);
+    document.title += "Pieced - " + capitalizeSpeciesName(species);
     fetchSpeciesData(species);
 }
 else {
     console.log("Error: no species was passed.");
 }
-
-//TODO: capitalize species name, improve general formatting
