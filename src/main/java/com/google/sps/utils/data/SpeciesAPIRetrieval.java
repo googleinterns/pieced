@@ -13,6 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 public class SpeciesAPIRetrieval {
 
@@ -45,7 +47,6 @@ public class SpeciesAPIRetrieval {
   public static Map convertJSONToMap(String jsonString) {
     Gson gson = new Gson();
     Map map = gson.fromJson(jsonString, Map.class);
-
     try {
       if (map.get("matchType").equals("EXACT")) {
         return map;
@@ -55,6 +56,16 @@ public class SpeciesAPIRetrieval {
     }
 
     return null;
+  }
+
+    /**
+   * Will be used to convert API JSON to a Map for easier access
+   * @return converted map of JSON, or null if incorrect JSON format
+   */
+  public static HashMap convertGeoToMap(String jsonString) {
+    Gson gson = new Gson();
+    HashMap map = gson.fromJson(jsonString, HashMap.class);
+    return map;
   }
 
   /**
@@ -81,6 +92,29 @@ public class SpeciesAPIRetrieval {
     TaxonomicPath taxonomicPath = new TaxonomicPath(kingdom, phylum, class_t, order, family, genus);
     
     species.setTaxonomicPath(taxonomicPath);
+    return;
+  }  
+  
+  /**
+   * Updates Species with geographical coordinates from converted JSON map
+   * @param species: species to add fields to
+   * @param apiMap: map of the JSON returned from API call to this species
+   */
+  public static void addAPIGeoInfo(Species species, Map apiMap) {
+    if (species == null) {
+      return;
+    }
+    if (apiMap == null) {
+      System.out.println("No results found in GBIF API for '" + species.getBinomialName() + "'.");
+      return;
+    }
+
+    for (Object i : (ArrayList) apiMap.get("results")) {
+        System.out.println(((Map) i).getOrDefault("decimalLatitude", null));
+        System.out.println(((Map) i).getOrDefault("decimalLongitude", null));
+    }
+
+    // species.setGeoData(apiMap);
     return;
   }  
 }
