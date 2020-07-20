@@ -10,7 +10,6 @@ ctx.imageSmoothingEnabled = false;
 var image = document.getElementById('species-image');
 
 var originalNumPixels = image.width * image.height;
-// var originalNumPixels = 100;
 var PIXEL_FACTOR_OLD = 100;
 var PIXEL_FACTOR_CURR = 100;
 pixel_factor.addEventListener('change', animate_update, false);

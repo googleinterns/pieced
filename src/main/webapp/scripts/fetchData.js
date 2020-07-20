@@ -2,6 +2,7 @@
 function fetchSpeciesData(name) {
     const URL = '/speciesData?species=' + name;
     fetch(URL).then(response => response.json()).then(speciesData => {
+        // var canvas                  = document.getElementById('canvas');
         var commonNameContainer     = document.getElementById('common-name-container');
         var scientificNameContainer = document.getElementById('scientific-name-container');
         var statusContainer         = document.getElementById('status-container');
@@ -58,11 +59,15 @@ function fetchSpeciesData(name) {
 
         // Update image source
         img.src = speciesData.imageLink;
+        // img.width = Math.round(img.naturalWidth/100)*100;
+        // img.height = Math.round(img.naturalHeight/100)*100;
+        img.width = img.naturalWidth;
+        img.height = img.naturalHeight;
 
         // Manipulate pixelation value based on species population
         pixelSlider.max = img.width * img.height;
         var pop = speciesData.population;
-        pixelSlider.value = (pop === undefined) ? pixelSlider.max : pop;
+        pixelSlider.value = (pop === undefined) ? pixelSlider.max : Math.min(pop, pixelSlider.max);
 
         // Update species taxonomic path
         if (speciesData.taxonomicPath != null) {
