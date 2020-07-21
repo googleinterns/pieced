@@ -59,21 +59,19 @@ function fetchSpeciesData(name) {
 
         // Update image source
         img.src = speciesData.imageLink;
-        // img.width = Math.round(img.naturalWidth/100)*100;
-        // img.height = Math.round(img.naturalHeight/100)*100;
-        canvas.width = img.width = img.naturalWidth;
-        canvas.height = img.height = img.naturalHeight;
+        canvas.width = img.width = Math.round(img.naturalWidth/16)*16;
+        canvas.height = img.height = Math.round(img.naturalHeight/16)*16;
+
+        // Manipulate pixelation value based on species population
+        pixelSlider.max = img.width * img.height;
+        var pop = speciesData.population;
+        pixelSlider.value = (pop === undefined) ? pixelSlider.max : Math.min(pop, pixelSlider.max);
 
         var ctx = canvas.getContext('2d');
         // Turn off image smoothing again, since modifying the canvas attributes reenables smoothing
         ctx.mozImageSmoothingEnabled = false;
         ctx.webkitImageSmoothingEnabled = false;
         ctx.imageSmoothingEnabled = false;
-
-        // Manipulate pixelation value based on species population
-        pixelSlider.max = img.width * img.height;
-        var pop = speciesData.population;
-        pixelSlider.value = (pop === undefined) ? pixelSlider.max : Math.min(pop, pixelSlider.max);
 
         // Update species taxonomic path
         if (speciesData.taxonomicPath != null) {

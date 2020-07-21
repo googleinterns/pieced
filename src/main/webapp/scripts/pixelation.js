@@ -8,11 +8,14 @@ ctx.webkitImageSmoothingEnabled = false;
 ctx.imageSmoothingEnabled = false;
 
 var image = document.getElementById('species-image');
+var slider = document.getElementById('pixel_factor');
 
 var originalNumPixels = image.width * image.height;
-var PIXEL_FACTOR_OLD = 100;
-var PIXEL_FACTOR_CURR = 100;
-pixel_factor.addEventListener('change', animate_update, false);
+// var PIXEL_FACTOR_OLD = 100;
+// var PIXEL_FACTOR_CURR = 100;
+var PIXEL_FACTOR_OLD = slider.value;
+var PIXEL_FACTOR_CURR = slider.value;
+pixel_factor.addEventListener('change', animate_update_wrapper, false);
 
 // wait until image has finished loading before attaching pixelate()
 image.onload = pixelate;
@@ -24,33 +27,66 @@ image.onload = pixelate;
  */
 function pixelate(v) {
     // v was originally used to represent the percentage to scale dimension down to;
-    // w = # pixels wide, h = # pixels tall
+    // numPixelsWidth = # pixels wide, numPixelsHeight = # pixels tall
 
     // var size = v * 0.01;
-    // w = canvas.width * size,
-    // h = canvas.height * size;
+    // numPixelsWidth = canvas.width * size,
+    // numPixelsHeight = canvas.height * size;
 
     // Grab number of total pixels the image should have
-    var numPixels = animated? v : pixel_factor.value;
-
-    // Creation of pixels that takes square root of numPixels
-    var w = Math.sqrt(numPixels);
-    var h = Math.sqrt(numPixels);
+    var totalPixels = animated? v : pixel_factor.value;
     
-    // Wide image
-    if (canvas.width > canvas.height) {
-        ratio = canvas.width / canvas.height;
-    } else {
-        ratio = canvas.height / canvas.width;
+    // TODO: Add condition for when something is to be considered rectangular
+    // Generate ratio > 1 if image is sufficiently non-square
+    var size = (canvas.width == canvas.height) ? ("square") : (canvas.width > canvas.height ? "wide" : "tall");
+    if (size == "wide") {
+        ratio = canvas.width / canvas.height;   // wide image
+    } else if (size == "tall") {
+        ratio = canvas.height / canvas.width;   // tall image
+    }
+
+    var [a, b, c] = getFactors(totalPixels);
+    console.log(a, b, c);
+
+    var numPixelsWidth = Math.sqrt(totalPixels);
+    var numPixelsHeight = Math.sqrt(totalPixels);
+
+    if (size == "wide") {        
+        numPixelsWidth = Math.max(a, b);
+        numPixelsHeight = Math.min(a, b);
+    } else if (size == "tall") {
+        numPixelsWidth = Math.min(a, b);
+        numPixelsHeight = Math.max(a, b);
     }
 
     // Draw scaled-down image
-    ctx.drawImage(image, 0, 0, w, h);
+    ctx.drawImage(image, 0, 0, numPixelsWidth, numPixelsHeight);
 
     // Scale image back up to full canvas size; automatic pixelation because image smoothing is off
     ctx.drawImage(canvas,
-                    0, 0, w, h,
+                    0, 0, numPixelsWidth, numPixelsHeight,
                     0, 0, canvas.width, canvas.height);
+}
+
+// Find factors
+function getFactors(n) {
+    square_root = Math.ceil(Math.sqrt(n));
+    foundSolution = false;
+    val = square_root;
+    while (!foundSolution) {
+        val2 = Math.floor(n/val);
+        if (val2 * val == n) {
+            foundSolution = true;
+        } else {
+            val -= 1;
+        }
+    }
+    return [val, val2, n];
+}
+
+function animate_update_wrapper() {
+    PIXEL_FACTOR_OLD = pixel_factor.value;
+    animate_update(pixel_factor.value);
 }
 
 /** Function to animate transition between two pixelation values;
@@ -61,6 +97,7 @@ function animate_update(endpoint) {
     var target = pixel_factor.value;
     // dx = speed of pixelation (# pixels/tick)
     var dx = 10;
+    // var dx = Math.abs(PIXEL_FACTOR_CURR - target) / 10;
     animated = true;
     var underTarget = false;
     doAnimation();
@@ -109,6 +146,7 @@ function animate_update(endpoint) {
     doAnimation();
 
     function doAnimation() {
+        // console.log(PIXEL_FACTOR_CURR, PIXEL_FACTOR_OLD);
         PIXEL_FACTOR_CURR += dx;
 
         if (PIXEL_FACTOR_CURR >= originalNumPixels) {
@@ -137,6 +175,7 @@ function animateOldResolution() {
     doAnimation();
 
     function doAnimation() {
+        // console.log(PIXEL_FACTOR_CURR, PIXEL_FACTOR_OLD);
         PIXEL_FACTOR_CURR -= dx;
 
         if (PIXEL_FACTOR_CURR <= PIXEL_FACTOR_OLD) {
