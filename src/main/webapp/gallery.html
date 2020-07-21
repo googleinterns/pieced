@@ -26,12 +26,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="filters d-inline-block d-flex justify-content-end">
-            <ul class="active-filters list-group list-group-horizontal">
-                <li class="active-filter list-inline-item"><button class="btn my-2 my-sm-0" type="submit"><i class="fa fa-close"></i>Filter 1</button></li>
-                <li class="active-filter list-inline-item"><button class="btn my-2 my-sm-0" type="submit"><i class="fa fa-close"></i>Filter 2</button></li>
-                <li class="active-filter list-inline-item"><button class="btn my-2 my-sm-0" type="submit"><i class="fa fa-close"></i>Filter 2</button></li>
-                <li class="active-filter list-inline-item"><button class="btn my-2 my-sm-0" type="submit"><i class="fa fa-close"></i>Filter 2</button></li>
-            </ul>
+            <ul class="active-filters list-group list-group-horizontal"></ul>
             <form class="form-inline">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -60,13 +55,13 @@
             </h6>
             <ul class="nav flex-column mb-2">
               <li class="nav-item">
-                <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+                <button class="btn active" onclick="clearFilters()"> Show all</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('CR')"> Critically Endangered</button>
+                <button class="btn" onclick="addFilter('CR')"> Critically Endangered</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('EN')"> Endangered</button>
+                <button class="btn" onclick="addFilter('EN')"> Endangered</button>
               </li>
               <li class="nav-item">
                 <button class="btn" onclick="filterSelection('VU')"> Vulnerable</button>

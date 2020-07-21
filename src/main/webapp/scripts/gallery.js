@@ -12,6 +12,8 @@ var $grid = $('.grid').masonry({
 });
 
 fetchAllSpeciesData();
+var filters = [];
+var $active_filters_ul = $('.active-filters');
 
 // Test function that fetches sample JSON and appends each species to the gallery
 function fetchAllSpeciesData() {
@@ -76,4 +78,34 @@ function filterSelection(class_name) {
 
   // Update the masonry layout
   $grid.masonry();
+}
+
+function addFilter(class_name) {
+  console.log(class_name)
+  filters.push(class_name);
+  $filter = $(
+    '<li class="active-filter list-inline-item">' +
+      '<button class="btn my-2 my-sm-0" type="submit">' +
+        '<i class="fa fa-close"></i>' +
+        class_name +
+      '</button>' +
+    '</li>'
+  );
+  $active_filters_ul.append($filter);
+  updateList()
+}
+
+function updateList() {
+  if (filters.length <= 0) {
+    showAllClasses();
+    return;
+  } 
+  hideAllClasses();
+  for(let i = 0; i < filters.length; i++){ 
+    showClass(filters[i]);
+  }
+}
+
+function clearFilters() {
+
 }
