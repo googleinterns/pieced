@@ -11,10 +11,10 @@ var image = document.getElementById('species-image');
 var slider = document.getElementById('pixel_factor');
 
 var originalNumPixels = image.width * image.height;
-// var PIXEL_FACTOR_OLD = 100;
-// var PIXEL_FACTOR_CURR = 100;
-var PIXEL_FACTOR_OLD = slider.value;
-var PIXEL_FACTOR_CURR = slider.value;
+var PIXEL_FACTOR_OLD = 100;
+var PIXEL_FACTOR_CURR = 100;
+// var PIXEL_FACTOR_OLD = slider.value;
+// var PIXEL_FACTOR_CURR = slider.value;
 pixel_factor.addEventListener('change', animate_update_wrapper, false);
 
 // wait until image has finished loading before attaching pixelate()
@@ -51,13 +51,13 @@ function pixelate(v) {
     var numPixelsWidth = Math.sqrt(totalPixels);
     var numPixelsHeight = Math.sqrt(totalPixels);
 
-    if (size == "wide") {        
-        numPixelsWidth = Math.max(a, b);
-        numPixelsHeight = Math.min(a, b);
-    } else if (size == "tall") {
-        numPixelsWidth = Math.min(a, b);
-        numPixelsHeight = Math.max(a, b);
-    }
+    // if (size == "wide") {        
+    //     numPixelsWidth = Math.max(a, b);
+    //     numPixelsHeight = Math.min(a, b);
+    // } else if (size == "tall") {
+    //     numPixelsWidth = Math.min(a, b);
+    //     numPixelsHeight = Math.max(a, b);
+    // }
 
     // Draw scaled-down image
     ctx.drawImage(image, 0, 0, numPixelsWidth, numPixelsHeight);
@@ -85,7 +85,7 @@ function getFactors(n) {
 }
 
 function animate_update_wrapper() {
-    PIXEL_FACTOR_OLD = pixel_factor.value;
+    // PIXEL_FACTOR_OLD = pixel_factor.value;
     animate_update(pixel_factor.value);
 }
 

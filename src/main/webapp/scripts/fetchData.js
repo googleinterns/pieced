@@ -59,8 +59,8 @@ function fetchSpeciesData(name) {
 
         // Update image source
         img.src = speciesData.imageLink;
-        canvas.width = img.width = Math.round(img.naturalWidth/16)*16;
-        canvas.height = img.height = Math.round(img.naturalHeight/16)*16;
+        // canvas.width = img.width = Math.round(img.naturalWidth/16)*16;
+        // canvas.height = img.height = Math.round(img.naturalHeight/16)*16;
 
         // Manipulate pixelation value based on species population
         pixelSlider.max = img.width * img.height;
