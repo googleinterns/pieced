@@ -73,22 +73,6 @@ function pixelate(v) {
                     0, 0, canvas.width, canvas.height);
 }
 
-// // find factors
-// function getFactors(n) {
-//     square_root = Math.ceil(Math.sqrt(n));
-//     foundSolution = false;
-//     val = square_root;
-//     while (!foundSolution) {
-//         val2 = Math.floor(n/val);
-//         if (val2 * val == n) {
-//             foundSolution = true;
-//         } else {
-//             val -= 1;
-//         }
-//     }
-//     return [val, val2, n];
-// }
-
 /** Function to animate transition between two pixelation values;
  * Changes number of pixels until we hit `target` pixels.
  */
