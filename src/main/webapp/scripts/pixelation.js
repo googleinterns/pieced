@@ -75,8 +75,8 @@ function animate_update() {
     // target = desired endpoint for pixelation is taken from current slider value
     var target = pixel_factor.value;
     // dx = speed of pixelation (# pixels/tick)
-    var dx = 10;
-    // var dx = Math.abs(PIXEL_FACTOR_CURR - target) / 10;
+    // var dx = 10;
+    var dx = Math.ceil(Math.abs(PIXEL_FACTOR_CURR - target) / 50);
     animated = true;
     var underTarget = false;
     doAnimation();
@@ -86,14 +86,16 @@ function animate_update() {
             PIXEL_FACTOR_CURR += dx;
             // "Binary Search" approach to home in on exact value since dx > 1
             if (!underTarget) {
-                dx -= 1;
+                // dx -= 1;
+                dx = Math.ceil(dx/2);
             }
             underTarget = true;
         } else if (PIXEL_FACTOR_CURR > target) {
             PIXEL_FACTOR_CURR -= dx;
             // "Binary Search" approach to home in on exact value since dx > 1
             if (underTarget) {
-                dx -= 1;
+                // dx -= 1;
+                dx = Math.ceil(dx/2);
             }
             underTarget = false;
         } else {
