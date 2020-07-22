@@ -135,7 +135,7 @@ function animate_update(endpoint) {
  *
  * Zoom out to original, full-resolution image.
  */
- function animateFullResolution() {
+ function animateToFullResolution() {
     // TODO: Change speed parameters to be a function of the original resolution.
     // TODO: Ease functions?
 
@@ -166,7 +166,7 @@ function animate_update(endpoint) {
  *
  * Zoom back in to old number of pixels.
  */
-function animateOldResolution() {
+function animateToOldResolution() {
     // "speed" parameter. Must be different than parameter for other animation fn
     // var dx = (PIXEL_FACTOR_CURR - PIXEL_FACTOR_OLD) / 50; 
     var dx = 4000;
