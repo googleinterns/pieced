@@ -10,12 +10,18 @@ ctx.imageSmoothingEnabled = false;
 var image = document.getElementById('species-image');
 var slider = document.getElementById('pixel_factor');
 
+// Get number of pixels for native image at full resolution
 var originalNumPixels = image.width * image.height;
-// var PIXEL_FACTOR_OLD = 100;
-// var PIXEL_FACTOR_CURR = 100;
+
+// Grab initial slider value (equal to species population)
+// MUST be parsed as numerical values to avoid bug where the values
+// are treated as Strings in some places, but Ints in others
+// e.g. (100 - 30 = 70, but 100 + 30 = 10030)
 var PIXEL_FACTOR_OLD = parseInt(slider.value);
 var PIXEL_FACTOR_CURR = parseInt(slider.value);
-pixel_factor.addEventListener('change', animate_update_wrapper, false);
+
+// Add trigger to animate whenever the slider value changes
+pixel_factor.addEventListener('change', animate_update, false);
 
 // wait until image has finished loading before attaching pixelate()
 image.onload = pixelate;
@@ -69,25 +75,20 @@ function pixelate(v) {
 }
 
 // Find factors
-function getFactors(n) {
-    square_root = Math.ceil(Math.sqrt(n));
-    foundSolution = false;
-    val = square_root;
-    while (!foundSolution) {
-        val2 = Math.floor(n/val);
-        if (val2 * val == n) {
-            foundSolution = true;
-        } else {
-            val -= 1;
-        }
-    }
-    return [val, val2, n];
-}
-
-function animate_update_wrapper() {
-    // PIXEL_FACTOR_OLD = pixel_factor.value;
-    animate_update(pixel_factor.value);
-}
+// function getFactors(n) {
+//     square_root = Math.ceil(Math.sqrt(n));
+//     foundSolution = false;
+//     val = square_root;
+//     while (!foundSolution) {
+//         val2 = Math.floor(n/val);
+//         if (val2 * val == n) {
+//             foundSolution = true;
+//         } else {
+//             val -= 1;
+//         }
+//     }
+//     return [val, val2, n];
+// }
 
 /** Function to animate transition between two pixelation values;
  * Changes number of pixels until we hit `endpoint` pixels.
