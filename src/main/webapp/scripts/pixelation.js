@@ -46,7 +46,7 @@ function pixelate(v) {
     }
 
     var [a, b, c] = getFactors(totalPixels);
-    console.log(a, b, c);
+    // console.log(a, b, c);
 
     var numPixelsWidth = Math.sqrt(totalPixels);
     var numPixelsHeight = Math.sqrt(totalPixels);
@@ -136,21 +136,24 @@ function animate_update(endpoint) {
  * Zoom out to original, full-resolution image.
  */
  function animateToFullResolution() {
+    console.log("START");
     // TODO: Change speed parameters to be a function of the original resolution.
     // TODO: Ease functions?
-
+    var range = PIXEL_FACTOR_CURR - PIXEL_FACTOR_OLD;
+    console.log(PIXEL_FACTOR_OLD, PIXEL_FACTOR_CURR, range);
     // "speed" parameter. Must be different than parameter for other animation fn
     // var dx = (originalNumPixels - PIXEL_FACTOR_CURR) / 100;
+    PIXEL_FACTOR_OLD = PIXEL_FACTOR_CURR;
     var dx = 2000;
     animated = true;
     doAnimation();
 
     function doAnimation() {
-        // console.log(PIXEL_FACTOR_CURR, PIXEL_FACTOR_OLD);
         PIXEL_FACTOR_CURR += dx;
 
         if (PIXEL_FACTOR_CURR >= originalNumPixels) {
             animated = false;
+            console.log("HIT MAX");
             return;
         }
 
@@ -167,19 +170,26 @@ function animate_update(endpoint) {
  * Zoom back in to old number of pixels.
  */
 function animateToOldResolution() {
+    console.log("START");
     // "speed" parameter. Must be different than parameter for other animation fn
     // var dx = (PIXEL_FACTOR_CURR - PIXEL_FACTOR_OLD) / 50; 
-    var dx = 4000;
-
+    // var dx = 4000;
+    var range = PIXEL_FACTOR_CURR - PIXEL_FACTOR_OLD;
+    var animationCompletionPercentage = 0;
+    console.log(PIXEL_FACTOR_OLD, PIXEL_FACTOR_CURR, range);
     animated = true;
     doAnimation();
 
     function doAnimation() {
-        // console.log(PIXEL_FACTOR_CURR, PIXEL_FACTOR_OLD);
-        PIXEL_FACTOR_CURR -= dx;
+        var easeOutput = calculateEaseValue(animationCompletionPercentage);
+        console.log("easeOutput: " + easeOutput);
+        console.log("PIXEL_FACTOR_CURR OLD: " + PIXEL_FACTOR_CURR);
+        PIXEL_FACTOR_CURR = Math.round(PIXEL_FACTOR_OLD + range * (1 - easeOutput));
+        console.log("PIXEL_FACTOR_CURR NEW: " + PIXEL_FACTOR_CURR);
 
-        if (PIXEL_FACTOR_CURR <= PIXEL_FACTOR_OLD) {
+        if (animationCompletionPercentage == 100) {
             animated = false;
+            console.log("HIT OLD VALUE");
             return;
         }
 
@@ -188,7 +198,20 @@ function animateToOldResolution() {
         if (animated) {
             requestAnimationFrame(doAnimation);
         }
+
+    animationCompletionPercentage += 5;
     }
+}
+
+// Map 3animation completion percentage to pixelation factor
+function calculateEaseValue(x) {
+    // // Map [0, 100] to [0, 1]
+    // x /= 100;
+    // //InOutQuart ease function, GPL-3.0 license, https://github.com/ai/easings.net
+    // factor = x < 0.5 ? 8 * x * x * x * x : 1 - pow(-2 * x + 2, 4) / 2;
+    // return factor;
+    console.log(x, x/100);
+    return x/100;
 }
 
 // Stand-in code for older browsers that don't support the animation
