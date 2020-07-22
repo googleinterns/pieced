@@ -1,4 +1,4 @@
-// Pixelate function: (C) Ken Fyrstenberg, Epistemex, License: CC3.0-attr
+// Pixelate function: original code (C) Ken Fyrstenberg, Epistemex, License: CC3.0-attr
 var ctx = canvas.getContext('2d');
 var animated = false;
 
@@ -29,7 +29,9 @@ image.onload = pixelate;
 /** Main Pixelation function
  * 
  * Pixelate image to desired number of pixels.
- * Shrinks and grows image w/o smoothing for automatic pixelation.
+ * Accomplished by shrinking and enlarging the image
+ * w/o image smoothing to create rough edges that automatically
+ * simulate a pixelation effect.
  */
 function pixelate(v) {
     // v was originally used to represent the percentage to scale dimension down to;
@@ -51,9 +53,6 @@ function pixelate(v) {
         ratio = canvas.height / canvas.width;   // tall image
     }
 
-    var [a, b, c] = getFactors(totalPixels);
-    // console.log(a, b, c);
-
     var numPixelsWidth = Math.sqrt(totalPixels);
     var numPixelsHeight = Math.sqrt(totalPixels);
 
@@ -74,7 +73,7 @@ function pixelate(v) {
                     0, 0, canvas.width, canvas.height);
 }
 
-// Find factors
+// // find factors
 // function getFactors(n) {
 //     square_root = Math.ceil(Math.sqrt(n));
 //     foundSolution = false;
@@ -91,10 +90,10 @@ function pixelate(v) {
 // }
 
 /** Function to animate transition between two pixelation values;
- * Changes number of pixels until we hit `endpoint` pixels.
+ * Changes number of pixels until we hit `target` pixels.
  */
-function animate_update(endpoint) {
-    // target = desired endpoint for pixelation
+function animate_update() {
+    // target = desired endpoint for pixelation taken from current slider value
     var target = pixel_factor.value;
     // dx = speed of pixelation (# pixels/tick)
     var dx = 10;
@@ -124,102 +123,117 @@ function animate_update(endpoint) {
             return;
         }
 
+        // Run pixelate function to render `PIXEL_FACTOR_CURR` pixels
         pixelate(PIXEL_FACTOR_CURR);
 
+        // Actually update the canvas we see with the new animation
         if (animated) {
             requestAnimationFrame(doAnimation);
         }
     }
 }
 
-/** When mouse enters canvas, animate transition to original, full-resolution image.
- *
- * Zoom out to original, full-resolution image.
+/*
+ * When mouse enters canvas containing image, this activates
+ * an animation that gradually "un-pixelates" the image until it
+ * reaches the original, full-resolution image, creating a
+ * "Zoom out" effect.
  */
  function animateToFullResolution() {
-    console.log("START");
     // TODO: Change speed parameters to be a function of the original resolution.
-    // TODO: Ease functions?
+
     var range = originalNumPixels - PIXEL_FACTOR_CURR;
     var animationCompletionPercentage = 0;
     console.log(PIXEL_FACTOR_OLD, PIXEL_FACTOR_CURR, range);
-    // "speed" parameter. Must be different than parameter for other animation fn
-    // var dx = (originalNumPixels - PIXEL_FACTOR_CURR) / 100;
-    // PIXEL_FACTOR_OLD = PIXEL_FACTOR_CURR;
-    // var dx = 2000;
+
     animated = true;
     doAnimation();
 
     function doAnimation() {
-        // PIXEL_FACTOR_CURR += dx;
+        // Calculate ease function value
         var easeOutput = calculateEaseValue(animationCompletionPercentage);
+
+        /** Use ease value to calculate proportional increase in # of pixels
+         *
+         * If easeOutput = 0, we just started the animation:
+         * `originalNumPixels - range * (1 - 0) = originalNUmPixels - (originalNumPixels - PIXEL_FACTOR_CURR) = PIXEL_FACTOR_CURR`
+         *
+         * If easeOutput = 1, we just finished the animation:
+         * `originalNumPixels - range * (1 - 1) = originalNumPixels` */
         PIXEL_FACTOR_CURR = Math.round(originalNumPixels - range * (1 - easeOutput));
 
-
-        if (PIXEL_FACTOR_CURR >= originalNumPixels) {
+        // If we've hit 100% completion of the animation (i.e. reached full resolution), stop
+        if (animationCompletionPercentage >= 100) {
             animated = false;
-            console.log("HIT MAX");
-            console.log(originalNumPixels);
-            console.log(PIXEL_FACTOR_OLD, PIXEL_FACTOR_CURR, range);
+            // console.log("Reached original resolution: " + PIXEL_FACTOR_OLD + " " + PIXEL_FACTOR_CURR + " " + originalNumPixels + " " + range);
             return;
         }
 
+        // Run pixelate function to render `PIXEL_FACTOR_CURR` pixels
         pixelate(PIXEL_FACTOR_CURR);
 
+        // Actually update the canvas we see with the new animation
         if (animated) {
             requestAnimationFrame(doAnimation);
         }
 
+        // Increment animation completion percentage by 2% (larger value = animates faster)
         animationCompletionPercentage += 2;
     }
 }
 
-/** After mouse leaves canvas, animate transition to previous pixelation amount
- *
- * Zoom back in to old number of pixels.
+/*
+ * When mouse leaves canvas containing image, this activates
+ * an animation that gradually "re-pixelates" the image until it
+ * reaches the previous pixelation level, leaving the image looking
+ * as it did when the mouse first entered the canvas.
  */
 function animateToOldResolution() {
-    console.log("START");
-    // "speed" parameter. Must be different than parameter for other animation fn
-    // var dx = (PIXEL_FACTOR_CURR - PIXEL_FACTOR_OLD) / 50; 
-    // var dx = 4000;
     var range = PIXEL_FACTOR_CURR - PIXEL_FACTOR_OLD;
     var animationCompletionPercentage = 0;
-    console.log(PIXEL_FACTOR_OLD, PIXEL_FACTOR_CURR, range);
+    // console.log(PIXEL_FACTOR_OLD, PIXEL_FACTOR_CURR, range);
     animated = true;
     doAnimation();
 
     function doAnimation() {
+        // Calculate ease function value
         var easeOutput = calculateEaseValue(animationCompletionPercentage);
-        console.log("PIXEL_FACTOR_CURR OLD: " + PIXEL_FACTOR_CURR);
-        console.log("EASE: " + easeOutput);
-        console.log("1 - EASE: " + (1 - easeOutput));
-        console.log("OFFSET: " + range * (1 - easeOutput));
-        console.log("PIXEL_FACTOR_OLD: " + PIXEL_FACTOR_OLD);
-        console.log("NEW VAL: " + (PIXEL_FACTOR_OLD + range * ( 1 - easeOutput)) );
-        console.log("NEW VAL: " + ((PIXEL_FACTOR_OLD) + (range * ( 1 - easeOutput))) );
-        console.log("NEW VAL: " + (parseInt(PIXEL_FACTOR_OLD) + parseInt(range * ( 1 - easeOutput))) );
-        PIXEL_FACTOR_CURR = Math.round(PIXEL_FACTOR_OLD + range * (1 - easeOutput));
-        console.log("PIXEL_FACTOR_CURR NEW: " + PIXEL_FACTOR_CURR);
+        // console.log((PIXEL_FACTOR_OLD + range * ( 1 - easeOutput)));
+        // console.log(((PIXEL_FACTOR_OLD) + (range * ( 1 - easeOutput))));
+        // console.log((parseInt(PIXEL_FACTOR_OLD) + parseInt(range * ( 1 - easeOutput))));
 
+        /** Use ease value to calculate proportional increase in # of pixels
+         *
+         * If easeOutput = 0, we just started the animation:
+         * `PIXEL_FACTOR_OLD + range * (1 - 0) = PIXEL_FACTOR_OLD + (PIXEL_FACTOR_CURR - PIXEL_FACTOR_OLD) = PIXEL_FACTOR_CURR`
+         *
+         * If easeOutput = 1, we just finished the animation:
+         * `PIXEL_FACTOR_OLD + range * (1 - 1) = PIXEL_FACTOR_OLD` */
+        PIXEL_FACTOR_CURR = Math.round(PIXEL_FACTOR_OLD + range * (1 - easeOutput));
+        
+        // console.log(PIXEL_FACTOR_CURR);
+
+        // Run pixelate function to render `PIXEL_FACTOR_CURR` pixels
         pixelate(PIXEL_FACTOR_CURR);
 
+        // If we've hit 100% completion of the animation (i.e. reached old resolution), stop
         if (animationCompletionPercentage >= 100) {
             animated = false;
-            console.log("HIT OLD VALUE");
-            console.log(PIXEL_FACTOR_OLD, PIXEL_FACTOR_CURR, range);
+            // console.log("Reached old resolution: " + PIXEL_FACTOR_OLD + " " + PIXEL_FACTOR_CURR + " " + originalNumPixels + " " + range);
             return;
         }
 
+        // Actually update the canvas we see with the new animation
         if (animated) {
             requestAnimationFrame(doAnimation);
         }
 
+        // Increment animation completion percentage by 2% (larger value = animates faster)
         animationCompletionPercentage += 2;
     }
 }
 
-// Map 3animation completion percentage to pixelation factor
+// Map animation completion percentage to pixelation factor
 function calculateEaseValue(x) {
     // Map [0, 100] to [0, 1]
     x /= 100;
