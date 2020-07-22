@@ -13,8 +13,8 @@ var slider = document.getElementById('pixel_factor');
 var originalNumPixels = image.width * image.height;
 // var PIXEL_FACTOR_OLD = 100;
 // var PIXEL_FACTOR_CURR = 100;
-var PIXEL_FACTOR_OLD = slider.value;
-var PIXEL_FACTOR_CURR = slider.value;
+var PIXEL_FACTOR_OLD = parseInt(slider.value);
+var PIXEL_FACTOR_CURR = parseInt(slider.value);
 pixel_factor.addEventListener('change', animate_update_wrapper, false);
 
 // wait until image has finished loading before attaching pixelate()
@@ -191,6 +191,13 @@ function animateToOldResolution() {
     function doAnimation() {
         var easeOutput = calculateEaseValue(animationCompletionPercentage);
         console.log("PIXEL_FACTOR_CURR OLD: " + PIXEL_FACTOR_CURR);
+        console.log("EASE: " + easeOutput);
+        console.log("1 - EASE: " + (1 - easeOutput));
+        console.log("OFFSET: " + range * (1 - easeOutput));
+        console.log("PIXEL_FACTOR_OLD: " + PIXEL_FACTOR_OLD);
+        console.log("NEW VAL: " + (PIXEL_FACTOR_OLD + range * ( 1 - easeOutput)) );
+        console.log("NEW VAL: " + ((PIXEL_FACTOR_OLD) + (range * ( 1 - easeOutput))) );
+        console.log("NEW VAL: " + (parseInt(PIXEL_FACTOR_OLD) + parseInt(range * ( 1 - easeOutput))) );
         PIXEL_FACTOR_CURR = Math.round(PIXEL_FACTOR_OLD + range * (1 - easeOutput));
         console.log("PIXEL_FACTOR_CURR NEW: " + PIXEL_FACTOR_CURR);
 
