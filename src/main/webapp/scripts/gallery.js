@@ -2,24 +2,32 @@
 // May need to use different libraries due to commercial use requirement
 // Masonry is released under the MIT license: https://desandro.mit-license.org/
 
-// Initialize Masonry
-console.log("initializing masonry");
-var $grid = $('.grid').masonry({
+// global variables
+var filters = []
+var $active_filters_ul = $('.active-filters');
+var $grid = $('.grid')
+var num_filters = 0;
+
+// Call these functions when page loads
+$(document).ready(function() {
+  // Initialize Masonry
+  console.log("initializing masonry");
+  $grid.masonry({
     itemSelector: '.grid-item',
     percentPosition: true,
     // horizontalOrder: true,
     columnWidth: '.grid-sizer'
-});
+  });
 
-fetchAllSpeciesData();
-var filters = [];
-var $active_filters_ul = $('.active-filters');
+  // get all data
+  fetchAllSpeciesData();
+
+  // hides filters on click
+  deleteFilter()
+});
 
 // Test function that fetches sample JSON and appends each species to the gallery
 function fetchAllSpeciesData() {
-    // const parameters = {'status': status, 'class': animal_class};
-    // const url = createQueryString("/allData", parameters);
-
     fetch("/allData").then(response => response.json()).then(speciesData => {
         for (var species in speciesData) {
             // Append images to grid
@@ -46,39 +54,34 @@ function fetchAllSpeciesData() {
     });
 }
 
-/**
- * Create query string from parameters
- */
-function createQueryString(url, parameters) {
-  const query = Object.entries(parameters)
-        .map(pair => pair.map(encodeURIComponent).join('='))
-        .join('&');
-  return url + "?" + query;
-}
 
 function showClass(class_name) {
   $('.' + class_name).show();
-}
-
-function hideAllClasses() {
-  $('.grid-filters').hide();
 }
 
 function showAllClasses() {
   $('.grid-filters').show();
 }
 
-function filterSelection(class_name) {
-  if (class_name === "all") {
-    showAllClasses();
-  } else {
-    hideAllClasses();
-    showClass(class_name);
-  }
-
-  // Update the masonry layout
-  $grid.masonry();
+function hideClass(class_name) {
+  $('.' + class_name).hide();
 }
+
+function hideAllClasses() {
+  $('.grid-filters').hide();
+}
+
+// function filterSelection(class_name) {
+//   if (class_name === "all") {
+//     showAllClasses();
+//   } else {
+//     hideAllClasses();
+//     showClass(class_name);
+//   }
+
+//   // Update the masonry layout
+//   $grid.masonry();
+// }
 
 function addFilter(class_name) {
   console.log(class_name)
@@ -92,20 +95,31 @@ function addFilter(class_name) {
     '</li>'
   );
   $active_filters_ul.append($filter);
-  updateList()
+
+  if (num_filters == 0) {
+    hideAllClasses();
+  }
+  showClass(class_name);
+  num_filters++;
+  $grid.masonry();
 }
 
-function updateList() {
-  if (filters.length <= 0) {
-    showAllClasses();
-    return;
-  } 
-  hideAllClasses();
-  for(let i = 0; i < filters.length; i++){ 
-    showClass(filters[i]);
-  }
+function deleteFilter() {
+  $('.active-filters').on('click', 'button', function(){
+    $(this).closest('li').remove();
+    console.log($(this).text())
+    hideClass($(this).text())
+    num_filters--;
+    if (num_filters == 0) {
+      showAllClasses();
+    }
+    $grid.masonry();
+  });
 }
 
 function clearFilters() {
-
+  $('.active-filters').empty();
+  showAllClasses();
+  num_filters = 0;  
+  $grid.masonry();
 }
