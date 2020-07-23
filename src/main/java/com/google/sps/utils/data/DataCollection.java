@@ -28,6 +28,7 @@ public class DataCollection {
     private static final String DATA_URL = "https://api.gbif.org/v1/species/match?name=";
     private static final String GEO_URL = "https://api.gbif.org/v1/occurrence/search?scientificName=";
     private static final String LIST_URL = "https://en.wikipedia.org/wiki/Lists_of_organisms_by_population";
+    private static final String CETACEANS_URL = "https://en.wikipedia.org/wiki/List_of_cetaceans_by_population";
     private static final String LIST_CONTENT_CLASS = "mw-parser-output";
     private static final String ERROR_STRING = "Exception occurred retrieving API data: ";
     private static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
@@ -88,10 +89,10 @@ public class DataCollection {
     */
     private static void parseSpeciesTable(String url) throws IOException {
         Document doc = Jsoup.connect(url).get();
+        Elements elements = doc.getElementsByClass("wikitable");
 
-        Elements table = doc.getElementsByClass("wikitable");
-        for (Element head : table.select("tbody")) {
-            for (Element row : head.select("tr")) {
+        for (Element table : elements.select("tbody")) {
+            for (Element row : table.select("tr")) {
                 Elements tds = row.select("td");
 
                 Species species = processSpecies(tds, url);
@@ -104,9 +105,9 @@ public class DataCollection {
                     addSpeciesToDatastore(species);
                 }
                 // addGeoInfo(species);
-                break;
+                // break;
             }
-            break;
+            // break;
         }
     }
 
@@ -117,6 +118,10 @@ public class DataCollection {
     * @return Species object with filled fields, or null if incomplete
     */
     private static Species processSpecies(Elements tds, String url) {
+        if (url.equals(CETACEANS_URL)) {
+            return processCetaceans(tds, url);
+        }
+
         if (tds.size() > 6) {
             String commonName = tds.get(0).text().trim();
             String binomialName = tds.get(1).text().trim();
@@ -140,6 +145,47 @@ public class DataCollection {
                                         .withPopulationTrend(trend)
                                         .withPopulation(population)
                                         .withWikipediaNotes(notes)
+                                        .withImageLink(imageLink)
+                                        .withCitationLink(url)
+                                        .build();
+            return species;
+        }
+        return null;
+    }
+
+    /**
+    * Get Cetaceans information from each row of the table (different table 
+    * format from the other species)
+    * @param tds: The row Element to scrape for info
+    * @param url: url that contains the table for citation
+    * @return Species object with filled fields, or null if incomplete
+    */
+    private static Species processCetaceans(Elements tds, String url) {
+
+        /**
+        * Example of row header:
+        * Common name, Scientific name, IUCN Red List status, Global population estimate, Range, Size, Picture
+        */
+        if ((tds.size() > 6) && !(tds.get(0).text().equals("Common name"))) {
+            String commonName = removeBrackets(tds.get(0).text().trim());
+            String binomialName = scrapeBinomial(tds.get(1).text().trim());
+            String status = scrapeStatus(tds.get(2).text()).trim();
+            String populationString = scrapePopulation(tds.get(3).text()).trim();
+            long population = convertPopulationLong(populationString);
+            // No trend or notes provided
+            PopulationTrend trend = PopulationTrend.UNKNOWN;
+            String imageLink = scrapeImageLink(tds.get(6).select("img").first());
+        
+            if (imageLink == null) {
+                return null;
+            }
+
+            System.out.printf("%-35s %-30s %-25s %-10s %n", commonName, binomialName, population, status);
+            Species species = new Species.Builder()
+                                        .withCommonName(commonName)
+                                        .withBinomialName(binomialName)
+                                        .withStatus(status)
+                                        .withPopulation(population)
                                         .withImageLink(imageLink)
                                         .withCitationLink(url)
                                         .build();
@@ -200,7 +246,6 @@ public class DataCollection {
         .set("status", species.getStatus())
         .set("population", species.getPopulation())
         .set("image_link", species.getImageLink())
-        .set("wikipedia_notes", species.getWikipediaNotes())
         .set("citation_link", species.getCitationLink())
         .build();
     
@@ -225,6 +270,12 @@ public class DataCollection {
         speciesEntity = Entity.newBuilder(speciesEntity).set("trend", species.getTrend().name()).build();
       } else {
         speciesEntity = Entity.newBuilder(speciesEntity).set("trend", "UNKNOWN").build();
+      }
+
+      if (species.getWikipediaNotes() != null) {
+        speciesEntity = Entity.newBuilder(speciesEntity).set("wikipedia_notes", species.getWikipediaNotes()).build();
+      } else {
+        speciesEntity = Entity.newBuilder(speciesEntity).set("wikipedia_notes", "N/A").build();
       }
       
       datastore.put(speciesEntity);
@@ -283,6 +334,19 @@ public class DataCollection {
     }
 
     /**
+    * Takes in content of the scientific name cell from wikipedia and extracts the binomial name.
+    *
+    * Example: Balaena mysticetus Linnaeus, 1758 -> Balaena mysticetus
+    * @param scientificName content of the scientific name cell
+    */
+    private static String scrapeBinomial(String scientificName) {
+        String[] nameArray = scientificName.split(" ");
+        String result = nameArray[0] + " " + nameArray[1];
+        // System.out.println("before: " + scientificName + " ===== after : " + result);
+        return result;
+    }
+
+    /**
     * Takes in the image element from wikipedia and extracts the url
     * 
     * If the species has an image, the format is:
@@ -337,7 +401,7 @@ public class DataCollection {
             }
         }
         catch (NumberFormatException n) {
-            System.out.println("Error: Wikipedia population '" + populationString + "' had incorrect format.");
+            // System.out.println("Error: Wikipedia population '" + populationString + "' had incorrect format.");
             return -1;
         }
     }
