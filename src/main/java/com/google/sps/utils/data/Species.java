@@ -16,13 +16,15 @@ public class Species {
 
     // Provided by Wikipedia
     private long population;
-    private String wikipediaNotes;
     private String imageLink;
     private String citationLink;
 
     // Provided by GBIF
     private TaxonomicPath taxonomicPath;
     private String geoData;
+
+    // Provided by Knowledge Graph API
+    private String wikipediaNotes;
     
     public static class Builder {
         private String commonName;
@@ -116,6 +118,10 @@ public class Species {
 
   public void setTaxonomicPath(TaxonomicPath taxonomicPath) {
     this.taxonomicPath = taxonomicPath;
+  }
+
+  public void setNotes(String wikipediaNotes) {
+    this.wikipediaNotes = wikipediaNotes;
   }
 
   public void setGeoData(String geoData) {
