@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.io.File; 
+import java.io.FileNotFoundException;
+import java.util.Scanner; 
 
 import java.io.IOException;
 import org.jsoup.Jsoup;
@@ -25,8 +28,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class DataCollection {
+    private static final String API_KEY = getKey();
+    private static final String API_AUTH_PATH = "../../api_auth.txt";
     private static final String DATA_URL = "https://api.gbif.org/v1/species/match?name=";
     private static final String GEO_URL = "https://api.gbif.org/v1/occurrence/search?scientificName=";
+    private static final String KG_URL = "https://kgsearch.googleapis.com/v1/entities:search?key=" + API_KEY + "&query=";
     private static final String LIST_URL = "https://en.wikipedia.org/wiki/Lists_of_organisms_by_population";
     private static final String CETACEANS_URL = "https://en.wikipedia.org/wiki/List_of_cetaceans_by_population";
     private static final String LIST_CONTENT_CLASS = "mw-parser-output";
@@ -35,13 +41,30 @@ public class DataCollection {
     private static KeyFactory keyFactory = datastore.newKeyFactory().setKind("Species");
 
     public static void main(String[] args) throws IOException {
-            collectData();
-        }
+        collectData();
+    }
 
     public static void collectData() throws IOException {
         List<String> urls = parseListofPages();
         for (String url: urls) {
             parseSpeciesTable(url);
+        }
+    }
+
+    /**
+    * Retrieve API_KEY from api_auth.txt file
+    * @return API_KEY
+    */
+    private static String getKey() {
+        try {
+            File file = new File(API_AUTH_PATH);
+            Scanner sc = new Scanner(file);
+            String key = sc.nextLine();
+            return key;
+        }
+        catch (FileNotFoundException f) {
+            System.out.println("Exception: API_AUTH file not found");
+            return null;
         }
     }
 
@@ -205,16 +228,28 @@ public class DataCollection {
     }
 
     /**
-    * Retrieves apiMap for the passed species and adds additional info to species
+    * Retrieves apiMap for the passed species and adds additional info to species from GBIF and 
+    * Knowledge Graph API
     * @param species: non-null species that isn't already stored in Datastore
     */
     public static void addApiInfo(Species species) {
-        // Add API-side fields if available
+        // Add GBIF API-side fields if available
         try {
-            String apiDataJSON = SpeciesAPIRetrieval.getJSON(DATA_URL, species.getBinomialName());
-            Map apiDataMap = SpeciesAPIRetrieval.convertJSONToMap(apiDataJSON);
-            SpeciesAPIRetrieval.addAPISpeciesInfo(species, apiDataMap);
+            String gbifDataJSON = SpeciesAPIRetrieval.getJSON(DATA_URL, species.getBinomialName());
+            Map gbifDataMap = SpeciesAPIRetrieval.convertJSONToMap(gbifDataJSON);
+            SpeciesAPIRetrieval.addGBIFInfo(species, gbifDataMap);
         } catch (Exception e) {
+            System.err.println("Error retrieving GBIF.org data");
+            System.err.println(ERROR_STRING + e);
+            e.printStackTrace();
+        }
+
+        // Add Knowledge Graph API-side fields if available
+        try {
+            String kgDataJSONString = SpeciesAPIRetrieval.getJSON(KG_URL, species.getBinomialName());
+            SpeciesAPIRetrieval.addKGInfo(species, kgDataJSONString);
+        } catch (Exception e) {
+            System.err.println("Error retrieving Knowledge Graph data");
             System.err.println(ERROR_STRING + e);
             e.printStackTrace();
         }
@@ -229,7 +264,7 @@ public class DataCollection {
             System.err.println(ERROR_STRING + e);
             e.printStackTrace();
         }
-  }
+    }
 
   /**
    * Store species in Datastore

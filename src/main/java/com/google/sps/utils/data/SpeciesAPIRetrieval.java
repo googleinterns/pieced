@@ -15,6 +15,11 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class SpeciesAPIRetrieval {
 
@@ -69,11 +74,11 @@ public class SpeciesAPIRetrieval {
   }
 
   /**
-   * Updates Species with fields from converted JSON map
+   * Updates Species with fields from converted JSON map from GBIF 
    * @param species: species to add fields to
    * @param apiMap: map of the JSON returned from API call to this species
    */
-  public static void addAPISpeciesInfo(Species species, Map apiMap) {
+  public static void addGBIFInfo(Species species, Map apiMap) {
     if (species == null) {
       return;
     }
@@ -93,7 +98,39 @@ public class SpeciesAPIRetrieval {
     
     species.setTaxonomicPath(taxonomicPath);
     return;
-  }  
+  }
+
+  /**
+   * Updates Species with fields from converted JSON map from Knowledge Graph 
+   * @param species: species to add fields to
+   * @param jsonString: JSON string returned from API call to this species
+   */
+  public static void addKGInfo(Species species, String jsonString) {
+    if (species == null) {
+        return;
+    }
+    if (jsonString == null) {
+        System.out.println("No results found in kg API for '" + species.getBinomialName() + "'.");
+        species.setNotes("N/A");
+      return;
+    }
+
+    // Add data from Knowledge Graph as the species' notes
+    try {
+        JSONObject jsonObject = new JSONObject(jsonString);
+        JSONArray itemListElement = (JSONArray) jsonObject.get("itemListElement");
+        String notes = itemListElement
+            .getJSONObject(0)
+            .getJSONObject("result")
+            .getJSONObject("detailedDescription")
+            .getString("articleBody");
+        species.setNotes(notes);
+    } catch (JSONException j){
+        System.out.println("error: " + j);
+        species.setNotes("N/A");
+    }
+    return;
+  }
   
   /**
    * Updates Species with geographical coordinates from converted JSON map
