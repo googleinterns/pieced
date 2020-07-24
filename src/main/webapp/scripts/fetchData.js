@@ -2,6 +2,7 @@
 function fetchSpeciesData(name) {
     const URL = '/speciesData?species=' + name;
     fetch(URL).then(response => response.json()).then(speciesData => {
+        // var canvas                  = document.getElementById('canvas');
         var commonNameContainer     = document.getElementById('common-name-container');
         var scientificNameContainer = document.getElementById('scientific-name-container');
         var statusContainer         = document.getElementById('status-container');
@@ -58,11 +59,24 @@ function fetchSpeciesData(name) {
 
         // Update image source
         img.src = speciesData.imageLink;
+        // canvas.width = img.width = Math.round(img.naturalWidth/16)*16;
+        // canvas.height = img.height = Math.round(img.naturalHeight/16)*16;
+
+        canvas.width = img.width = img.naturalWidth;
+        canvas.height = img.height = img.naturalHeight;
 
         // Manipulate pixelation value based on species population
         pixelSlider.max = img.width * img.height;
         var pop = speciesData.population;
-        pixelSlider.value = (pop === undefined) ? pixelSlider.max : pop;
+        // console.log("img.width * img.height = " + pixelSlider.max + " population = " + pop);
+        // console.log("natural width * height: " + img.naturalWidth * img.naturalHeight);
+        pixelSlider.value = (pop === undefined) ? pixelSlider.max : Math.min(pop, pixelSlider.max);
+
+        var ctx = canvas.getContext('2d');
+        // Turn off image smoothing again, since modifying the canvas attributes reenables smoothing
+        ctx.mozImageSmoothingEnabled = false;
+        ctx.webkitImageSmoothingEnabled = false;
+        ctx.imageSmoothingEnabled = false;
 
         // Update species taxonomic path
         if (speciesData.taxonomicPath != null) {
@@ -73,5 +87,15 @@ function fetchSpeciesData(name) {
             familyContainer.innerText       = speciesData.taxonomicPath.family_t;
             genusContainer.innerText        = speciesData.taxonomicPath.genus_t;
         }
+
+        pixelSetup();
     });
+}
+
+// Capitalize each word in species' names
+function capitalizeSpeciesName(name) {
+    wordsArray = name.toLowerCase().split(' ');
+    capitalizedArray = wordsArray.map(w => w.substring(0,1).toUpperCase() + w.substring(1));
+    capitalizedName = capitalizedArray.join(' ');
+    return capitalizedName;
 }

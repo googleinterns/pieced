@@ -118,6 +118,10 @@ canvas {
     padding-bottom: 100px;
 }
 
+#common-name-container {
+    text-transform: capitalize;
+}
+
 /* 
 li {
   float: left;

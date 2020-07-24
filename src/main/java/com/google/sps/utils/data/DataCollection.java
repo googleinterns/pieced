@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.io.File; 
+import java.io.FileNotFoundException;
+import java.util.Scanner; 
 
 import java.io.IOException;
 import org.jsoup.Jsoup;
@@ -25,22 +28,43 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class DataCollection {
+    private static final String API_KEY = getKey();
+    private static final String API_AUTH_PATH = "../../api_auth.txt";
     private static final String DATA_URL = "https://api.gbif.org/v1/species/match?name=";
     private static final String GEO_URL = "https://api.gbif.org/v1/occurrence/search?scientificName=";
+    private static final String KG_URL = "https://kgsearch.googleapis.com/v1/entities:search?key=" + API_KEY + "&query=";
     private static final String LIST_URL = "https://en.wikipedia.org/wiki/Lists_of_organisms_by_population";
+    private static final String CETACEANS_URL = "https://en.wikipedia.org/wiki/List_of_cetaceans_by_population";
     private static final String LIST_CONTENT_CLASS = "mw-parser-output";
     private static final String ERROR_STRING = "Exception occurred retrieving API data: ";
     private static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
     private static KeyFactory keyFactory = datastore.newKeyFactory().setKind("Species");
 
     public static void main(String[] args) throws IOException {
-            collectData();
-        }
+        collectData();
+    }
 
     public static void collectData() throws IOException {
         List<String> urls = parseListofPages();
         for (String url: urls) {
             parseSpeciesTable(url);
+        }
+    }
+
+    /**
+    * Retrieve API_KEY from api_auth.txt file
+    * @return API_KEY
+    */
+    private static String getKey() {
+        try {
+            File file = new File(API_AUTH_PATH);
+            Scanner sc = new Scanner(file);
+            String key = sc.nextLine();
+            return key;
+        }
+        catch (FileNotFoundException f) {
+            System.out.println("Exception: API_AUTH file not found");
+            return null;
         }
     }
 
@@ -88,10 +112,10 @@ public class DataCollection {
     */
     private static void parseSpeciesTable(String url) throws IOException {
         Document doc = Jsoup.connect(url).get();
+        Elements elements = doc.getElementsByClass("wikitable");
 
-        Elements table = doc.getElementsByClass("wikitable");
-        for (Element head : table.select("tbody")) {
-            for (Element row : head.select("tr")) {
+        for (Element table : elements.select("tbody")) {
+            for (Element row : table.select("tr")) {
                 Elements tds = row.select("td");
 
                 Species species = processSpecies(tds, url);
@@ -104,9 +128,9 @@ public class DataCollection {
                     addSpeciesToDatastore(species);
                 }
                 // addGeoInfo(species);
-                break;
+                // break;
             }
-            break;
+            // break;
         }
     }
 
@@ -117,6 +141,10 @@ public class DataCollection {
     * @return Species object with filled fields, or null if incomplete
     */
     private static Species processSpecies(Elements tds, String url) {
+        if (url.equals(CETACEANS_URL)) {
+            return processCetaceans(tds, url);
+        }
+
         if (tds.size() > 6) {
             String commonName = tds.get(0).text().trim();
             String binomialName = tds.get(1).text().trim();
@@ -149,6 +177,47 @@ public class DataCollection {
     }
 
     /**
+    * Get Cetaceans information from each row of the table (different table 
+    * format from the other species)
+    * @param tds: The row Element to scrape for info
+    * @param url: url that contains the table for citation
+    * @return Species object with filled fields, or null if incomplete
+    */
+    private static Species processCetaceans(Elements tds, String url) {
+
+        /**
+        * Example of row header:
+        * Common name, Scientific name, IUCN Red List status, Global population estimate, Range, Size, Picture
+        */
+        if ((tds.size() > 6) && !(tds.get(0).text().equals("Common name"))) {
+            String commonName = removeBrackets(tds.get(0).text().trim());
+            String binomialName = scrapeBinomial(tds.get(1).text().trim());
+            String status = scrapeStatus(tds.get(2).text()).trim();
+            String populationString = scrapePopulation(tds.get(3).text()).trim();
+            long population = convertPopulationLong(populationString);
+            // No trend or notes provided
+            PopulationTrend trend = PopulationTrend.UNKNOWN;
+            String imageLink = scrapeImageLink(tds.get(6).select("img").first());
+        
+            if (imageLink == null) {
+                return null;
+            }
+
+            System.out.printf("%-35s %-30s %-25s %-10s %n", commonName, binomialName, population, status);
+            Species species = new Species.Builder()
+                                        .withCommonName(commonName)
+                                        .withBinomialName(binomialName)
+                                        .withStatus(status)
+                                        .withPopulation(population)
+                                        .withImageLink(imageLink)
+                                        .withCitationLink(url)
+                                        .build();
+            return species;
+        }
+        return null;
+    }
+
+    /**
     * Checks if the species is already in Datastore
     * @return true if already stored, false otherwise
     */
@@ -159,16 +228,28 @@ public class DataCollection {
     }
 
     /**
-    * Retrieves apiMap for the passed species and adds additional info to species
+    * Retrieves apiMap for the passed species and adds additional info to species from GBIF and 
+    * Knowledge Graph API
     * @param species: non-null species that isn't already stored in Datastore
     */
     public static void addApiInfo(Species species) {
-        // Add API-side fields if available
+        // Add GBIF API-side fields if available
         try {
-            String apiDataJSON = SpeciesAPIRetrieval.getJSON(DATA_URL, species.getBinomialName());
-            Map apiDataMap = SpeciesAPIRetrieval.convertJSONToMap(apiDataJSON);
-            SpeciesAPIRetrieval.addAPISpeciesInfo(species, apiDataMap);
+            String gbifDataJSON = SpeciesAPIRetrieval.getJSON(DATA_URL, species.getBinomialName());
+            Map gbifDataMap = SpeciesAPIRetrieval.convertJSONToMap(gbifDataJSON);
+            SpeciesAPIRetrieval.addGBIFInfo(species, gbifDataMap);
         } catch (Exception e) {
+            System.err.println("Error retrieving GBIF.org data");
+            System.err.println(ERROR_STRING + e);
+            e.printStackTrace();
+        }
+
+        // Add Knowledge Graph API-side fields if available
+        try {
+            String kgDataJSONString = SpeciesAPIRetrieval.getJSON(KG_URL, species.getBinomialName());
+            SpeciesAPIRetrieval.addKGInfo(species, kgDataJSONString);
+        } catch (Exception e) {
+            System.err.println("Error retrieving Knowledge Graph data");
             System.err.println(ERROR_STRING + e);
             e.printStackTrace();
         }
@@ -183,7 +264,7 @@ public class DataCollection {
             System.err.println(ERROR_STRING + e);
             e.printStackTrace();
         }
-  }
+    }
 
   /**
    * Store species in Datastore
@@ -200,7 +281,6 @@ public class DataCollection {
         .set("status", species.getStatus())
         .set("population", species.getPopulation())
         .set("image_link", species.getImageLink())
-        .set("wikipedia_notes", species.getWikipediaNotes())
         .set("citation_link", species.getCitationLink())
         .build();
     
@@ -225,6 +305,12 @@ public class DataCollection {
         speciesEntity = Entity.newBuilder(speciesEntity).set("trend", species.getTrend().name()).build();
       } else {
         speciesEntity = Entity.newBuilder(speciesEntity).set("trend", "UNKNOWN").build();
+      }
+
+      if (species.getWikipediaNotes() != null) {
+        speciesEntity = Entity.newBuilder(speciesEntity).set("wikipedia_notes", species.getWikipediaNotes()).build();
+      } else {
+        speciesEntity = Entity.newBuilder(speciesEntity).set("wikipedia_notes", "N/A").build();
       }
       
       datastore.put(speciesEntity);
@@ -283,6 +369,19 @@ public class DataCollection {
     }
 
     /**
+    * Takes in content of the scientific name cell from wikipedia and extracts the binomial name.
+    *
+    * Example: Balaena mysticetus Linnaeus, 1758 -> Balaena mysticetus
+    * @param scientificName content of the scientific name cell
+    */
+    private static String scrapeBinomial(String scientificName) {
+        String[] nameArray = scientificName.split(" ");
+        String result = nameArray[0] + " " + nameArray[1];
+        // System.out.println("before: " + scientificName + " ===== after : " + result);
+        return result;
+    }
+
+    /**
     * Takes in the image element from wikipedia and extracts the url
     * 
     * If the species has an image, the format is:
@@ -337,7 +436,7 @@ public class DataCollection {
             }
         }
         catch (NumberFormatException n) {
-            System.out.println("Error: Wikipedia population '" + populationString + "' had incorrect format.");
+            // System.out.println("Error: Wikipedia population '" + populationString + "' had incorrect format.");
             return -1;
         }
     }
