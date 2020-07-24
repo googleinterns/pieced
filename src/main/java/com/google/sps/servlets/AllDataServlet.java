@@ -45,22 +45,22 @@ import java.util.ArrayList;
 @WebServlet("/allData")
 public class AllDataServlet extends HttpServlet {
     Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-    
+    int queryLimit = 250;
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
+        String sortBy = request.getParameter("sortBy");
 
         // Initialize and run a query that will select the specific species from Datastore by filtering by scientific name
         Query<Entity> query = Query.newEntityQueryBuilder()
             .setKind("Species")
-            .setOrderBy(OrderBy.asc("common_name"))
-        //     .setFilter(CompositeFilter.and(
-        // PropertyFilter.eq("status", "CR"), PropertyFilter.eq("class", "Mammalia")))
-            .setLimit(250)
+            .setOrderBy(OrderBy.asc(sortBy))
+            .setLimit(queryLimit)
             .build();
-        QueryResults<Entity> queriedSpecies = datastore.run(query);
 
+        QueryResults<Entity> queriedSpecies = datastore.run(query);
         List<Species> data = new ArrayList<>();
 
         queriedSpecies.forEachRemaining( speciesData -> {

@@ -20,15 +20,23 @@ $(document).ready(function() {
   });
 
   // get all data
-  fetchAllSpeciesData();
+  fetchAllSpeciesData("common_name");
 
   // hides filters on click
   deleteFilter()
 });
 
-// Test function that fetches sample JSON and appends each species to the gallery
-function fetchAllSpeciesData() {
-    fetch("/allData").then(response => response.json()).then(speciesData => {
+/** 
+ *Fetches sample JSON and appends each species to the gallery
+ * @param sortBy: the parameter to sort by
+ */
+function fetchAllSpeciesData(sortBy) {
+    const parameters = {'sortBy': sortBy};
+    const url = createQueryString("/allData", parameters);
+    console.log(url)
+    clearGallery();
+    
+    fetch(url).then(response => response.json()).then(speciesData => {
         for (var species in speciesData) {
             // Append images to grid
             var $html = $(
@@ -54,6 +62,15 @@ function fetchAllSpeciesData() {
     });
 }
 
+/**
+ * Create query string from parameters
+ */
+function createQueryString(url, parameters) {
+  const query = Object.entries(parameters)
+        .map(pair => pair.map(encodeURIComponent).join('='))
+        .join('&');
+  return url + "?" + query;
+}
 
 function showClass(class_name) {
   $('.' + class_name).show();
@@ -122,4 +139,8 @@ function clearFilters() {
   showAllClasses();
   num_filters = 0;  
   $grid.masonry();
+}
+
+function clearGallery() {
+  $grid.empty();
 }

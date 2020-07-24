@@ -32,11 +32,11 @@
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
             <form class="form-inline">              
-                <label for="SortBy">SORT BY: </label>
-                <select class="form-control" id="SortBy">
-                    <option>Common Name</option>
-                    <option>Population</option>
-                    <option>Taxon</option>
+                <label for="sort-by">SORT BY: </label>
+                <select class="custom-select" id="sort-by" onChange="fetchAllSpeciesData(this.options[this.selectedIndex].value)">
+                    <option value="common_name">Common Name</option>
+                    <option value="population">Population</option>
+                    <option value="order">Taxon</option>
                 </select>
             </form>
         </div>
@@ -49,14 +49,17 @@
               <span>Filters</span>
             </h2>
 
+            <ul class="nav flex-column mb-2">
+              <li class="nav-item">
+                <button class="btn active" onclick="clearFilters()"> Show all</button>
+              </li>
+            </ul>
+
             <!-- STATUS -->
             <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
               <span>Status</span>
             </h6>
             <ul class="nav flex-column mb-2">
-              <li class="nav-item">
-                <button class="btn active" onclick="clearFilters()"> Show all</button>
-              </li>
               <li class="nav-item">
                 <button class="btn" onclick="addFilter('CR')"> Critically Endangered</button>
               </li>
@@ -86,9 +89,6 @@
             </h6>
             <ul class="nav flex-column mb-2">
               <li class="nav-item">
-                <button class="btn active" onclick="addFilter('all')"> Show all</button>
-              </li>
-              <li class="nav-item">
                 <button class="btn" onclick="addFilter('DECREASE')"> Decreasing</button>
               </li>
               <li class="nav-item">
@@ -98,7 +98,7 @@
                 <button class="btn" onclick="addFilter('STEADY')"> Steady</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('UNKNOWN')"> Unknown</button>
+                <button class="btn" onclick="addFilter('UNKNOWN')"> Unknown</button>
               </li>
             </ul>
 
@@ -108,19 +108,16 @@
             </h6>
             <ul class="nav flex-column mb-2">
               <li class="nav-item">
-                <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+                <button class="btn" onclick="addFilter('Aves')"> Birds</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('Aves')"> Birds</button>
+                <button class="btn" onclick="addFilter('Mammalia')"> Mammals</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('Mammalia')"> Mammals</button>
+                <button class="btn" onclick="addFilter('Amphibia')"> Amphibians</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('Amphibia')"> Amphibians</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('Reptilia')"> Reptiles</button>
+                <button class="btn" onclick="addFilter('Reptilia')"> Reptiles</button>
               </li>
             </ul>
           </div>
