@@ -26,11 +26,13 @@
     <div class="container-fluid">
       <div class="row">
         <div class="filters d-inline-block d-flex justify-content-end">
+            <!-- filter -->
             <ul class="active-filters list-group list-group-horizontal"></ul>
-            <form class="form-inline">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+
+            <!-- search -->
+            <input class="form-control mr-sm-2" type="search" aria-label="search" id="species-search" onkeyup="searchName()" placeholder="Search">
+
+            <!-- sort -->
             <form class="form-inline">              
                 <label for="sort-by">SORT BY: </label>
                 <select class="custom-select" id="sort-by" onChange="fetchAllSpeciesData(this.options[this.selectedIndex].value)">
@@ -126,7 +128,7 @@
         <div class="col-md-9 ml-sm-auto col-lg-10 px-4">
           <div id="content">
             <div id="gallery-page" class="container-fluid">
-              <div class="grid"></div>
+              <div id="grid"></div>
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@
 // global variables
 var filters = new Map()
 var $active_filters_ul = $('.active-filters');
-var $grid = $('.grid')
+var $grid = $('#grid')
 
 // Call these functions when page loads
 $(document).ready(function() {
@@ -71,6 +71,11 @@ function createQueryString(url, parameters) {
     return url + "?" + query;
 }
 
+function clearGallery() {
+  $grid.empty();
+}
+
+// ------------------------------------ FILTER FUNCTIONS ------------------------------------ //
 function showClass(class_name) {
   $('.' + class_name).show();
 }
@@ -93,7 +98,7 @@ function addFilter(class_name, category) {
   }
 
   filters.set(class_name, category)
-  
+
   $filter = $(
     '<li class="active-filter list-inline-item">' +
       '<button class="btn my-2 my-sm-0" type="submit">' +
@@ -131,6 +136,19 @@ function clearFilters() {
   $grid.masonry();
 }
 
-function clearGallery() {
-  $grid.empty();
+// ------------------------------------ SEARCH FUNCTIONS ------------------------------------ //
+function searchName() {
+    var input = document.getElementById("species-search");
+    var filter = input.value.toUpperCase();
+    console.log(filter)
+    var grid_item = grid.getElementsByClassName("grid-filters");
+    for (var i = 0; i < grid_item.length; i++) {
+        var name = grid_item[i].getElementsByTagName("a")[0].innerText;
+        if (name.toUpperCase().indexOf(filter) <= -1) {
+            grid_item[i].style.display = "none";
+        } else {
+            grid_item[i].style.display = "block";
+        }
+    }
+    $grid.masonry();
 }
