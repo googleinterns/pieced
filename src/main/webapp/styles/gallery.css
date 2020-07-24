@@ -76,7 +76,7 @@ a:hover {
 /**************** ACTIVE FILTER LIST *******************/
 .active-filter {
   background: black;
-  color: white;
+  color: white !important;
 }
 
 .filters {
