@@ -3,10 +3,9 @@
 // Masonry is released under the MIT license: https://desandro.mit-license.org/
 
 // global variables
-var filters = []
+var filters = new Map()
 var $active_filters_ul = $('.active-filters');
 var $grid = $('.grid')
-var num_filters = 0;
 
 // Call these functions when page loads
 $(document).ready(function() {
@@ -66,10 +65,10 @@ function fetchAllSpeciesData(sortBy) {
  * Create query string from parameters
  */
 function createQueryString(url, parameters) {
-  const query = Object.entries(parameters)
+    const query = Object.entries(parameters)
         .map(pair => pair.map(encodeURIComponent).join('='))
         .join('&');
-  return url + "?" + query;
+    return url + "?" + query;
 }
 
 function showClass(class_name) {
@@ -88,21 +87,13 @@ function hideAllClasses() {
   $('.grid-filters').hide();
 }
 
-// function filterSelection(class_name) {
-//   if (class_name === "all") {
-//     showAllClasses();
-//   } else {
-//     hideAllClasses();
-//     showClass(class_name);
-//   }
+function addFilter(class_name, category) {
+  if (filters.has(class_name)) {
+    return;
+  }
 
-//   // Update the masonry layout
-//   $grid.masonry();
-// }
-
-function addFilter(class_name) {
-  console.log(class_name)
-  filters.push(class_name);
+  filters.set(class_name, category)
+  
   $filter = $(
     '<li class="active-filter list-inline-item">' +
       '<button class="btn my-2 my-sm-0" type="submit">' +
@@ -113,21 +104,20 @@ function addFilter(class_name) {
   );
   $active_filters_ul.append($filter);
 
-  if (num_filters == 0) {
+  if (filters.size == 1) {
     hideAllClasses();
   }
   showClass(class_name);
-  num_filters++;
   $grid.masonry();
 }
 
 function deleteFilter() {
   $('.active-filters').on('click', 'button', function(){
     $(this).closest('li').remove();
-    console.log($(this).text())
+
+    filters.delete($(this).text())
     hideClass($(this).text())
-    num_filters--;
-    if (num_filters == 0) {
+    if (filters.size == 0) {
       showAllClasses();
     }
     $grid.masonry();
@@ -137,7 +127,7 @@ function deleteFilter() {
 function clearFilters() {
   $('.active-filters').empty();
   showAllClasses();
-  num_filters = 0;  
+  filters.clear();
   $grid.masonry();
 }
 

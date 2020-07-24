@@ -61,25 +61,25 @@
             </h6>
             <ul class="nav flex-column mb-2">
               <li class="nav-item">
-                <button class="btn" onclick="addFilter('CR')"> Critically Endangered</button>
+                <button class="btn" onclick="addFilter('CR', 'status')"> Critically Endangered</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="addFilter('EN')"> Endangered</button>
+                <button class="btn" onclick="addFilter('EN', 'status')"> Endangered</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="addFilter('VU')"> Vulnerable</button>
+                <button class="btn" onclick="addFilter('VU', 'status')"> Vulnerable</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="addFilter('NT')"> Near Threatened</button>
+                <button class="btn" onclick="addFilter('NT', 'status')"> Near Threatened</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="addFilter('LC')"> Least Concern</button>
+                <button class="btn" onclick="addFilter('LC', 'status')"> Least Concern</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="addFilter('DO')"> Domesticated</button>
+                <button class="btn" onclick="addFilter('DO', 'status')"> Domesticated</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="addFilter('DD')"> Data Deficient</button>
+                <button class="btn" onclick="addFilter('DD', 'status')"> Data Deficient</button>
               </li>
             </ul>
 
@@ -89,16 +89,16 @@
             </h6>
             <ul class="nav flex-column mb-2">
               <li class="nav-item">
-                <button class="btn" onclick="addFilter('DECREASE')"> Decreasing</button>
+                <button class="btn" onclick="addFilter('DECREASE', 'trend')"> Decreasing</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="addFilter('INCREASE')"> Increasing</button>
+                <button class="btn" onclick="addFilter('INCREASE', 'trend')"> Increasing</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="addFilter('STEADY')"> Steady</button>
+                <button class="btn" onclick="addFilter('STEADY', 'trend')"> Steady</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="addFilter('UNKNOWN')"> Unknown</button>
+                <button class="btn" onclick="addFilter('UNKNOWN', 'trend')"> Unknown</button>
               </li>
             </ul>
 
@@ -108,16 +108,16 @@
             </h6>
             <ul class="nav flex-column mb-2">
               <li class="nav-item">
-                <button class="btn" onclick="addFilter('Aves')"> Birds</button>
+                <button class="btn" onclick="addFilter('Aves', 'taxon')"> Birds</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="addFilter('Mammalia')"> Mammals</button>
+                <button class="btn" onclick="addFilter('Mammalia', 'taxon')"> Mammals</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="addFilter('Amphibia')"> Amphibians</button>
+                <button class="btn" onclick="addFilter('Amphibia', 'taxon')"> Amphibians</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="addFilter('Reptilia')"> Reptiles</button>
+                <button class="btn" onclick="addFilter('Reptilia', 'taxon')"> Reptiles</button>
               </li>
             </ul>
           </div>
