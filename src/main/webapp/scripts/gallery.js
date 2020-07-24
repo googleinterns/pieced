@@ -97,6 +97,11 @@ function addFilter(class_name, category) {
     return;
   }
 
+  if (filters.size >= 5) {
+    alert("Only 5 filters are allowed. Please remove a filter.");
+    return;
+  }
+
   filters.set(class_name, category)
 
   $filter = $(

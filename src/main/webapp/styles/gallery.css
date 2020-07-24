@@ -74,12 +74,24 @@ a:hover {
 }
 
 /**************** ACTIVE FILTER LIST *******************/
+.active-filter .btn, .active-filter i {
+  color: whitesmoke;
+}
+
+.active-filter i {
+  margin: 2px;
+}
 .active-filter {
   background: black;
-  color: white !important;
+  border-radius: 25px;
+}
+
+.active-filters {
+  margin-right: 5px;
 }
 
 .filters {
   width: 100%;
   background: whitesmoke;
+  padding: 5px 10px;
 }
