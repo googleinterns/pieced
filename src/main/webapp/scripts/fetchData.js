@@ -18,8 +18,8 @@ function fetchSpeciesData(name) {
         var genusContainer          = document.getElementById('genus-container');
 
         // Update names for species
-        commonNameContainer.innerText       = capitalizeSpeciesName(speciesData.commonName);
-        scientificNameContainer.innerText   = capitalizeSpeciesName(speciesData.binomialName);
+        commonNameContainer.innerText       = speciesData.commonName;
+        scientificNameContainer.innerText   = speciesData.binomialName;
 
         // Map conservation status code to term and update entry
         var statusCode  = speciesData.status;
@@ -62,9 +62,14 @@ function fetchSpeciesData(name) {
         // canvas.width = img.width = Math.round(img.naturalWidth/16)*16;
         // canvas.height = img.height = Math.round(img.naturalHeight/16)*16;
 
+        canvas.width = img.width = img.naturalWidth;
+        canvas.height = img.height = img.naturalHeight;
+
         // Manipulate pixelation value based on species population
         pixelSlider.max = img.width * img.height;
         var pop = speciesData.population;
+        // console.log("img.width * img.height = " + pixelSlider.max + " population = " + pop);
+        // console.log("natural width * height: " + img.naturalWidth * img.naturalHeight);
         pixelSlider.value = (pop === undefined) ? pixelSlider.max : Math.min(pop, pixelSlider.max);
 
         var ctx = canvas.getContext('2d');
@@ -82,6 +87,8 @@ function fetchSpeciesData(name) {
             familyContainer.innerText       = speciesData.taxonomicPath.family_t;
             genusContainer.innerText        = speciesData.taxonomicPath.genus_t;
         }
+
+        pixelSetup();
     });
 }
 

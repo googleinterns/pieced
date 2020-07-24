@@ -1,4 +1,5 @@
 // Pixelate function: original code (C) Ken Fyrstenberg, Epistemex, License: CC3.0-attr
+
 var ctx = canvas.getContext('2d');
 var animated = false;
 
@@ -14,9 +15,7 @@ var slider = document.getElementById('pixel_factor');
 var originalNumPixels = image.width * image.height;
 
 // Grab initial slider value (equal to species population)
-// MUST be parsed as numerical values to avoid bug where the values
-// are treated as Strings in some places, but Ints in others
-// e.g. (100 - 30 = 70, but 100 + 30 = 10030)
+// Must be parsed as numerical values to avoid bug where the values are treated as Strings in some places, but ints in others
 var PIXEL_FACTOR_OLD = parseInt(slider.value);
 var PIXEL_FACTOR_CURR = parseInt(slider.value);
 
@@ -25,6 +24,15 @@ pixel_factor.addEventListener('change', animate_update, false);
 
 // wait until image has finished loading before attaching pixelate()
 image.onload = pixelate;
+
+// reset values after data has been fetched from fetchData.js
+function pixelSetup()  {
+    // console.log(PIXEL_FACTOR_CURR + " " + PIXEL_FACTOR_OLD + " " + originalNumPixels);
+    originalNumPixels = image.width * image.height;
+    PIXEL_FACTOR_OLD = parseInt(slider.value);
+    PIXEL_FACTOR_CURR = parseInt(slider.value);
+    // console.log(PIXEL_FACTOR_CURR + " " + PIXEL_FACTOR_OLD + " " + originalNumPixels);
+}
 
 /** Main Pixelation function
  * 
@@ -73,7 +81,8 @@ function pixelate(v) {
  */
 function animate_update() {
     // target = desired endpoint for pixelation is taken from current slider value
-    var target = pixel_factor.value;
+    var target = parseInt(slider.value);
+    
     // dx = speed of pixelation (# pixels/tick)
     // var dx = 10;
     var dx = Math.ceil(Math.abs(PIXEL_FACTOR_CURR - target) / 50);
@@ -100,6 +109,7 @@ function animate_update() {
             underTarget = false;
         } else {
             animated = false;
+            PIXEL_FACTOR_OLD = PIXEL_FACTOR_CURR;
             return;
         }
 
