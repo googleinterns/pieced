@@ -81,9 +81,11 @@ a:hover {
 .active-filter i {
   margin: 2px;
 }
-.active-filter {
-  background: black;
+
+.active-filter button {
+  background: black !important;
   border-radius: 25px;
+  margin: 5px;
 }
 
 .active-filters {
@@ -94,4 +96,13 @@ a:hover {
   width: 100%;
   background: whitesmoke;
   padding: 5px 10px;
+  font-size: 0.9em;
+}
+
+.form-inline label {
+  margin: 5px;
+}
+
+.form-inline {
+  margin: 5px;
 }

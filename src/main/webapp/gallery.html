@@ -29,19 +29,19 @@
             <!-- filter -->
             <ul class="active-filters list-group list-group-horizontal"></ul>
 
-            <!-- search -->
-            <form class="form-inline">
-                <input class="form-control mr-sm-2" type="search" aria-label="search" id="species-search" onkeyup="searchName()" placeholder="Search">
-            </form>
-
             <!-- sort -->
             <form class="form-inline">              
-                <label for="sort-by">SORT BY: </label>
+                <label for="sort-by">Sort By: </label>
                 <select class="custom-select" id="sort-by" onChange="fetchAllSpeciesData(this.options[this.selectedIndex].value)">
                     <option value="common_name">Common Name</option>
                     <option value="population">Population</option>
                     <option value="order">Taxon</option>
                 </select>
+            </form>
+
+            <!-- search -->
+            <form class="form-inline">
+                <input class="form-control mr-sm-2" type="search" aria-label="search" id="species-search" onkeyup="searchName()" placeholder="Search">
             </form>
         </div>
       </div>
