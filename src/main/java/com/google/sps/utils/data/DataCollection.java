@@ -49,7 +49,6 @@ public class DataCollection {
         // Parse EXTINCT_URL
         List<String> extinct_urls = parseExtinctList();
         for (String url : extinct_urls) {
-            // System.out.println(url);
             parseExtinctSpecies(url);
         }
 
@@ -318,7 +317,6 @@ public class DataCollection {
     * @return Species object with filled fields, or null if incomplete
     */
     private static Species processExtinct(String commonName, String imageLink, String scientificName, String url) {
-        System.out.printf("%-35s %-30s %n", commonName, scientificName);
         Species species = new Species.Builder()
                                     .withCommonName(commonName)
                                     .withBinomialName(scientificName)
