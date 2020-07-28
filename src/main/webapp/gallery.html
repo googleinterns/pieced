@@ -7,6 +7,7 @@
     <title>Pieced - Gallery</title>
 
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="styles/gallery.css">
     <link rel="stylesheet" href="styles/style.css">
   </head>
@@ -24,11 +25,39 @@
     <!--------------- CONTENT ---------------->
     <div class="container-fluid">
       <div class="row">
+        <div class="filters d-inline-block d-flex justify-content-end">
+            <!-- filter -->
+            <ul class="active-filters list-group list-group-horizontal"></ul>
+
+            <!-- sort -->
+            <form class="form-inline">              
+                <label for="sort-by">Sort By: </label>
+                <select class="custom-select" id="sort-by" onChange="fetchAllSpeciesData(this.options[this.selectedIndex].value)">
+                    <option value="common_name">Common Name</option>
+                    <option value="population">Population</option>
+                    <option value="order">Taxon</option>
+                </select>
+            </form>
+
+            <!-- search -->
+            <form class="form-inline">
+                <input class="form-control mr-sm-2" type="search" aria-label="search" id="species-search" onkeyup="searchName()" placeholder="Search">
+            </form>
+        </div>
+      </div>
+
+      <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
             <h2 class="sidebar-heading d-flex justify-content-between align-items-center mt-4 mb-1">
               <span>Filters</span>
             </h2>
+
+            <ul class="nav flex-column mb-2">
+              <li class="nav-item">
+                <button class="btn active" onclick="clearFilters()"> Show all</button>
+              </li>
+            </ul>
 
             <!-- STATUS -->
             <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -36,28 +65,25 @@
             </h6>
             <ul class="nav flex-column mb-2">
               <li class="nav-item">
-                <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+                <button class="btn" onclick="addFilter('CR', 'status')"> Critically Endangered</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('CR')"> Critically Endangered</button>
+                <button class="btn" onclick="addFilter('EN', 'status')"> Endangered</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('EN')"> Endangered</button>
+                <button class="btn" onclick="addFilter('VU', 'status')"> Vulnerable</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('VU')"> Vulnerable</button>
+                <button class="btn" onclick="addFilter('NT', 'status')"> Near Threatened</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('NT')"> Near Threatened</button>
+                <button class="btn" onclick="addFilter('LC', 'status')"> Least Concern</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('LC')"> Least Concern</button>
+                <button class="btn" onclick="addFilter('DO', 'status')"> Domesticated</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('DO')"> Domesticated</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('DD')"> Data Deficient</button>
+                <button class="btn" onclick="addFilter('DD', 'status')"> Data Deficient</button>
               </li>
             </ul>
 
@@ -67,19 +93,16 @@
             </h6>
             <ul class="nav flex-column mb-2">
               <li class="nav-item">
-                <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+                <button class="btn" onclick="addFilter('DECREASE', 'trend')"> Decreasing</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('DECREASE')"> Decreasing</button>
+                <button class="btn" onclick="addFilter('INCREASE', 'trend')"> Increasing</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('INCREASE')"> Increasing</button>
+                <button class="btn" onclick="addFilter('STEADY', 'trend')"> Steady</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('STEADY')"> Steady</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('UNKNOWN')"> Unknown</button>
+                <button class="btn" onclick="addFilter('UNKNOWN', 'trend')"> Unknown</button>
               </li>
             </ul>
 
@@ -89,19 +112,16 @@
             </h6>
             <ul class="nav flex-column mb-2">
               <li class="nav-item">
-                <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+                <button class="btn" onclick="addFilter('Aves', 'taxon')"> Birds</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('Aves')"> Birds</button>
+                <button class="btn" onclick="addFilter('Mammalia', 'taxon')"> Mammals</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('Mammalia')"> Mammals</button>
+                <button class="btn" onclick="addFilter('Amphibia', 'taxon')"> Amphibians</button>
               </li>
               <li class="nav-item">
-                <button class="btn" onclick="filterSelection('Amphibia')"> Amphibians</button>
-              </li>
-              <li class="nav-item">
-                <button class="btn" onclick="filterSelection('Reptilia')"> Reptiles</button>
+                <button class="btn" onclick="addFilter('Reptilia', 'taxon')"> Reptiles</button>
               </li>
             </ul>
           </div>
@@ -110,7 +130,7 @@
         <div class="col-md-9 ml-sm-auto col-lg-10 px-4">
           <div id="content">
             <div id="gallery-page" class="container-fluid">
-              <div class="grid"></div>
+              <div id="grid"></div>
             </div>
           </div>
         </div>
