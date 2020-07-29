@@ -40,7 +40,7 @@ function fetchAllSpeciesData(sortBy) {
             // Append images to grid
             var $html = $(
                 '<div class="grid-filters ' + speciesData[species].status + ' ' + speciesData[species].trend + ' ' + speciesData[species].taxonomicPath.order_t + ' ' + speciesData[species].taxonomicPath.class_t + '">' +
-                  '<div class="grid-sizer"></div>' +
+                //   '<div class="grid-sizer"></div>' +
                   '<div class="grid-item">' +
                     '<img src="'+ speciesData[species].imageLink +'" />' +
                     '<div class="overlay">' + 
@@ -73,6 +73,8 @@ function createQueryString(url, parameters) {
 
 function clearGallery() {
   $grid.empty();
+  $sizer = $('<div class="grid-sizer"></div>');
+  $grid.append($sizer);
 }
 
 // ------------------------------------ FILTER FUNCTIONS ------------------------------------ //
@@ -118,7 +120,7 @@ function addFilter(class_name, category) {
     hideAllClasses();
   }
   showClass(class_name);
-  $grid.masonry();
+  $grid.masonry('layout');
 }
 
 function deleteFilter() {
@@ -130,7 +132,7 @@ function deleteFilter() {
     if (filters.size == 0) {
       showAllClasses();
     }
-    $grid.masonry();
+    $grid.masonry('layout');
   });
 }
 
@@ -138,7 +140,7 @@ function clearFilters() {
   $('.active-filters').empty();
   showAllClasses();
   filters.clear();
-  $grid.masonry();
+  $grid.masonry('layout');
 }
 
 // ------------------------------------ SEARCH FUNCTIONS ------------------------------------ //
@@ -155,5 +157,5 @@ function searchName() {
             grid_item[i].style.display = "block";
         }
     }
-    $grid.masonry();
+    $grid.masonry('layout');
 }
