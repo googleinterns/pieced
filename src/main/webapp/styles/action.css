@@ -1,0 +1,11 @@
+.citations-list {
+    list-style-type: none;
+}
+
+#accordion, .card, .collapse {
+    background: none !important;
+}
+
+/* .card-header {
+    opacity: 0.5;
+} */
