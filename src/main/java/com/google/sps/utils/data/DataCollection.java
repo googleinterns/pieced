@@ -35,6 +35,7 @@ public class DataCollection {
     private static final String KG_URL = "https://kgsearch.googleapis.com/v1/entities:search?key=" + API_KEY + "&query=";
     private static final String LIST_URL = "https://en.wikipedia.org/wiki/Lists_of_organisms_by_population";
     private static final String CETACEANS_URL = "https://en.wikipedia.org/wiki/List_of_cetaceans_by_population";
+    private static final String EXTINCT_URL = "https://en.wikipedia.org/wiki/Extinct_in_the_wild";
     private static final String LIST_CONTENT_CLASS = "mw-parser-output";
     private static final String ERROR_STRING = "Exception occurred retrieving API data: ";
     private static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
@@ -45,10 +46,17 @@ public class DataCollection {
     }
 
     public static void collectData() throws IOException {
-        List<String> urls = parseListofPages();
-        for (String url: urls) {
-            parseSpeciesTable(url);
+        // Parse EXTINCT_URL
+        List<String> extinct_urls = parseExtinctList();
+        for (String url : extinct_urls) {
+            parseSpeciesPage(url);
         }
+
+        // Parse LIST_URL
+        List<String> species_urls = parseListofPages();
+        for (String url : species_urls) {
+            parseSpeciesTable(url);
+        }        
     }
 
     /**
@@ -135,6 +143,87 @@ public class DataCollection {
     }
 
     /**
+    * Scrapes EXTINCT_URL to get a list of all the URLs with information about species.
+    * The returned URLs direct to individual species pages, rather than a table.
+    * Page Structure:
+    *   <ul>
+    *     <li><a href="LINK"></a>[Text]</li>
+    *     <li><a href="LINK"></a>[Text]</li>
+    *   </ul>
+    *
+    * @return List of all the URLs to go to
+    */
+    private static List<String> parseExtinctList() throws IOException {
+        Document doc = Jsoup.connect(EXTINCT_URL).get();
+        Elements content = doc.getElementsByClass(LIST_CONTENT_CLASS);
+        Elements listItems = content.select("ul > li"); // get list items that are in a nested ul
+        List<String> urls = new ArrayList<String>();
+
+        boolean reachedSpecies = false;
+        for (Element listItem: listItems) {
+            if (listItem.text().contains("Alagoas curassow")) {
+                reachedSpecies = true;
+            }
+
+            // Ignore other list elements
+            if (!reachedSpecies) {
+                continue;
+            }
+
+            // Stop after 19 species urls because there are other urls that share the format
+            if (urls.size() == 19) {
+                break;
+            }
+
+            // Gets the absolute link to the new wiki page
+            // Example: https://en.wikipedia.org/wiki/Alagoas_curassow
+            Element link = listItem.select("a").first();
+            String absHref = link.attr("abs:href");
+            urls.add(absHref);
+        }
+        return urls;
+    }
+
+    /**
+    * Add information from individual species page per url into Datastore
+    * @param url: url to parse the webpage for
+    */
+    private static void parseSpeciesPage(String url) throws IOException {
+        Document doc = Jsoup.connect(url).get();
+        String commonName, imageLink, scientificName;
+
+        // Extract common name
+        Element commonEl = doc.getElementsByClass("firstHeading").first();
+        commonName = commonEl.text().trim();
+
+        // Extract image link
+        Element image = doc.select("img").first();
+        imageLink = scrapeImageLink(image);
+        
+        // Extract scientific name
+        Element binomial = doc.getElementsByClass("binomial").first();
+        if (binomial == null) {
+            Element trinomial = doc.getElementsByClass("trinomial").first();
+            if (trinomial != null) {
+                scientificName = trinomial.text().trim();
+            }
+            else {
+                scientificName = null;
+            }
+        }
+        else {
+            scientificName = binomial.text().trim();
+        }
+
+
+        Species species = processExtinct(commonName, imageLink, scientificName, url);
+        if (species == null || !speciesAlreadyStored(species.getBinomialName())) {
+            addApiInfo(species);
+            addSpeciesToDatastore(species);
+        }
+    }
+
+    /**
     * Get Species information from each row of the table
     * @param tds: The row Element to scrape for info
     * @param url: url that contains the table for citation
@@ -215,6 +304,26 @@ public class DataCollection {
             return species;
         }
         return null;
+    }
+
+    /**
+    * Create Species object for extinct in the wild animals
+    * @param commonName: the common name scraped from the webpage
+    * @param imageLink: image link scraped from the webpage
+    * @param scientificName: binomial or trinomial name scraped from the webpage
+    * @param url: url that contains the table for citation
+    * @return Species object with filled fields, or null if incomplete
+    */
+    private static Species processExtinct(String commonName, String imageLink, String scientificName, String url) {
+        Species species = new Species.Builder()
+                                    .withCommonName(commonName)
+                                    .withBinomialName(scientificName)
+                                    .withStatus("EW")
+                                    .withPopulation(0)
+                                    .withImageLink(imageLink)
+                                    .withCitationLink(url)
+                                    .build();
+        return species;
     }
 
     /**
