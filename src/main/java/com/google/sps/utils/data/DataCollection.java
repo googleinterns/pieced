@@ -49,7 +49,7 @@ public class DataCollection {
         // Parse EXTINCT_URL
         List<String> extinct_urls = parseExtinctList();
         for (String url : extinct_urls) {
-            parseExtinctSpecies(url);
+            parseSpeciesPage(url);
         }
 
         // Parse LIST_URL
@@ -143,7 +143,8 @@ public class DataCollection {
     }
 
     /**
-    * Scrapes EXTINCT_URL to get a list of all the URLs with information about species
+    * Scrapes EXTINCT_URL to get a list of all the URLs with information about species.
+    * The returned URLs direct to individual species pages, rather than a table.
     * Page Structure:
     *   <ul>
     *     <li><a href="LINK"></a>[Text]</li>
@@ -178,19 +179,16 @@ public class DataCollection {
             // Example: https://en.wikipedia.org/wiki/Alagoas_curassow
             Element link = listItem.select("a").first();
             String absHref = link.attr("abs:href");
-            if (absHref.contains("#")) { // if link is actually a bookmark
-                continue;
-            }
             urls.add(absHref);
         }
         return urls;
     }
 
     /**
-    * Add information for every extinct species per url into Datastore
+    * Add information from individual species page per url into Datastore
     * @param url: url to parse the webpage for
     */
-    private static void parseExtinctSpecies(String url) throws IOException {
+    private static void parseSpeciesPage(String url) throws IOException {
         Document doc = Jsoup.connect(url).get();
         String commonName, imageLink, scientificName;
 
