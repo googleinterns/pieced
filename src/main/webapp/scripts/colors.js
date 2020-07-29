@@ -2,11 +2,10 @@ function corsProxy(url) {
     return `https://cors-anywhere.herokuapp.com/${url}`;
 }
 
-function getColorPalette(url) {
-    console.log(url)
-    var img = document.createElement('img');
+function getColorPalette(img) {
+    console.log(img)
     img.crossOrigin = "Anonymous";
-    img.src = corsProxy(url);
+    // img.src = corsProxy(url);
     var paletteReady = false;
     
     if (!paletteReady) {
@@ -29,8 +28,8 @@ function getColorPalette(url) {
 function getPalette(img) {
     paletteReady = true;
     var vibrant = new Vibrant(img);
-    swatches = vibrant.swatches(),
-    listFragment = new DocumentFragment();
+    // swatches = vibrant.swatches(),
+    // listFragment = new DocumentFragment();
         
         // for ( var swatch in swatches ) {
         //     if (swatches.hasOwnProperty(swatch) && swatches[swatch]) { 

@@ -89,7 +89,7 @@ function fetchSpeciesData(name) {
         }
 
         pixelSetup();
-        getColorPalette(speciesData.imageLink)
+        getColorPalette(img)
     });
 }
 
