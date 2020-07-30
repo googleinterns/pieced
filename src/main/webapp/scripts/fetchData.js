@@ -22,20 +22,20 @@ function fetchSpeciesData(name) {
         scientificNameContainer.innerText   = speciesData.binomialName;
 
         // Map conservation status code to term and update entry
-        var statusCode  = speciesData.status;
-        statusCode      = (statusCode == null) ? null : statusCode.substr(0, 2);
-        var statusMap   = {
-                            "EX" : "Extinct",
-                            "EW" : "Extinct in the Wild",
-                            "CR" : "Critically Endangered",
-                            "EN" : "Endangered",
-                            "VU" : "Vulnerable",
-                            "NT" : "Near Threatened",
-                            "LC" : "Least Concern",
-                            "DD" : "Data Deficient",
-                            "DO" : "Domesticated",
-                            "NE" : "Not Evaluated"
-                          };
+        var statusCode = speciesData.status;
+        statusCode = (statusCode == null) ? null : statusCode.substr(0, 2);
+        var statusMap = {
+                "EX" : "Extinct",
+                "EW" : "Extinct in the Wild",
+                "CR" : "Critically Endangered",
+                "EN" : "Endangered",
+                "VU" : "Vulnerable",
+                "NT" : "Near Threatened",
+                "LC" : "Least Concern",
+                "DD" : "Data Deficient",
+                "DO" : "Domesticated",
+                "NE" : "Not Evaluated"
+                };
         statusContainer.innerText = (statusMap[statusCode] === undefined) ? "unknown" : statusCode + ": " + statusMap[statusCode];
 
         // Update description entry
