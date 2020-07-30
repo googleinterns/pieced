@@ -11,10 +11,6 @@ a:hover {
     text-decoration: underline;
 }
 
-/* #refresh-button {
-  margin-left: 7px;
-} */
-
 #gallery-page {
     padding: 0 !important;
     margin: 0 !important;
@@ -23,24 +19,12 @@ a:hover {
 #grid {
     max-width: 100%;
     width: 100%;
-    /* padding: 0 !important;
-    margin: 0 !important; */
 }
-
-/* .grid:after {
-    content: '';
-    display: block;
-    clear: both;
-} */
 
 .grid-sizer,
 .grid-item {
     width: 25%;
 }
-
-/* .grid-filters {
-  display: none;
-} */
 
 .grid-item {
     float: left;
@@ -59,8 +43,9 @@ a:hover {
 }
 
 .EW img {
-  filter: grayscale(100%); 
+    filter: grayscale(100%); 
 }
+
 /* The overlay effect - lays on top of the container and over the image */
 .overlay {
     position: absolute;
@@ -70,7 +55,6 @@ a:hover {
     color: #f1f1f1;
     width: 100%;
     opacity: 1;
-    color: white;
     font-size: 20px;
     padding: 0.5em;
     text-align: center;
@@ -78,34 +62,34 @@ a:hover {
 
 /**************** ACTIVE FILTER LIST *******************/
 .active-filter .btn, .active-filter i {
-  color: whitesmoke;
+    color: whitesmoke;
 }
 
 .active-filter i {
-  margin: 2px;
+    margin: 2px;
 }
 
 .active-filter button {
-  background: black !important;
-  border-radius: 25px;
-  margin: 5px;
+    background: black !important;
+    border-radius: 25px;
+    margin: 5px;
 }
 
 .active-filters {
-  margin-right: 5px;
+    margin-right: 5px;
 }
 
 .filters {
-  width: 100%;
-  background: whitesmoke;
-  padding: 5px 10px;
-  font-size: 0.9em;
+    width: 100%;
+    background: whitesmoke;
+    padding: 5px 10px;
+    font-size: 0.9em;
 }
 
 .form-inline label {
-  margin: 5px;
+    margin: 5px;
 }
 
 .form-inline {
-  margin: 5px;
+    margin: 5px;
 }

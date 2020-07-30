@@ -40,8 +40,7 @@ public class Species {
         private TaxonomicPath taxonomicPath;
         private String geoData;
 
-        public Builder() {
-        }
+        public Builder() {}
 
         public Builder withCommonName(String commonName) {
             this.commonName = commonName;

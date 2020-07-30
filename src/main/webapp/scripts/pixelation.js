@@ -72,8 +72,8 @@ function pixelate(v) {
 
     // Scale image back up to full canvas size; automatic pixelation because image smoothing is off
     ctx.drawImage(canvas,
-                    0, 0, numPixelsWidth, numPixelsHeight,
-                    0, 0, canvas.width, canvas.height);
+            0, 0, numPixelsWidth, numPixelsHeight,
+            0, 0, canvas.width, canvas.height);
 }
 
 /** Function to animate transition between two pixelation values;

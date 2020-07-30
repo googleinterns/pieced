@@ -294,13 +294,13 @@ public class DataCollection {
 
             System.out.printf("%-35s %-30s %-25s %-10s %n", commonName, binomialName, population, status);
             Species species = new Species.Builder()
-                                        .withCommonName(commonName)
-                                        .withBinomialName(binomialName)
-                                        .withStatus(status)
-                                        .withPopulation(population)
-                                        .withImageLink(imageLink)
-                                        .withCitationLink(url)
-                                        .build();
+                                .withCommonName(commonName)
+                                .withBinomialName(binomialName)
+                                .withStatus(status)
+                                .withPopulation(population)
+                                .withImageLink(imageLink)
+                                .withCitationLink(url)
+                                .build();
             return species;
         }
         return null;
@@ -316,13 +316,13 @@ public class DataCollection {
     */
     private static Species processExtinct(String commonName, String imageLink, String scientificName, String url) {
         Species species = new Species.Builder()
-                                    .withCommonName(commonName)
-                                    .withBinomialName(scientificName)
-                                    .withStatus("EW")
-                                    .withPopulation(0)
-                                    .withImageLink(imageLink)
-                                    .withCitationLink(url)
-                                    .build();
+                            .withCommonName(commonName)
+                            .withBinomialName(scientificName)
+                            .withStatus("EW")
+                            .withPopulation(0)
+                            .withImageLink(imageLink)
+                            .withCitationLink(url)
+                            .build();
         return species;
     }
 
