@@ -9,20 +9,20 @@ var $grid = $('#grid')
 
 // Call these functions when page loads
 $(document).ready(function() {
-  // Initialize Masonry
-  console.log("initializing masonry");
-  $grid.masonry({
-    itemSelector: '.grid-item',
-    percentPosition: true,
-    // horizontalOrder: true,
-    columnWidth: '.grid-sizer'
-  });
+    // Initialize Masonry
+    console.log("initializing masonry");
+    $grid.masonry({
+        itemSelector: '.grid-item',
+        percentPosition: true,
+        // horizontalOrder: true,
+        columnWidth: '.grid-sizer'
+    });
 
-  // get all data
-  fetchAllSpeciesData("common_name");
+    // get all data
+    fetchAllSpeciesData("common_name");
 
-  // hides filters on click
-  deleteFilter()
+    // hides filters on click
+    deleteFilter()
 });
 
 /** 
@@ -40,13 +40,12 @@ function fetchAllSpeciesData(sortBy) {
             // Append images to grid
             var $html = $(
                 '<div class="grid-filters ' + speciesData[species].status + ' ' + speciesData[species].trend + ' ' + speciesData[species].taxonomicPath.order_t + ' ' + speciesData[species].taxonomicPath.class_t + '">' +
-                //   '<div class="grid-sizer"></div>' +
-                  '<div class="grid-item">' +
-                    '<img src="'+ speciesData[species].imageLink +'" />' +
-                    '<div class="overlay">' + 
-                      '<a href="/species-template.html?species=' + speciesData[species].commonName + '"> ' + speciesData[species].commonName + '</a>' +
-                    '</div> ' +
-                  '</div>' +
+                    '<div class="grid-item">' +
+                        '<img src="'+ speciesData[species].imageLink +'" />' +
+                        '<div class="overlay">' + 
+                            '<a href="/species-template.html?species=' + speciesData[species].commonName + '"> ' + speciesData[species].commonName + '</a>' +
+                        '</div> ' +
+                    '</div>' +
                 '</div>'); 
 
             $grid.append($html)
@@ -73,89 +72,93 @@ function createQueryString(url, parameters) {
 }
 
 function clearGallery() {
-  $grid.empty();
-  $sizer = $('<div class="grid-sizer"></div>');
-  $grid.append($sizer);
+    $grid.empty();
+    $sizer = $('<div class="grid-sizer"></div>');
+    $grid.append($sizer);
 }
 
 // ------------------------------------ FILTER FUNCTIONS ------------------------------------ //
 function showClass(class_name) {
-  $('.' + class_name).show();
+    $('.' + class_name).show();
 }
 
 function showAllClasses() {
-  $('.grid-filters').show();
+    $('.grid-filters').show();
 }
 
 function hideClass(class_name) {
-  $('.' + class_name).hide();
+    $('.' + class_name).hide();
 }
 
 function hideAllClasses() {
-  console.log("hideall")
-  $('.grid-filters').hide();
+    console.log("hideall")
+    $('.grid-filters').hide();
 }
 
 function addFilter(class_name, category) {
-  if (filters.has(class_name)) {
-    return;
-  }
+    if (filters.has(class_name)) {
+        return;
+    }
 
-  if (filters.size >= 5) {
-    alert("Only 5 filters are allowed. Please remove a filter.");
-    return;
-  }
+    if (filters.size >= 5) {
+        alert("Only 5 filters are allowed. Please remove a filter.");
+        return;
+    }
 
-  filters.set(class_name, category)
+    filters.set(class_name, category)
 
-  $filter = $(
-    '<li class="active-filter list-inline-item">' +
-      '<button class="btn my-2 my-sm-0" type="submit">' +
-        '<i class="fa fa-close"></i>' +
-        class_name +
-      '</button>' +
-    '</li>'
-  );
-  $active_filters_ul.append($filter);
+    $filter = $(
+        '<li class="active-filter list-inline-item">' +
+            '<button class="btn my-2 my-sm-0" type="submit">' +
+                '<i class="fa fa-close"></i>' +
+                class_name +
+            '</button>' +
+        '</li>'
+    );
+    $active_filters_ul.append($filter);
 
-  if (filters.size == 1) {
-    hideAllClasses();
-  }
-  showClass(class_name);
-  $grid.masonry('layout');
+    if (filters.size == 1) {
+        hideAllClasses();
+    }
+
+    showClass(class_name);
+    $grid.masonry('layout');
 }
 
 function deleteFilter() {
-  $('.active-filters').on('click', 'button', function(){
-    $(this).closest('li').remove();
+    $('.active-filters').on('click', 'button', function(){
+        $(this).closest('li').remove();
 
-    filters.delete($(this).text())
-    hideClass($(this).text())
-    if (filters.size == 0) {
-      showAllClasses();
-    }
-    $grid.masonry('layout');
-  });
+        filters.delete($(this).text())
+        hideClass($(this).text())
+        
+        if (filters.size == 0) {
+            showAllClasses();
+        }
+
+        $grid.masonry('layout');
+    });
 }
 
 function clearFilters() {
-  $('.active-filters').empty();
-  showAllClasses();
-  filters.clear();
-  $grid.masonry('layout');
+    $('.active-filters').empty();
+    showAllClasses();
+    filters.clear();
+    $grid.masonry('layout');
 }
 
 function recompileAllFilters() {
-  console.log("recompile");
-  if (filters.size == 0) {
-    console.log("no filters");
-    return;
-  }
-  hideAllClasses();
-  for (let filter of filters.keys()) {
-      console.log(filter);
-    showClass(filter)
-  }
+    console.log("recompile");
+    if (filters.size == 0) {
+        console.log("no filters");
+        return;
+    }
+    hideAllClasses();
+    
+    for (let filter of filters.keys()) {
+        console.log(filter);
+        showClass(filter)
+    }
 }
 
 // ------------------------------------ SEARCH FUNCTIONS ------------------------------------ //

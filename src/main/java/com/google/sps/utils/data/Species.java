@@ -40,8 +40,7 @@ public class Species {
         private TaxonomicPath taxonomicPath;
         private String geoData;
 
-        public Builder() {
-        }
+        public Builder() {}
 
         public Builder withCommonName(String commonName) {
             this.commonName = commonName;
@@ -103,80 +102,80 @@ public class Species {
         }      
     }
   
-  public Species() {
-    commonName = null;
-    binomialName = null;
-    status = null;
-    trend = PopulationTrend.UNKNOWN;
-    population = -1;
-    wikipediaNotes = null;
-    imageLink = null;
-    citationLink = null;
-    taxonomicPath = null;
-    geoData = null;
-  }
-
-  public void setTaxonomicPath(TaxonomicPath taxonomicPath) {
-    this.taxonomicPath = taxonomicPath;
-  }
-
-  public void setNotes(String wikipediaNotes) {
-    this.wikipediaNotes = wikipediaNotes;
-  }
-
-  public void setGeoData(String geoData) {
-    this.geoData = geoData;
-  }
-
-  public String getCommonName() {
-    return commonName;
-  }
-
-  public String getBinomialName() {
-    return binomialName;
-  }
-
-  public long getPopulation() {
-    return population;
-  }
-  
-  public String getStatus() {
-    return status;
-  }
-  
-  public String getImageLink() {
-    return imageLink;
-  }
-
-  public TaxonomicPath getTaxonomicPath() {
-    return taxonomicPath;
-  }
-
-  public PopulationTrend getTrend() {
-    return trend;
-  }
-
-  public String getWikipediaNotes() {
-    return wikipediaNotes;
-  }
-
-  public String getCitationLink() {
-    return citationLink;
-  }
-
-  public boolean hasNecessaryInfo() {
-    if (binomialName == null || binomialName.equals("")) {
-      return false;
+    public Species() {
+        commonName = null;
+        binomialName = null;
+        status = null;
+        trend = PopulationTrend.UNKNOWN;
+        population = -1;
+        wikipediaNotes = null;
+        imageLink = null;
+        citationLink = null;
+        taxonomicPath = null;
+        geoData = null;
     }
 
-    if (population < 0) {
-      return false;
+    public void setTaxonomicPath(TaxonomicPath taxonomicPath) {
+        this.taxonomicPath = taxonomicPath;
     }
 
-    if (imageLink == null || imageLink.equals("")) {
-      return false;
+    public void setNotes(String wikipediaNotes) {
+        this.wikipediaNotes = wikipediaNotes;
+    }
+
+    public void setGeoData(String geoData) {
+        this.geoData = geoData;
+    }
+
+    public String getCommonName() {
+        return commonName;
+    }
+
+    public String getBinomialName() {
+        return binomialName;
+    }
+
+    public long getPopulation() {
+        return population;
+    } 
+  
+    public String getStatus() {
+        return status;
     }
     
-    return true;
-  }
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public TaxonomicPath getTaxonomicPath() {
+        return taxonomicPath;
+    }
+
+    public PopulationTrend getTrend() {
+        return trend;
+    }
+
+    public String getWikipediaNotes() {
+        return wikipediaNotes;
+    }
+
+    public String getCitationLink() {
+        return citationLink;
+    }
+
+    public boolean hasNecessaryInfo() {
+        if (binomialName == null || binomialName.equals("")) {
+            return false;
+        }
+
+        if (population < 0) {
+            return false;
+        }
+
+        if (imageLink == null || imageLink.equals("")) {
+            return false;
+        }
+        
+        return true;
+    }
 }

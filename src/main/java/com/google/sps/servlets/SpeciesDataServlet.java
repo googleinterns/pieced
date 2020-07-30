@@ -103,15 +103,15 @@ public class SpeciesDataServlet extends AllDataServlet {
     private String generateInvalidResponse(HttpServletResponse response, String errorMessage) {
         System.err.println("Invalid fetch request: " + errorMessage);
         Species species = new Species.Builder()
-                                    .withCommonName(null)
-                                    .withBinomialName(null)
-                                    .withStatus(null)
-                                    .withPopulationTrend(PopulationTrend.UNKNOWN)
-                                    .withPopulation(-1)
-                                    .withWikipediaNotes(null)
-                                    .withImageLink(null)
-                                    .withCitationLink(null)
-                                    .build();        
+                            .withCommonName(null)
+                            .withBinomialName(null)
+                            .withStatus(null)
+                            .withPopulationTrend(PopulationTrend.UNKNOWN)
+                            .withPopulation(-1)
+                            .withWikipediaNotes(null)
+                            .withImageLink(null)
+                            .withCitationLink(null)
+                            .build();        
 
         species.setTaxonomicPath(null);
         species.setGeoData(null);

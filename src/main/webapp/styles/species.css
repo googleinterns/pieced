@@ -121,28 +121,3 @@ canvas {
 #common-name-container {
     text-transform: capitalize;
 }
-
-/* 
-li {
-  float: left;
-}
-
-li a {
-  display: block;
-  color: var(--link-color) !important;
-  padding: 16px;
-  text-align: center;
-  text-decoration: none;
-}
-
-li a:hover {
-  background-color: var(--link-hover-color);
-}
-
-ul {
-  background-color: var(--list-color);
-  list-style-type: none;
-  margin: 0;
-  overflow: hidden;
-  padding: 0;
-} */

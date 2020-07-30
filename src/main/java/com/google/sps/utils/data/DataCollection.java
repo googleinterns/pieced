@@ -294,13 +294,13 @@ public class DataCollection {
 
             System.out.printf("%-35s %-30s %-25s %-10s %n", commonName, binomialName, population, status);
             Species species = new Species.Builder()
-                                        .withCommonName(commonName)
-                                        .withBinomialName(binomialName)
-                                        .withStatus(status)
-                                        .withPopulation(population)
-                                        .withImageLink(imageLink)
-                                        .withCitationLink(url)
-                                        .build();
+                                .withCommonName(commonName)
+                                .withBinomialName(binomialName)
+                                .withStatus(status)
+                                .withPopulation(population)
+                                .withImageLink(imageLink)
+                                .withCitationLink(url)
+                                .build();
             return species;
         }
         return null;
@@ -316,13 +316,13 @@ public class DataCollection {
     */
     private static Species processExtinct(String commonName, String imageLink, String scientificName, String url) {
         Species species = new Species.Builder()
-                                    .withCommonName(commonName)
-                                    .withBinomialName(scientificName)
-                                    .withStatus("EW")
-                                    .withPopulation(0)
-                                    .withImageLink(imageLink)
-                                    .withCitationLink(url)
-                                    .build();
+                            .withCommonName(commonName)
+                            .withBinomialName(scientificName)
+                            .withStatus("EW")
+                            .withPopulation(0)
+                            .withImageLink(imageLink)
+                            .withCitationLink(url)
+                            .build();
         return species;
     }
 
@@ -375,56 +375,56 @@ public class DataCollection {
         }
     }
 
-  /**
-   * Store species in Datastore
-   * @param species: species to store
-   */
-  public static void addSpeciesToDatastore(Species species) {
-    Key key = keyFactory.newKey(species.getBinomialName());
-    Entity oldEntity = datastore.get(key);
+    /**
+    * Store species in Datastore
+    * @param species: species to store
+    */
+    public static void addSpeciesToDatastore(Species species) {
+        Key key = keyFactory.newKey(species.getBinomialName());
+        Entity oldEntity = datastore.get(key);
+        
+        if (oldEntity == null) {
+            Entity speciesEntity = Entity.newBuilder(key)
+                .set("common_name", species.getCommonName())
+                .set("binomial_name", species.getBinomialName())
+                .set("status", species.getStatus())
+                .set("population", species.getPopulation())
+                .set("image_link", species.getImageLink())
+                .set("citation_link", species.getCitationLink())
+                .build();
     
-    if (oldEntity == null) {
-      Entity speciesEntity = Entity.newBuilder(key)
-        .set("common_name", species.getCommonName())
-        .set("binomial_name", species.getBinomialName())
-        .set("status", species.getStatus())
-        .set("population", species.getPopulation())
-        .set("image_link", species.getImageLink())
-        .set("citation_link", species.getCitationLink())
-        .build();
+            if (species.getTaxonomicPath() != null) {
+                speciesEntity = Entity.newBuilder(speciesEntity).set("kingdom", species.getTaxonomicPath().getAnimalKingdom()).build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("phylum", species.getTaxonomicPath().getAnimalPhylum()).build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("class", species.getTaxonomicPath().getAnimalClass()).build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("order", species.getTaxonomicPath().getAnimalOrder()).build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("family", species.getTaxonomicPath().getAnimalFamily()).build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("genus", species.getTaxonomicPath().getAnimalGenus()).build();
+            } else {
+                speciesEntity = Entity.newBuilder(speciesEntity).set("kingdom", "Not Available").build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("phylum", "Not Available").build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("class", "Not Available").build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("order", "Not Available").build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("family", "Not Available").build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("genus", "Not Available").build();
+        
+            }
     
-      if (species.getTaxonomicPath() != null) {
-        speciesEntity = Entity.newBuilder(speciesEntity).set("kingdom", species.getTaxonomicPath().getAnimalKingdom()).build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("phylum", species.getTaxonomicPath().getAnimalPhylum()).build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("class", species.getTaxonomicPath().getAnimalClass()).build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("order", species.getTaxonomicPath().getAnimalOrder()).build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("family", species.getTaxonomicPath().getAnimalFamily()).build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("genus", species.getTaxonomicPath().getAnimalGenus()).build();
-      } else {
-        speciesEntity = Entity.newBuilder(speciesEntity).set("kingdom", "Not Available").build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("phylum", "Not Available").build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("class", "Not Available").build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("order", "Not Available").build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("family", "Not Available").build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("genus", "Not Available").build();
-      
-      }
-    
-      if (species.getTrend() != null) {
-        speciesEntity = Entity.newBuilder(speciesEntity).set("trend", species.getTrend().name()).build();
-      } else {
-        speciesEntity = Entity.newBuilder(speciesEntity).set("trend", "UNKNOWN").build();
-      }
+            if (species.getTrend() != null) {
+                speciesEntity = Entity.newBuilder(speciesEntity).set("trend", species.getTrend().name()).build();
+            } else {
+                speciesEntity = Entity.newBuilder(speciesEntity).set("trend", "UNKNOWN").build();
+            }
 
-      if (species.getWikipediaNotes() != null) {
-        speciesEntity = Entity.newBuilder(speciesEntity).set("wikipedia_notes", species.getWikipediaNotes()).build();
-      } else {
-        speciesEntity = Entity.newBuilder(speciesEntity).set("wikipedia_notes", "N/A").build();
-      }
-      
-      datastore.put(speciesEntity);
+            if (species.getWikipediaNotes() != null) {
+                speciesEntity = Entity.newBuilder(speciesEntity).set("wikipedia_notes", species.getWikipediaNotes()).build();
+            } else {
+                speciesEntity = Entity.newBuilder(speciesEntity).set("wikipedia_notes", "N/A").build();
+            }
+        
+            datastore.put(speciesEntity);
+        }
     }
-  }
 
 
     // ------------------------------  SCRAPING HELPER FUNCTIONS  ------------------------------ //
