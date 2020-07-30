@@ -58,6 +58,9 @@ a:hover {
     margin: 0 !important;
 }
 
+.EW img {
+  filter: grayscale(100%); 
+}
 /* The overlay effect - lays on top of the container and over the image */
 .overlay {
     position: absolute;

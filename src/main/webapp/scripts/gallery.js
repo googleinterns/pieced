@@ -19,12 +19,18 @@ $(document).ready(function() {
   });
 
   // get all data
-  fetchAllSpeciesData("common_name");
+  createGallery("common_name");
 
   // hides filters on click
   deleteFilter()
 });
 
+function createGallery(sortBy) {
+  console.log("create");
+  fetchAllSpeciesData(sortBy);
+  console.log("loaded");
+  hideAllClasses();
+}
 /** 
  *Fetches sample JSON and appends each species to the gallery
  * @param sortBy: the parameter to sort by
@@ -91,6 +97,7 @@ function hideClass(class_name) {
 }
 
 function hideAllClasses() {
+  console.log("hideall")
   $('.grid-filters').hide();
 }
 
@@ -141,6 +148,19 @@ function clearFilters() {
   showAllClasses();
   filters.clear();
   $grid.masonry('layout');
+}
+
+function recompileAllFilters() {
+  console.log("recompile");
+  if (filters.size == 0) {
+    console.log("no filters");
+    return;
+  }
+  hideAllClasses();
+//   for (let filter of filters.keys()) {
+//       console.log(filter);
+//     showClass(filter)
+//   }
 }
 
 // ------------------------------------ SEARCH FUNCTIONS ------------------------------------ //
