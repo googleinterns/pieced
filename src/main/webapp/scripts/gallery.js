@@ -9,7 +9,6 @@ var DIV = "div";
 // Call these functions when page loads
 $(document).ready(function() {
     // Initialize Masonry
-    console.log("initializing masonry");
     $grid.masonry({
         itemSelector: '.grid-item',
         percentPosition: true,
@@ -93,7 +92,6 @@ function clearGallery() {
  */
 function applyAllFilters() {
     hideAllClasses();
-    console.log("reset");
     
     // initialize selectors with "div" so they show all divs by default
     // if no filters, "div" means all classes show anyways
@@ -202,7 +200,6 @@ function searchName() {
     $("#species-search").on('input', function() { 
         var input = document.getElementById("species-search");
         var filter = input.value.toUpperCase();
-        console.log(filter)
         var grid_item = grid.getElementsByClassName("grid-filters");
         for (var i = 0; i < grid_item.length; i++) {
             var name = grid_item[i].getElementsByTagName("a")[0].innerText;
