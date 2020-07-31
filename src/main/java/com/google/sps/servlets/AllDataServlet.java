@@ -57,7 +57,7 @@ public class AllDataServlet extends HttpServlet {
         Query<Entity> query = Query.newEntityQueryBuilder()
             .setKind("Species")
             .setOrderBy(OrderBy.asc(sortBy))
-            .setLimit(queryLimit)
+            // .setLimit(queryLimit)
             .build();
 
         QueryResults<Entity> queriedSpecies = datastore.run(query);
