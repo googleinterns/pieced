@@ -29,8 +29,11 @@
                 <div>
                     <canvas onmouseover="animateToFullResolution()" onmouseout="animateToOldResolution()" id="canvas"> </canvas>
                     <img id="species-image" class="image" alt = "Placeholder" style="display: none;">
-                    <label id="pixel_label" for="pixel_factor"> Current Population </label>
-                    <input id="pixel_factor" type="number" min="1"  value="100">
+                    <div id="population">
+                        <label id="pixel_label" for="pixel_factor"> Current Population </label>
+                        <input id="pixel_factor" type="number" min="1"  value="100">
+                        <button type="button" id="reset-population">Reset</button>
+                    </div>
                 </div>
             </div>
 
