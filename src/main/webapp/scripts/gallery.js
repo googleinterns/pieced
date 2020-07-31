@@ -1,11 +1,10 @@
-// Played around with the following packages: masonry.pkgd.js, imagesloaded.pkgd.js
-// May need to use different libraries due to commercial use requirement
 // Masonry is released under the MIT license: https://desandro.mit-license.org/
 
 // global variables
 var filters = new Map()
 var $active_filters_ul = $('.active-filters');
 var $grid = $('#grid')
+var DIV = "div";
 
 // Call these functions when page loads
 $(document).ready(function() {
@@ -26,13 +25,12 @@ $(document).ready(function() {
 });
 
 /** 
- *Fetches sample JSON and appends each species to the gallery
+ * Fetches sample JSON and appends each species to the gallery
  * @param sortBy: the parameter to sort by
  */
 function fetchAllSpeciesData(sortBy) {
     const parameters = {'sortBy': sortBy};
     const url = createQueryString("/allData", parameters);
-    console.log(url)
     clearGallery();
     
     fetch(url).then(response => response.json()).then(speciesData => {
@@ -57,7 +55,8 @@ function fetchAllSpeciesData(sortBy) {
         $grid.imagesLoaded().progress( function() {
             $grid.masonry('layout');
         });
-        recompileAllFilters();
+
+        applyAllFilters();
     });
 }
 
@@ -71,30 +70,74 @@ function createQueryString(url, parameters) {
     return url + "?" + query;
 }
 
+/**
+ * Reset all the animals that have been loaded into the grid
+ */
 function clearGallery() {
     $grid.empty();
     $sizer = $('<div class="grid-sizer"></div>');
     $grid.append($sizer);
 }
 
-// ------------------------------------ FILTER FUNCTIONS ------------------------------------ //
-function showClass(class_name) {
-    $('.' + class_name).show();
+// ------------------------------------------- FILTER FUNCTIONS ------------------------------------------- //
+
+/**
+ * Applies all the filters stored in the map. It's divided into 3 categories: status, trend, and taxon
+ * It ORs filters in the same category and ANDs filters in different categories
+ * For example)
+ *      If Mammals, Birds, and Endangered are the selected filters,
+ *      it will show Endangered Mammals and Endangered Birds
+ */
+function applyAllFilters() {
+    hideAllClasses();
+    console.log("reset");
+    
+    // initialize selectors with "div" so they show all divs by default
+    // if no filters, "div" means all classes show anyways
+    var status_selector = DIV;
+    var trend_selector = DIV;
+    var taxon_selector = DIV;
+
+    for (let [key, value] of filters) {
+        if (value === "status") {
+            status_selector = createSelectorString(status_selector, key);
+        } else if (value === "trend") {
+            trend_selector = createSelectorString(trend_selector, key);
+        } else if (value === "taxon") {
+            taxon_selector = createSelectorString(taxon_selector, key);
+        } 
+    }
+
+    $(status_selector).filter(trend_selector).filter(taxon_selector).show();
+    $grid.masonry('layout');
 }
 
-function showAllClasses() {
-    $('.grid-filters').show();
-}
-
-function hideClass(class_name) {
-    $('.' + class_name).hide();
-}
-
+/**
+ * Hides all the elements in the grid
+ */
 function hideAllClasses() {
-    console.log("hideall")
     $('.grid-filters').hide();
 }
 
+/**
+ * Appends class_name to selector to create a filter string.
+ * Example final format: "div.CR, div.EN, div.VU"
+ * @param selector: string containing the filters that have already been set, initialized with DIV
+ * @param class_name: the new filter to append
+ */
+function createSelectorString(selector, class_name) {
+    if (selector.length > DIV.length) { // if selector already has a filter
+        return selector.concat(", " + DIV + "." + class_name);
+    } else {
+        return selector.concat("." + class_name);
+    }
+}
+
+/**
+ * Adds up to 5 filters to the filters map and applies them
+ * @param class_name: the actual filter class, eg) "CR"
+ * @param category: the category of the filter to determine OR or AND, eg) "status"
+ */
 function addFilter(class_name, category) {
     if (filters.has(class_name)) {
         return;
@@ -106,7 +149,41 @@ function addFilter(class_name, category) {
     }
 
     filters.set(class_name, category)
+    addFilterToListUI(class_name);
+    applyAllFilters();
+    $grid.masonry('layout');
+}
 
+/**
+ * Deletes the filter from the UI List and the filters map
+ * Runs automatically when the list item is clicked
+ */
+function deleteFilter() {
+    $('.active-filters').on('click', 'button', function(){
+        $(this).closest('li').remove();
+
+        filters.delete($(this).text())
+        applyAllFilters();
+
+        $grid.masonry('layout');
+    });
+}
+
+/**
+ * Clears all filters in the filters map
+ */
+function clearFilters() {
+    $('.active-filters').empty();
+    filters.clear();
+    applyAllFilters();
+    $grid.masonry('layout');
+}
+
+/**
+ * Appends a UI list item to the active_filters_ul
+ * @param class_name: the filter that has just been added
+ */
+function addFilterToListUI(class_name) {
     $filter = $(
         '<li class="active-filter list-inline-item">' +
             '<button class="btn my-2 my-sm-0" type="submit">' +
@@ -116,52 +193,12 @@ function addFilter(class_name, category) {
         '</li>'
     );
     $active_filters_ul.append($filter);
-
-    if (filters.size == 1) {
-        hideAllClasses();
-    }
-
-    showClass(class_name);
-    $grid.masonry('layout');
 }
 
-function deleteFilter() {
-    $('.active-filters').on('click', 'button', function(){
-        $(this).closest('li').remove();
-
-        filters.delete($(this).text())
-        hideClass($(this).text())
-        
-        if (filters.size == 0) {
-            showAllClasses();
-        }
-
-        $grid.masonry('layout');
-    });
-}
-
-function clearFilters() {
-    $('.active-filters').empty();
-    showAllClasses();
-    filters.clear();
-    $grid.masonry('layout');
-}
-
-function recompileAllFilters() {
-    console.log("recompile");
-    if (filters.size == 0) {
-        console.log("no filters");
-        return;
-    }
-    hideAllClasses();
-    
-    for (let filter of filters.keys()) {
-        console.log(filter);
-        showClass(filter)
-    }
-}
-
-// ------------------------------------ SEARCH FUNCTIONS ------------------------------------ //
+// -------------------------------------------- SEARCH FUNCTIONS -------------------------------------------- //
+/**
+ * Filters the gallery as the user types letter by letter
+ */
 function searchName() {
     var input = document.getElementById("species-search");
     var filter = input.value.toUpperCase();

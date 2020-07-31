@@ -45,7 +45,7 @@ import java.util.ArrayList;
 @WebServlet("/allData")
 public class AllDataServlet extends HttpServlet {
     Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-    int queryLimit = 250;
+    int queryLimit = 25;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
