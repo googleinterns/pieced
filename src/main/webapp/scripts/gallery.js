@@ -154,7 +154,6 @@ function addFilter(class_name, category) {
     filters.set(class_name, category)
     addFilterToListUI(class_name);
     applyAllFilters();
-    $grid.masonry('layout');
 }
 
 /**
@@ -167,8 +166,6 @@ function deleteFilter() {
 
         filters.delete($(this).text())
         applyAllFilters();
-
-        $grid.masonry('layout');
     });
 }
 
@@ -179,7 +176,6 @@ function clearFilters() {
     $('.active-filters').empty();
     filters.clear();
     applyAllFilters();
-    $grid.masonry('layout');
 }
 
 /**
