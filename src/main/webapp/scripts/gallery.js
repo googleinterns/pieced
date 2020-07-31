@@ -22,6 +22,9 @@ $(document).ready(function() {
 
     // hides filters on click
     deleteFilter()
+
+    // lets users search for a species
+    searchName();
 });
 
 /** 
@@ -200,17 +203,19 @@ function addFilterToListUI(class_name) {
  * Filters the gallery as the user types letter by letter
  */
 function searchName() {
-    var input = document.getElementById("species-search");
-    var filter = input.value.toUpperCase();
-    console.log(filter)
-    var grid_item = grid.getElementsByClassName("grid-filters");
-    for (var i = 0; i < grid_item.length; i++) {
-        var name = grid_item[i].getElementsByTagName("a")[0].innerText;
-        if (name.toUpperCase().indexOf(filter) <= -1) {
-            grid_item[i].style.display = "none";
-        } else {
-            grid_item[i].style.display = "block";
+    $("#species-search").on('input', function() { 
+        var input = document.getElementById("species-search");
+        var filter = input.value.toUpperCase();
+        console.log(filter)
+        var grid_item = grid.getElementsByClassName("grid-filters");
+        for (var i = 0; i < grid_item.length; i++) {
+            var name = grid_item[i].getElementsByTagName("a")[0].innerText;
+            if (name.toUpperCase().indexOf(filter) <= -1) {
+                grid_item[i].style.display = "none";
+            } else {
+                grid_item[i].style.display = "block";
+            }
         }
-    }
-    $grid.masonry('layout');
+        $grid.masonry('layout');
+    });
 }
