@@ -127,7 +127,7 @@ public class DataCollection {
                 Elements tds = row.select("td");
 
                 Species species = processSpecies(tds, url);
-                if (species == null || !species.hasNecessaryInfo()) {
+                if (species == null || !species.isDisplayable()) {
                     continue;
                 }
 
@@ -494,7 +494,9 @@ public class DataCollection {
     * Takes in the image element from wikipedia and extracts the url
     * 
     * If the species has an image, the format is:
-    *    <img src="IMAGE_URL" srcset="IMAGE_URL_SIZE:1.5x, IMAGE_URL_SIZE:2x">
+    *    <img src="IMAGE_URL" srcset="IMAGE_URL 1.5x, IMAGE_URL 2x">
+    * Example format:
+    *    <img src="//upload.wikimedia.org/image.jpg" srcset="//upload.wikimedia.org/image.jpg 1.5x, //upload.wikimedia.org/image.jpg 2x">
     * @param trendImg html for the species image in the table
     */
     private static String scrapeImageLink(Element image) {

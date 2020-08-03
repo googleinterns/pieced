@@ -17,6 +17,7 @@ html {
 #species-image-container {
     /* background: var(--image-container-color); */
     flex-grow: 1;
+    padding: 25px 25px 0px 25px;
 }
 
 #species-name, #species-image, #canvas, #pixel_factor, #pixel_label {
@@ -120,4 +121,20 @@ canvas {
 
 #common-name-container {
     text-transform: capitalize;
+}
+
+#population {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#reset-population {
+    padding: 0 20px 0 20px;
+    background: white;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    color: #495057;
 }

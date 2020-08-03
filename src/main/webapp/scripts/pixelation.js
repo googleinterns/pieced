@@ -10,17 +10,20 @@ ctx.imageSmoothingEnabled = false;
 
 var image = document.getElementById('species-image');
 var slider = document.getElementById('pixel_factor');
+var reset = document.getElementById('reset-population');
 
 // Get number of pixels for native image at full resolution
 var originalNumPixels = image.width * image.height;
 
 // Grab initial slider value (equal to species population)
 // Must be parsed as numerical values to avoid bug where the values are treated as Strings in some places, but ints in others
+var population = parseInt(slider.value);
 var PIXEL_FACTOR_OLD = parseInt(slider.value);
 var PIXEL_FACTOR_CURR = parseInt(slider.value);
 
 // Add trigger to animate whenever the slider value changes
 pixel_factor.addEventListener('change', animate_update, false);
+reset.addEventListener('click', resetWrapper, false);
 
 // wait until image has finished loading before attaching pixelate()
 image.onload = pixelate;
@@ -223,6 +226,13 @@ function calculateEaseValue(x) {
     factor = x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2;
     return factor;
 }
+
+// Wrapper function to reset the population to the original value
+function resetWrapper() {
+    slider.value = Math.min(population, slider.max);
+    animate_update();
+}
+
 
 // Stand-in code for older browsers that don't support the animation
 window.requestAnimationFrame = (function () {
