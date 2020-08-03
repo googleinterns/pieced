@@ -81,7 +81,7 @@ a:hover {
 
 .filters {
     width: 100%;
-    background: whitesmoke;
+    background: #0a0c0d;
     padding: 5px 10px;
     font-size: 0.9em;
 }
@@ -92,4 +92,11 @@ a:hover {
 
 .form-inline {
     margin: 5px;
+}
+
+.sidebar {
+    background: #0a0c0d;
+}
+.sidebar-sticky {
+    background: #0a0c0d;
 }
