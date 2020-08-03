@@ -163,7 +163,7 @@ public class Species {
         return citationLink;
     }
 
-    public boolean hasNecessaryInfo() {
+    public boolean isDisplayable() {
         if (binomialName == null || binomialName.equals("")) {
             return false;
         }

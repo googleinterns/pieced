@@ -127,7 +127,7 @@ public class DataCollection {
                 Elements tds = row.select("td");
 
                 Species species = processSpecies(tds, url);
-                if (species == null || !species.hasNecessaryInfo()) {
+                if (species == null || !species.isDisplayable()) {
                     continue;
                 }
 
