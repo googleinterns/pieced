@@ -27,18 +27,18 @@ public class Species {
     private String wikipediaNotes;
     
     public static class Builder {
-        private String commonName;
-        private String binomialName;
-        private String status;
-        private PopulationTrend trend;
+        private String commonName = null;
+        private String binomialName = null;
+        private String status = null;
+        private PopulationTrend trend = PopulationTrend.UNKNOWN;
 
-        private long population;
-        private String wikipediaNotes;
-        private String imageLink;
-        private String citationLink;
+        private long population = -1;
+        private String wikipediaNotes = null;
+        private String imageLink = null;
+        private String citationLink = null;
 
-        private TaxonomicPath taxonomicPath;
-        private String geoData;
+        private TaxonomicPath taxonomicPath = null;
+        private String geoData = null;
 
         public Builder() {}
 
