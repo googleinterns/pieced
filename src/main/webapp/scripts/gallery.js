@@ -26,6 +26,14 @@ $(document).ready(function() {
     searchName();
 });
 
+// Helper function to check for errors in fetch() calls
+function handleErrors(response) {
+    if (!response.ok) {
+        throw Error(response.statusText);
+    }
+    return response.json();
+}
+
 /** 
  * Fetches sample JSON and appends each species to the gallery
  * @param sortBy: the parameter to sort by
@@ -35,7 +43,7 @@ function fetchAllSpeciesData(sortBy) {
     const url = createQueryString("/allData", parameters);
     clearGallery();
     
-    fetch(url).then(response => response.json()).then(speciesData => {
+    fetch(url).then(response => handleErrors(response)).then(speciesData => {
         for (var species in speciesData) {
             // Append images to grid
             var $html = $(
