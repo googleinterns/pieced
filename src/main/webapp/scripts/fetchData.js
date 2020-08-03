@@ -1,7 +1,15 @@
 // Fetches JSON for a given species
 function fetchSpeciesData(name) {
     const URL = '/speciesData?species=' + name;
-    fetch(URL).then(response => response.json()).then(speciesData => populatePageWithSpeciesData(speciesData));
+    fetch(URL).then(response => handleErrors(response)).then(speciesData => populatePageWithSpeciesData(speciesData));
+}
+
+// Helper function to check for errors in fetch() calls
+function handleErrors(response) {
+    if (!response.ok) {
+        throw Error(response.statusText);
+    }
+    return response.json();
 }
 
 // Helper function that takes the JSON and modifies the species-template page to display the contained information
