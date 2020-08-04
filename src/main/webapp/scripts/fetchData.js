@@ -7,7 +7,8 @@ function fetchSpeciesData(name) {
 // Helper function to check for errors in fetch() calls
 function handleErrors(response) {
     if (!response.ok) {
-        throw Error(response.statusText);
+        document.getElementById('common-name-container').innerText = response.status + " " + response.statusText;
+        throw Error(response.status + " " + response.statusText);
     }
     return response.json();
 }
