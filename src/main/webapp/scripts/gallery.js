@@ -28,7 +28,6 @@ $(document).ready(function() {
 
 // Helper function to check for errors in fetch() calls
 function handleErrors(response) {
-    console.log(response);
     if (!response.ok) {
         throw Error(response.statusText);
     }
@@ -45,7 +44,6 @@ function fetchAllSpeciesData(sortBy) {
     clearGallery();
     
     fetch(url).then(response => handleErrors(response)).then(speciesData => {
-    // fetch(url).then(response => response.json()).then(speciesData => {
         for (var species in speciesData) {
             // Append images to grid
             var $html = $(

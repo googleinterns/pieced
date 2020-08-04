@@ -57,9 +57,7 @@ public class SpeciesDataServlet extends AllDataServlet {
         
         // Return invalid data if species name is null or empty
         if (speciesName == null) {
-            String json = generateInvalidResponse(response, "No species name requested.");
-            response.getWriter().println(json);
-            // response.sendError(response.SC_BAD_REQUEST, "Invalid species name requested.");
+            response.sendError(response.SC_BAD_REQUEST, "Invalid species name requested.");
             return;
         }
 
@@ -68,9 +66,7 @@ public class SpeciesDataServlet extends AllDataServlet {
         QueryResults<Entity> queriedSpecies = datastore.run(query);
 
         if (!queriedSpecies.hasNext()) {
-            String json = generateInvalidResponse(response, "No results in datastore.");
-            response.getWriter().println(json);
-            // response.sendError(response.SC_NOT_FOUND, "No result found in DataStore.");
+            response.sendError(response.SC_NOT_FOUND, "No result found in DataStore.");
             return;
         }
 
@@ -101,26 +97,5 @@ public class SpeciesDataServlet extends AllDataServlet {
             return null;
         }
         return speciesName;
-    }
-
-    // Builds an invalid JSON response when the request is invalid or misses in the datastore.
-    private String generateInvalidResponse(HttpServletResponse response, String errorMessage) {
-        System.err.println("Invalid fetch request: " + errorMessage);
-        Species species = new Species.Builder()
-                            .withCommonName(null)
-                            .withBinomialName(null)
-                            .withStatus(null)
-                            .withPopulationTrend(PopulationTrend.UNKNOWN)
-                            .withPopulation(-1)
-                            .withWikipediaNotes(null)
-                            .withImageLink(null)
-                            .withCitationLink(null)
-                            .build();        
-
-        species.setTaxonomicPath(null);
-        species.setGeoData(null);
-
-        String json = convertToJson(species);
-        return json;
     }
 }
