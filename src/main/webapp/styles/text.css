@@ -1,0 +1,24 @@
+/************ shared between action & about **********/
+body {
+    padding: 3em 10em !important;
+}
+
+a {
+    color: whitesmoke;
+}
+
+a:hover {
+    color: var(--accent);
+}
+
+h1, h2, h3, p, li {
+    color: whitesmoke;
+}
+
+h1 {
+    text-align: center;
+}
+
+hr {
+    color: var(--accent);
+}
