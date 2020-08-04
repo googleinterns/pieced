@@ -88,8 +88,8 @@ public class Species {
         }
 
         // Overloaded method to construct TaxonomicPath w/o external reference
-        public Builder withTaxonomicPath(String kingdom, String phylum, String class, String order, String family, String genus) {
-            this.taxonomicPath = new TaxonomicPath(kingdom, phylum, class, order, family, genus);
+        public Builder withTaxonomicPath(String kingdom_t, String phylum_t, String class_t, String order_t, String family_t, String genus_t) {
+            this.taxonomicPath = new TaxonomicPath(kingdom_t, phylum_t, class_t, order_t, family_t, genus_t);
             return this;
         }
 

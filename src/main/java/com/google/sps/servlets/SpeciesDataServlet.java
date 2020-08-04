@@ -43,6 +43,8 @@ import java.util.ArrayList;
 /** Servlet that grabs data on individual species. */
 @WebServlet("/speciesData")
 public class SpeciesDataServlet extends AllDataServlet {
+    // static final int SC_BAD_REQUEST = 400;
+    // static final int SC_NOT_FOUND = 404;
     Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
     
     @Override
@@ -57,6 +59,7 @@ public class SpeciesDataServlet extends AllDataServlet {
         if (speciesName == null) {
             String json = generateInvalidResponse(response, "No species name requested.");
             response.getWriter().println(json);
+            // response.sendError(response.SC_BAD_REQUEST, "Invalid species name requested.");
             return;
         }
 
@@ -67,6 +70,7 @@ public class SpeciesDataServlet extends AllDataServlet {
         if (!queriedSpecies.hasNext()) {
             String json = generateInvalidResponse(response, "No results in datastore.");
             response.getWriter().println(json);
+            // response.sendError(response.SC_NOT_FOUND, "No result found in DataStore.");
             return;
         }
 

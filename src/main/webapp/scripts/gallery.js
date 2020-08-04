@@ -28,6 +28,7 @@ $(document).ready(function() {
 
 // Helper function to check for errors in fetch() calls
 function handleErrors(response) {
+    console.log(response);
     if (!response.ok) {
         throw Error(response.statusText);
     }
