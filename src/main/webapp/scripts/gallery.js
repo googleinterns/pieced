@@ -39,14 +39,14 @@ function fetchAllSpeciesData(sortBy) {
         for (var species in speciesData) {
             // Append images to grid
             var $html = $(
-                '<div class="grid-filters ' + speciesData[species].status + ' ' + speciesData[species].trend + ' ' + speciesData[species].taxonomicPath.order_t + ' ' + speciesData[species].taxonomicPath.class_t + '">' +
-                    '<div class="grid-item">' +
-                        '<img src="'+ speciesData[species].imageLink +'" />' +
-                        '<div class="overlay">' + 
-                            '<a href="/species-template.html?species=' + speciesData[species].commonName + '"> ' + speciesData[species].commonName + '</a>' +
-                        '</div> ' +
-                    '</div>' +
-                '</div>'); 
+                `<div class="grid-filters ${speciesData[species].status} ${speciesData[species].trend} ${speciesData[species].taxonomicPath.order_t} ${speciesData[species].taxonomicPath.class_t}">
+                    <div class="grid-item">
+                        <img src="${speciesData[species].imageLink}" />
+                        <div class="overlay">
+                            <a href="/species-template.html?species=${speciesData[species].commonName}"> ${speciesData[species].commonName} </a>
+                        </div>
+                    </div>
+                </div>`); 
 
             $grid.append($html)
                 // add and lay out newly appended items

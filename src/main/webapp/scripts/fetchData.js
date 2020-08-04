@@ -48,12 +48,7 @@ function fetchSpeciesData(name) {
                 descriptionContainer.innerText = "N/A";
                 break;
             default:
-                if (notes.indexOf('[') > 0) {
-                    descriptionContainer.innerText = notes.substr(0, notes.indexOf('['));
-                }
-                else {
-                    descriptionContainer.innerText = notes;
-                }
+                descriptionContainer.innerText = notes;
         }
         citationsContainer.innerText = speciesData.citationLink;
 
