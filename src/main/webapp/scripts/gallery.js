@@ -54,8 +54,7 @@ function fetchAllSpeciesData(sortBy) {
                             <a href="/species-template.html?species=${speciesData[species].commonName}"> ${speciesData[species].commonName} </a>
                         </div>
                     </div>
-                </div>`); 
-
+                </div>`);
             $grid.append($html)
                 // add and lay out newly appended items
                 .masonry('appended', $html);
