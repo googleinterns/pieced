@@ -17,6 +17,7 @@ html {
 #species-image-container {
     /* background: var(--image-container-color); */
     flex-grow: 1;
+    padding: 25px 25px 0px 25px;
 }
 
 #species-name, #species-image, #canvas, #pixel_factor, #pixel_label {
@@ -122,27 +123,18 @@ canvas {
     text-transform: capitalize;
 }
 
-/* 
-li {
-  float: left;
+#population {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-li a {
-  display: block;
-  color: var(--link-color) !important;
-  padding: 16px;
-  text-align: center;
-  text-decoration: none;
+#reset-population {
+    padding: 0 20px 0 20px;
+    background: white;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    color: #495057;
 }
-
-li a:hover {
-  background-color: var(--link-hover-color);
-}
-
-ul {
-  background-color: var(--list-color);
-  list-style-type: none;
-  margin: 0;
-  overflow: hidden;
-  padding: 0;
-} */

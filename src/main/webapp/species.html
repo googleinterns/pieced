@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Pieced - Species</title>
 
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/species.css">
@@ -13,12 +12,13 @@
 
   </head>
   
-  <body onload="fetchSpeciesData()">
+  <body>
     <div id="navigation"></div>
 
     <!--------------- HEADER ---------------->
     <header class="container-fluid">
-      <h1>SPECIES</h1>
+      <h1 id="common-name-container"> </h1>
+      <ul class="colors"></ul>
     </header>
 
     <!--------------- CONTENT ---------------->
@@ -26,41 +26,57 @@
         <!-- Page Content -->
         <div id="species-page" class="container-fluid"> 
             <div id="species-image-container">
-                <!-- Debug nav bar to select different species and load from JSON -->
-                <ul>
-                    <li> <a onclick="fetchSpeciesData('Impala')"> Impala </a> </li>
-                    <li> <a onclick="fetchSpeciesData('Addax')"> Addax </a> </li>
-                    <li> <a onclick="fetchSpeciesData('Japanese serow')"> Japanese serow </a> </li>
-                    <li> <a onclick="fetchSpeciesData('Bongo')"> Bongo </a> </li>
-                </ul>
-
                 <!-- Canvas for pixelation -->
                 <div>
-                    <canvas onmouseover="animateFullResolution()" onmouseout="animateOldResolution()" id="canvas" width="500" height="400"> </canvas>
-                    <img id="species-image" class="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Royal_Bengal_Tiger_at_Kanha_National_Park.jpg/800px-Royal_Bengal_Tiger_at_Kanha_National_Park.jpg"
-                        alt="Tiger" style="display: none;" height = "512px" width = "256px">
+                    <canvas onmouseover="animateToFullResolution()" onmouseout="animateToOldResolution()" id="canvas"> </canvas>
+                    <img id="species-image" class="image" alt = "Placeholder" style="display: none;">
+                    <label id="pixel_label" for="pixel_factor"> Current Population </label>
                     <input id="pixel_factor" type="number" min="1"  value="100">
                 </div>
             </div>
 
             <!-- Containers for species-specific info -->
             <div id="species-info-container">
-                <h3 class="text-center"> Name </h3>
-                <div id="common-name-container" class="text-center"> </div>
-
-                <h3 class="text-center"> Scientific Name </h3>
-                <div id="scientific-name-container" class="text-center"> </div>
-
-                <h3 class="text-center"> Status </h3>
-                <div id="status-container" class="text-center"> </div>
-                
-                <h3 class="text-center"> Description </h3>
-                <div id="description-container" class="text-center"> </div>
-                
-                <h3 class="text-center"> Citations </h3>
-                <div id="citations-container" class="text-center"> </div>
-
-                <div id = "map-section"> </div>
+                <div id="name-wrapper" class="info-wrapper">
+                    <h4 class="text-center"> Scientific Name </h4>
+                    <div id="scientific-name-container" class="lead text-center species-attribute"> </div>
+                </div>
+                <div id="status-wrapper" class="info-wrapper">
+                    <h4 class="text-center"> Status </h4>
+                    <div id="status-container" class="lead text-center species-attribute"> </div>
+                </div>
+                <div id="description-wrapper" class="info-wrapper">
+                    <h4 class="text-center"> Description </h4>
+                    <div id="description-container" class="lead text-center species-attribute"> </div>
+                </div>
+                <div id="citations-wrapper" class="info-wrapper">                
+                    <h4 class="text-center"> Citations </h4>
+                    <div id="citations-container" class="lead text-center species-attribute"> </div>
+                </div>
+                <div id="kingdom-wrapper" class="info-wrapper">
+                    <h4 class="text-center"> Kingdom </h4>
+                    <div id="kingdom-container" class="lead text-center species-attribute"> </div>
+                </div>
+                <div id="phylum-wrapper" class="info-wrapper">
+                    <h4 class="text-center"> Phylum </h4>
+                    <div id="phylum-container" class="lead text-center species-attribute"> </div>
+                </div>
+                <div id="class-wrapper" class="info-wrapper">
+                    <h4 class="text-center"> Class </h4>
+                    <div id="class-container" class="lead text-center species-attribute"> </div>
+                </div>
+                <div id="order-wrapper" class="info-wrapper">
+                    <h4 class="text-center"> Order </h4>
+                    <div id="order-container" class="lead text-center species-attribute"> </div>
+                </div>
+                <div id="family-wrapper" class="info-wrapper">
+                    <h4 class="text-center"> Family </h4>
+                    <div id="family-container" class="lead text-center species-attribute"> </div>
+                </div>
+                <div id="genus-wrapper" class="info-wrapper">
+                    <h4 class="text-center"> Genus </h4>
+                    <div id="genus-container" class="lead text-center species-attribute"> </div>
+                </div>
             </div>
         </div>
     </div>
@@ -69,12 +85,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
     <script src="bootstrap/js/bootstrap.min.js"></script>
 
-    <!-- <script src="test.json"></script> -->
+    <!-- <script src="scripts/vibrant.js"></script> -->
+    <script src="node_modules/node-vibrant/dist/vibrant.js"></script>
     <script src="scripts/pixelation.js"></script>
+    <script src="scripts/colors.js"></script>
     <script src="scripts/fetchData.js"></script>
     <script src="scripts/script.js"></script>
-
-    <script src="scripts/geo.js"></script>
-
+    <script src="scripts/species.js"></script>
   </body>
 </html>

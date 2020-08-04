@@ -1,68 +1,66 @@
 /**************** VARIABLES *******************/
 :root {
-  --main: #7EC8C2;
-  --body: #000;
-  --background: #fff;
+    --main: #7EC8C2;
+    --body: #000;
+    --background: #fff;
 }
 
 /**************** MAIN *******************/
 body {
-  padding: 0;
-  margin: 0;
-  color: var(--body);
-  background-color: var(--background);
-  /* background-image: url('https://images.alphacoders.com/887/887559.jpg'); /* just as a filler */
-
+    padding: 0;
+    margin: 0;
+    color: var(--body);
+    background-color: var(--background);
 }
 
 /**************** NAVBAR *******************/
 .navbar {
-  border-bottom: 2px solid var(--body);
+    border-bottom: 2px solid var(--body);
 }
 
 .bg-nav {
-  background: #fff;
-  border-bottom-color: #fff;
+    background: #fff;
+    border-bottom-color: #fff;
 }
 
 .navbar-brand {
-  text-transform: uppercase;
-  margin-left: 20px;
-  letter-spacing: 0px;
-  font-size: 2em;
+    text-transform: uppercase;
+    margin-left: 20px;
+    letter-spacing: 0px;
+    font-size: 2em;
 }
 
 .navbar-collapse {
-  justify-content: flex-end;
-  margin-right: 20px;
+    justify-content: flex-end;
+    margin-right: 20px;
 }
 
 .nav-item {
-  margin-left: 10px;
+    margin-left: 10px;
 }
 
 .nav-link {
-  text-transform: uppercase;
-  padding: 10px;
-  color: var(--body);
+    text-transform: uppercase;
+    padding: 10px;
+    color: var(--body);
 }
 
 .nav-btn {
-  outline: 2px solid var(--main);
+    outline: 2px solid var(--main);
 }
 
 .nav-btn:hover {
-  background: var(--main);
+    background: var(--main);
 }
 
 /**************** HEADER *******************/
 header {
-  background-size: cover;
-  background-position: center;
-  background-color: var(--main);
-  position: relative;
-  margin-top: 75px;
-  text-align: center;
-  padding: 10%;
-  color: #fff;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--main);
+    position: relative;
+    margin-top: 75px;
+    text-align: center;
+    padding: 10%;
+    color: #fff;
 }

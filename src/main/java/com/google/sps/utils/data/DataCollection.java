@@ -35,6 +35,7 @@ public class DataCollection {
     private static final String KG_URL = "https://kgsearch.googleapis.com/v1/entities:search?key=" + API_KEY + "&query=";
     private static final String LIST_URL = "https://en.wikipedia.org/wiki/Lists_of_organisms_by_population";
     private static final String CETACEANS_URL = "https://en.wikipedia.org/wiki/List_of_cetaceans_by_population";
+    private static final String EXTINCT_URL = "https://en.wikipedia.org/wiki/Extinct_in_the_wild";
     private static final String LIST_CONTENT_CLASS = "mw-parser-output";
     private static final String ERROR_STRING = "Exception occurred retrieving API data: ";
     private static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
@@ -45,10 +46,17 @@ public class DataCollection {
     }
 
     public static void collectData() throws IOException {
-        List<String> urls = parseListofPages();
-        for (String url: urls) {
-            parseSpeciesTable(url);
+        // Parse EXTINCT_URL
+        List<String> extinct_urls = parseExtinctList();
+        for (String url : extinct_urls) {
+            parseSpeciesPage(url);
         }
+
+        // Parse LIST_URL
+        List<String> species_urls = parseListofPages();
+        for (String url : species_urls) {
+            parseSpeciesTable(url);
+        }        
     }
 
     /**
@@ -119,7 +127,7 @@ public class DataCollection {
                 Elements tds = row.select("td");
 
                 Species species = processSpecies(tds, url);
-                if (species == null || !species.hasNecessaryInfo()) {
+                if (species == null || !species.isDisplayable()) {
                     continue;
                 }
 
@@ -135,7 +143,88 @@ public class DataCollection {
     }
 
     /**
-    * Get Species information from each row of the table
+    * Scrapes EXTINCT_URL to get a list of all the URLs with information about species.
+    * The returned URLs direct to individual species pages, rather than a table.
+    * Page Structure:
+    *   <ul>
+    *     <li><a href="LINK"></a>[Text]</li>
+    *     <li><a href="LINK"></a>[Text]</li>
+    *   </ul>
+    *
+    * @return List of all the URLs to go to
+    */
+    private static List<String> parseExtinctList() throws IOException {
+        Document doc = Jsoup.connect(EXTINCT_URL).get();
+        Elements content = doc.getElementsByClass(LIST_CONTENT_CLASS);
+        Elements listItems = content.select("ul > li"); // get list items that are in a nested ul
+        List<String> urls = new ArrayList<String>();
+
+        boolean reachedSpecies = false;
+        for (Element listItem: listItems) {
+            if (listItem.text().contains("Alagoas curassow")) {
+                reachedSpecies = true;
+            }
+
+            // Ignore other list elements
+            if (!reachedSpecies) {
+                continue;
+            }
+
+            // Stop after 19 species urls because there are other urls that share the format
+            if (urls.size() == 19) {
+                break;
+            }
+
+            // Gets the absolute link to the new wiki page
+            // Example: https://en.wikipedia.org/wiki/Alagoas_curassow
+            Element link = listItem.select("a").first();
+            String absHref = link.attr("abs:href");
+            urls.add(absHref);
+        }
+        return urls;
+    }
+
+    /**
+    * Add information from individual species page per url into Datastore
+    * @param url: url to parse the webpage for
+    */
+    private static void parseSpeciesPage(String url) throws IOException {
+        Document doc = Jsoup.connect(url).get();
+        String commonName, imageLink, scientificName;
+
+        // Extract common name
+        Element commonEl = doc.getElementsByClass("firstHeading").first();
+        commonName = commonEl.text().trim();
+
+        // Extract image link
+        Element image = doc.select("img").first();
+        imageLink = scrapeImageLink(image);
+        
+        // Extract scientific name
+        Element binomial = doc.getElementsByClass("binomial").first();
+        if (binomial == null) {
+            Element trinomial = doc.getElementsByClass("trinomial").first();
+            if (trinomial != null) {
+                scientificName = trinomial.text().trim();
+            }
+            else {
+                scientificName = null;
+            }
+        }
+        else {
+            scientificName = binomial.text().trim();
+        }
+
+
+        Species species = processExtinct(commonName, imageLink, scientificName, url);
+        if (species == null || !speciesAlreadyStored(species.getBinomialName())) {
+            addApiInfo(species);
+            addSpeciesToDatastore(species);
+        }
+    }
+
+    /**
+    * Get Species information, calling the appropriate function (based on Wikipedia table format)
     * @param tds: The row Element to scrape for info
     * @param url: url that contains the table for citation
     * @return Species object with filled fields, or null if incomplete
@@ -144,7 +233,18 @@ public class DataCollection {
         if (url.equals(CETACEANS_URL)) {
             return processCetaceans(tds, url);
         }
+        else {
+            return processGeneralSpecies(tds, url);
+        }
+    }
 
+    /**
+    * Get Species information from each row of the table
+    * @param tds: The row Element to scrape for info
+    * @param url: url that contains the table for citation
+    * @return Species object with filled fields, or null if incomplete
+    */
+    private static Species processGeneralSpecies(Elements tds, String url) {
         if (tds.size() > 6) {
             String commonName = tds.get(0).text().trim();
             String binomialName = tds.get(1).text().trim();
@@ -205,16 +305,36 @@ public class DataCollection {
 
             System.out.printf("%-35s %-30s %-25s %-10s %n", commonName, binomialName, population, status);
             Species species = new Species.Builder()
-                                        .withCommonName(commonName)
-                                        .withBinomialName(binomialName)
-                                        .withStatus(status)
-                                        .withPopulation(population)
-                                        .withImageLink(imageLink)
-                                        .withCitationLink(url)
-                                        .build();
+                                .withCommonName(commonName)
+                                .withBinomialName(binomialName)
+                                .withStatus(status)
+                                .withPopulation(population)
+                                .withImageLink(imageLink)
+                                .withCitationLink(url)
+                                .build();
             return species;
         }
         return null;
+    }
+
+    /**
+    * Create Species object for extinct in the wild animals
+    * @param commonName: the common name scraped from the webpage
+    * @param imageLink: image link scraped from the webpage
+    * @param scientificName: binomial or trinomial name scraped from the webpage
+    * @param url: url that contains the table for citation
+    * @return Species object with filled fields, or null if incomplete
+    */
+    private static Species processExtinct(String commonName, String imageLink, String scientificName, String url) {
+        Species species = new Species.Builder()
+                            .withCommonName(commonName)
+                            .withBinomialName(scientificName)
+                            .withStatus("EW")
+                            .withPopulation(0)
+                            .withImageLink(imageLink)
+                            .withCitationLink(url)
+                            .build();
+        return species;
     }
 
     /**
@@ -266,56 +386,56 @@ public class DataCollection {
         }
     }
 
-  /**
-   * Store species in Datastore
-   * @param species: species to store
-   */
-  public static void addSpeciesToDatastore(Species species) {
-    Key key = keyFactory.newKey(species.getBinomialName());
-    Entity oldEntity = datastore.get(key);
+    /**
+    * Store species in Datastore
+    * @param species: species to store
+    */
+    public static void addSpeciesToDatastore(Species species) {
+        Key key = keyFactory.newKey(species.getBinomialName());
+        Entity oldEntity = datastore.get(key);
+        
+        if (oldEntity == null) {
+            Entity speciesEntity = Entity.newBuilder(key)
+                .set("common_name", species.getCommonName())
+                .set("binomial_name", species.getBinomialName())
+                .set("status", species.getStatus())
+                .set("population", species.getPopulation())
+                .set("image_link", species.getImageLink())
+                .set("citation_link", species.getCitationLink())
+                .build();
     
-    if (oldEntity == null) {
-      Entity speciesEntity = Entity.newBuilder(key)
-        .set("common_name", species.getCommonName())
-        .set("binomial_name", species.getBinomialName())
-        .set("status", species.getStatus())
-        .set("population", species.getPopulation())
-        .set("image_link", species.getImageLink())
-        .set("citation_link", species.getCitationLink())
-        .build();
+            if (species.getTaxonomicPath() != null) {
+                speciesEntity = Entity.newBuilder(speciesEntity).set("kingdom", species.getTaxonomicPath().getAnimalKingdom()).build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("phylum", species.getTaxonomicPath().getAnimalPhylum()).build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("class", species.getTaxonomicPath().getAnimalClass()).build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("order", species.getTaxonomicPath().getAnimalOrder()).build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("family", species.getTaxonomicPath().getAnimalFamily()).build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("genus", species.getTaxonomicPath().getAnimalGenus()).build();
+            } else {
+                speciesEntity = Entity.newBuilder(speciesEntity).set("kingdom", "Not Available").build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("phylum", "Not Available").build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("class", "Not Available").build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("order", "Not Available").build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("family", "Not Available").build();
+                speciesEntity = Entity.newBuilder(speciesEntity).set("genus", "Not Available").build();
+        
+            }
     
-      if (species.getTaxonomicPath() != null) {
-        speciesEntity = Entity.newBuilder(speciesEntity).set("kingdom", species.getTaxonomicPath().getAnimalKingdom()).build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("phylum", species.getTaxonomicPath().getAnimalPhylum()).build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("class", species.getTaxonomicPath().getAnimalClass()).build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("order", species.getTaxonomicPath().getAnimalOrder()).build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("family", species.getTaxonomicPath().getAnimalFamily()).build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("genus", species.getTaxonomicPath().getAnimalGenus()).build();
-      } else {
-        speciesEntity = Entity.newBuilder(speciesEntity).set("kingdom", "Not Available").build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("phylum", "Not Available").build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("class", "Not Available").build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("order", "Not Available").build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("family", "Not Available").build();
-        speciesEntity = Entity.newBuilder(speciesEntity).set("genus", "Not Available").build();
-      
-      }
-    
-      if (species.getTrend() != null) {
-        speciesEntity = Entity.newBuilder(speciesEntity).set("trend", species.getTrend().name()).build();
-      } else {
-        speciesEntity = Entity.newBuilder(speciesEntity).set("trend", "UNKNOWN").build();
-      }
+            if (species.getTrend() != null) {
+                speciesEntity = Entity.newBuilder(speciesEntity).set("trend", species.getTrend().name()).build();
+            } else {
+                speciesEntity = Entity.newBuilder(speciesEntity).set("trend", "UNKNOWN").build();
+            }
 
-      if (species.getWikipediaNotes() != null) {
-        speciesEntity = Entity.newBuilder(speciesEntity).set("wikipedia_notes", species.getWikipediaNotes()).build();
-      } else {
-        speciesEntity = Entity.newBuilder(speciesEntity).set("wikipedia_notes", "N/A").build();
-      }
-      
-      datastore.put(speciesEntity);
+            if (species.getWikipediaNotes() != null) {
+                speciesEntity = Entity.newBuilder(speciesEntity).set("wikipedia_notes", species.getWikipediaNotes()).build();
+            } else {
+                speciesEntity = Entity.newBuilder(speciesEntity).set("wikipedia_notes", "N/A").build();
+            }
+        
+            datastore.put(speciesEntity);
+        }
     }
-  }
 
 
     // ------------------------------  SCRAPING HELPER FUNCTIONS  ------------------------------ //
@@ -385,7 +505,9 @@ public class DataCollection {
     * Takes in the image element from wikipedia and extracts the url
     * 
     * If the species has an image, the format is:
-    *    <img src="IMAGE_URL" srcset="IMAGE_URL_SIZE:1.5x, IMAGE_URL_SIZE:2x">
+    *    <img src="IMAGE_URL" srcset="IMAGE_URL 1.5x, IMAGE_URL 2x">
+    * Example format:
+    *    <img src="//upload.wikimedia.org/image.jpg" srcset="//upload.wikimedia.org/image.jpg 1.5x, //upload.wikimedia.org/image.jpg 2x">
     * @param trendImg html for the species image in the table
     */
     private static String scrapeImageLink(Element image) {

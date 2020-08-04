@@ -84,25 +84,26 @@ public class AllDataServlet extends HttpServlet {
         String imageLink        = speciesData.getString("image_link");
         String citationLink     = speciesData.getString("citation_link");
         PopulationTrend trend   = DataCollection.convertToPopulationTrendEnum(speciesData.getString("trend"));
-        TaxonomicPath taxonomy  = new TaxonomicPath(speciesData.getString("kingdom"),
-                                                    speciesData.getString("phylum"),
-                                                    speciesData.getString("class"),
-                                                    speciesData.getString("order"),
-                                                    speciesData.getString("family"),
-                                                    speciesData.getString("genus"));
+        TaxonomicPath taxonomy  = new TaxonomicPath(
+                                    speciesData.getString("kingdom"),
+                                    speciesData.getString("phylum"),
+                                    speciesData.getString("class"),
+                                    speciesData.getString("order"),
+                                    speciesData.getString("family"),
+                                    speciesData.getString("genus"));
 
         Species species = new Species.Builder()
-                                    .withCommonName(commonName)
-                                    .withBinomialName(binomialName)
-                                    .withStatus(status)
-                                    .withPopulationTrend(trend)
-                                    .withPopulation(population)
-                                    .withWikipediaNotes(wikipediaNotes)
-                                    .withImageLink(imageLink)
-                                    .withCitationLink(citationLink)
-                                    .build();
+                            .withCommonName(commonName)
+                            .withBinomialName(binomialName)
+                            .withStatus(status)
+                            .withPopulationTrend(trend)
+                            .withPopulation(population)
+                            .withWikipediaNotes(wikipediaNotes)
+                            .withImageLink(imageLink)
+                            .withCitationLink(citationLink)
+                            .withTaxonomicPath(taxonomy)
+                            .build();
                                             
-        species.setTaxonomicPath(taxonomy);
         return species;
     }
 
