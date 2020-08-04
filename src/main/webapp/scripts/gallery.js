@@ -55,7 +55,6 @@ function fetchAllSpeciesData(sortBy) {
                         '</div> ' +
                     '</div>' +
                 '</div>'); 
-
             $grid.append($html)
                 // add and lay out newly appended items
                 .masonry('appended', $html);
