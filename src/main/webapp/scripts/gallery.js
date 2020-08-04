@@ -44,7 +44,8 @@ function fetchAllSpeciesData(sortBy) {
     const url = createQueryString("/allData", parameters);
     clearGallery();
     
-    fetch(url).then(response => handleErrors(response)).then(speciesData => {
+    // fetch(url).then(response => handleErrors(response)).then(speciesData => {
+    fetch(url).then(response => response.json()).then(speciesData => {
         for (var species in speciesData) {
             // Append images to grid
             var $html = $(
