@@ -108,8 +108,8 @@ public class Species {
             s.wikipediaNotes = this.wikipediaNotes;
             s.imageLink = this.imageLink;
             s.citationLink = this.citationLink;
+            s.taxonomicPath = this.taxonomicPath;
             s.geoData = this.geoData;
-
             return s;
         }      
     }

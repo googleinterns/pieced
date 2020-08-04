@@ -103,7 +103,8 @@ public class AllDataServlet extends HttpServlet {
                             .withCitationLink(citationLink)
                             .withTaxonomicPath(taxonomy)
                             .build();
-                                            
+
+        System.out.println(species);
         return species;
     }
 

@@ -47,6 +47,7 @@ function fetchAllSpeciesData(sortBy) {
     // fetch(url).then(response => handleErrors(response)).then(speciesData => {
     fetch(url).then(response => response.json()).then(speciesData => {
         for (var species in speciesData) {
+            console.log(species);
             // Append images to grid
             var $html = $(
                 '<div class="grid-filters ' + speciesData[species].status + ' ' + speciesData[species].trend + ' ' + speciesData[species].taxonomicPath.order_t + ' ' + speciesData[species].taxonomicPath.class_t + '">' +
