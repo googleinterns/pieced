@@ -78,7 +78,14 @@ a:hover {
     color: var(--dark-main-1) !important;
 }
 
-/**************** PAGE HEADER *******************/
+/**************** SPACING *******************/
 .page-header {
-    margin-top: 75px;
+    margin-top: 65px;
+}
+
+a.anchor {
+    display: block;
+    position: relative;
+    top: -65px;
+    visibility: hidden;
 }
