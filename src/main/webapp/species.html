@@ -14,14 +14,10 @@
   
   <body>
     <div id="navigation"></div>
-
-    <!--------------- HEADER ---------------->
-    <header class="container-fluid">
-      <h1 id="common-name-container"> </h1>
-    </header>
+    <a class="anchor"></a>
 
     <!--------------- CONTENT ---------------->
-    <div id="content">
+    <div id="page-header content">
         <div class="species-info-box">
             <div class="species-name">
                 <h1 id="common-name-container"></h1>
@@ -33,7 +29,7 @@
             <div id="species-image-container">
                 <!-- Canvas for pixelation -->
                 <div>
-                    <canvas onmouseover="animateToFullResolution()" onmouseout="animateToOldResolution()" id="canvas" height = "400" width = "500"> </canvas>
+                    <canvas onmouseover="animateToFullResolution()" onmouseout="animateToOldResolution()" id="canvas" height = "600" width = "600"> </canvas>
                     <img id="species-image" class="image" alt = "Placeholder" style="display: none;">
                     <div id="population">
                         <label id="pixel_label" for="pixel_factor"> Current Population </label>
