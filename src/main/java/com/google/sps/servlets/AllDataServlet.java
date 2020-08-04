@@ -101,9 +101,9 @@ public class AllDataServlet extends HttpServlet {
                             .withWikipediaNotes(wikipediaNotes)
                             .withImageLink(imageLink)
                             .withCitationLink(citationLink)
+                            .withTaxonomicPath(taxonomy)
                             .build();
                                             
-        species.setTaxonomicPath(taxonomy);
         return species;
     }
 

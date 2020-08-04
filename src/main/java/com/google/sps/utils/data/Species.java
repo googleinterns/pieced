@@ -27,18 +27,18 @@ public class Species {
     private String wikipediaNotes;
     
     public static class Builder {
-        private String commonName;
-        private String binomialName;
-        private String status;
-        private PopulationTrend trend;
+        private String commonName = null;
+        private String binomialName = null;
+        private String status = null;
+        private PopulationTrend trend = PopulationTrend.UNKNOWN;
 
-        private long population;
-        private String wikipediaNotes;
-        private String imageLink;
-        private String citationLink;
+        private long population = -1;
+        private String wikipediaNotes = null;
+        private String imageLink = null;
+        private String citationLink = null;
 
-        private TaxonomicPath taxonomicPath;
-        private String geoData;
+        private TaxonomicPath taxonomicPath = null;
+        private String geoData = null;
 
         public Builder() {}
 
@@ -87,6 +87,17 @@ public class Species {
             return this;
         }
 
+        // Overloaded method to construct TaxonomicPath w/o external reference
+        public Builder withTaxonomicPath(String kingdom_t, String phylum_t, String class_t, String order_t, String family_t, String genus_t) {
+            this.taxonomicPath = new TaxonomicPath(kingdom_t, phylum_t, class_t, order_t, family_t, genus_t);
+            return this;
+        }
+
+        public Builder withGeoData(String geoData) {
+            this.geoData = geoData;
+            return this;
+        }
+
         public Species build() {
             Species s = new Species();
             s.commonName = this.commonName;
@@ -97,12 +108,13 @@ public class Species {
             s.wikipediaNotes = this.wikipediaNotes;
             s.imageLink = this.imageLink;
             s.citationLink = this.citationLink;
-
+            s.taxonomicPath = this.taxonomicPath;
+            s.geoData = this.geoData;
             return s;
         }      
     }
   
-    public Species() {
+    private Species() {
         commonName = null;
         binomialName = null;
         status = null;
