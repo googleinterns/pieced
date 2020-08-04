@@ -18,9 +18,6 @@
         <div id="navigation"></div>
 
         <!--------------- HOME HEADER ---------------->
-        <!-- <header class="page-header header container-fluid d-flex align-items-center position-relative vh-100 cover">
-            <h1>I'm Fiza</h1>
-        </header> -->
         <header class="header container-fluid">
             <div class="overlay"></div>
             <div class="description">
@@ -40,7 +37,7 @@
 
             <!-- sort -->
             <form class="form-inline">              
-                <label for="sort-by">Sort By: </label>
+                <label for="sort-by" class="text-light">Sort By: </label>
                 <select class="custom-select" id="sort-by" onChange="fetchAllSpeciesData(this.options[this.selectedIndex].value)">
                     <option value="common_name">Common Name</option>
                     <option value="population">Population</option>

@@ -44,3 +44,8 @@
     color:#fff;
     padding: 10px 50px;
 }
+
+/* Creates smooth scrolling to the anchor position */
+html {
+    scroll-behavior: smooth;
+}
