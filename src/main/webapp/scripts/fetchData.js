@@ -13,7 +13,7 @@ function handleErrors(response) {
     return response.json();
 }
 
-// Helper function that takes the JSON and modifies the species-template page to display the contained information
+// Helper function that takes the JSON and modifies the species page to display the contained information
 function populatePageWithSpeciesData(speciesData) {
     // var canvas                  = document.getElementById('canvas');
     var commonNameContainer     = document.getElementById('common-name-container');
