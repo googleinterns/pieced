@@ -87,6 +87,17 @@ public class Species {
             return this;
         }
 
+        // Overloaded method to construct TaxonomicPath w/o external reference
+        public Builder withTaxonomicPath(String kingdom, String phylum, String class, String order, String family, String genus) {
+            this.taxonomicPath = new TaxonomicPath(kingdom, phylum, class, order, family, genus);
+            return this;
+        }
+
+        public Builder withGeoData(String geoData) {
+            this.geoData = geoData;
+            return this;
+        }
+
         public Species build() {
             Species s = new Species();
             s.commonName = this.commonName;
@@ -97,12 +108,13 @@ public class Species {
             s.wikipediaNotes = this.wikipediaNotes;
             s.imageLink = this.imageLink;
             s.citationLink = this.citationLink;
+            s.geoData = this.geoData;
 
             return s;
         }      
     }
   
-    public Species() {
+    private Species() {
         commonName = null;
         binomialName = null;
         status = null;
