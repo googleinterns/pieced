@@ -100,5 +100,10 @@ a:hover {
 }
 
 .nav-item .btn {
-    color: var(--accent);
+    color: white;
+}
+
+.sidebar h6 {
+    background: var(--accent);
+    color: white !important;
 }
