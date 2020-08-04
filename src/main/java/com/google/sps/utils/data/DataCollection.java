@@ -224,7 +224,7 @@ public class DataCollection {
     }
 
     /**
-    * Get Species information from each row of the table
+    * Get Species information, calling the appropriate function (based on Wikipedia table format)
     * @param tds: The row Element to scrape for info
     * @param url: url that contains the table for citation
     * @return Species object with filled fields, or null if incomplete
@@ -233,7 +233,18 @@ public class DataCollection {
         if (url.equals(CETACEANS_URL)) {
             return processCetaceans(tds, url);
         }
+        else {
+            return processGeneralSpecies(tds, url);
+        }
+    }
 
+    /**
+    * Get Species information from each row of the table
+    * @param tds: The row Element to scrape for info
+    * @param url: url that contains the table for citation
+    * @return Species object with filled fields, or null if incomplete
+    */
+    private static Species processGeneralSpecies(Elements tds, String url) {
         if (tds.size() > 6) {
             String commonName = tds.get(0).text().trim();
             String binomialName = tds.get(1).text().trim();
