@@ -47,7 +47,7 @@ a:hover {
 }
 
 /* The overlay effect - lays on top of the container and over the image */
-.overlay {
+.overlay-grid {
     position: absolute;
     bottom: 0;
     background: rgb(0, 0, 0);
@@ -70,7 +70,7 @@ a:hover {
 }
 
 .active-filter button {
-    background: black !important;
+    background: var(--accent) !important;
     border-radius: 25px;
     margin: 5px;
 }
@@ -81,7 +81,7 @@ a:hover {
 
 .filters {
     width: 100%;
-    background: #0a0c0d;
+    background: var(--dark-main-1);
     padding: 5px 10px;
     font-size: 0.9em;
 }
@@ -95,8 +95,10 @@ a:hover {
 }
 
 .sidebar {
-    background: #0a0c0d;
+    background: var(--dark-main-1) !important;
+    color: white !important;
 }
-.sidebar-sticky {
-    background: #0a0c0d;
+
+.nav-item .btn {
+    color: var(--accent);
 }

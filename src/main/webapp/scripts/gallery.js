@@ -42,7 +42,7 @@ function fetchAllSpeciesData(sortBy) {
                 `<div class="grid-filters ${speciesData[species].status} ${speciesData[species].trend} ${speciesData[species].taxonomicPath.order_t} ${speciesData[species].taxonomicPath.class_t}">
                     <div class="grid-item">
                         <img src="${speciesData[species].imageLink}" />
-                        <div class="overlay">
+                        <div class="overlay-grid">
                             <a href="/species-template.html?species=${speciesData[species].commonName}"> ${speciesData[species].commonName} </a>
                         </div>
                     </div>

@@ -1,13 +1,18 @@
 /**************** VARIABLES *******************/
 :root {
-    --navbar-text: #222e2a;
-    --button-accent: #AB887C;
+    --accent: #AB887C;
+    --light-main-2: #606158;
+    --light-main-1: #34462a;
+    --main: #13250c;
+    --dark-main-1: #0a0c0d;
 }
 
 /**************** MAIN *******************/
 body {
     padding: 0;
     margin: 0;
+    background: var(--dark-main-1);
+    color: var(--light-main-2);
 }
 
 a {
@@ -47,15 +52,15 @@ a:hover {
 }
 
 .nav-link:hover {
-    color: var(--button-accent);
+    color: var(--accent);
 }
 
 .nav-btn {
-    outline: 2px solid var(--button-accent);
+    outline: 2px solid var(--accent);
 }
 
 .nav-btn:hover {
-    background: var(--button-accent);
+    background: var(--accent);
     color: white;
 }
 
@@ -66,9 +71,9 @@ a:hover {
 }
 
 .bg-nav .navbar-brand {
-    color: var(--navbar-text);
+    color: var(--dark-main-1);
 }
 
 .bg-nav .nav-link {
-    color: var(--navbar-text) !important;
+    color: var(--dark-main-1) !important;
 }
