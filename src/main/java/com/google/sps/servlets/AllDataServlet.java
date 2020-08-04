@@ -91,6 +91,8 @@ public class AllDataServlet extends HttpServlet {
                                     speciesData.getString("order"),
                                     speciesData.getString("family"),
                                     speciesData.getString("genus"));
+        String geoData          = speciesData.getString("geo_data");
+
 
         Species species = new Species.Builder()
                             .withCommonName(commonName)
@@ -101,9 +103,10 @@ public class AllDataServlet extends HttpServlet {
                             .withWikipediaNotes(wikipediaNotes)
                             .withImageLink(imageLink)
                             .withCitationLink(citationLink)
+                            .withTaxonomicPath(taxonomy)
+                            .withGeoData(geoData)
                             .build();
                                             
-        species.setTaxonomicPath(taxonomy);
         return species;
     }
 
