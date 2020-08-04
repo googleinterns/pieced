@@ -77,3 +77,8 @@ a:hover {
 .bg-nav .nav-link {
     color: var(--dark-main-1) !important;
 }
+
+/**************** PAGE HEADER *******************/
+.page-header {
+    margin-top: 75px;
+}
