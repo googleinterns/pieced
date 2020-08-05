@@ -1,91 +1,29 @@
 .species-info-box {
   align-self: flex-start;
   background-color: white;
-  padding:20px;
+  padding: 20px;
   position: relative;
   transform: translate(-5%, 50%);
 }
 
-.species-image-box {
-    background: red;
-}
-
 .species-name {
-    color: var(--dark-main-1);
+    color: var(--light-bg-1);
 }
 
-/* .species-attribute {
-    padding-bottom: 0.5em;
+.species-name h1 {
+    font-size: 150%;
+    line-height: 0.7;
+    text-transform: uppercase;
 }
 
-label {
-    text-align: center;
-} */
-
-/* #species-info-container {
-    display: flex;
-    flex-direction: column;
-    background: var(--info-container-color);
-    flex-grow: 3;
-
-    display: grid;
-    grid-gap: .5rem;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    grid-template-areas: "name name kingdom phylum class"
-                        "status status order family genus"
-                        "description description description description description"
-                        "citations citations citations citations citations";
-    justify-content: space-between;
-
-    height: 450px;
-    padding: 25px 25px 0px 25px;
+.species-name h2 {
+    font-size: 120%;
+    font-style: italic;
 }
 
-.info-wrapper {
-    border-radius: .25rem;
-    background: #7EC8C2;
-    padding-top: 10px;
-} */
-
-#name-wrapper {
-    grid-area: name;
-}
-
-#status-wrapper {
-    grid-area: status;
-}
-
-#description-wrapper {
-    grid-area: description;
-}
-
-#citations-wrapper {
-    grid-area: citations;
-}
-
-#kingdom-wrapper {
-    grid-area: kingdom;
-}
-
-#phylum-wrapper {
-    grid-area: phylum;
-}
-
-#class-wrapper {
-    grid-area: class;
-}
-
-#order-wrapper {
-    grid-area: order;
-}
-
-#family-wrapper {
-    grid-area: family;
-}
-
-#genus-wrapper {
-    grid-area: genus;
+#population-container {
+    font-size: 600%;
+    line-height: 0.9;
 }
 
 canvas {
@@ -96,34 +34,4 @@ canvas {
     image-rendering: -o-crisp-edges;
     image-rendering: crisp-edges;
     -ms-interpolation-mode: nearest-neighbor;
-}
-
-#map-section {
-    height: 100%;
-    width: 100%;
-}
-
-.container-fluid {
-    padding-top: 100px;
-    padding-bottom: 100px;
-}
-
-#common-name-container {
-    text-transform: capitalize;
-}
-
-#population {
-    padding-top: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-#reset-population {
-    padding: 0 20px 0 20px;
-    background: white;
-    border: 1px solid #ced4da;
-    border-radius: .25rem;
-    color: #495057;
 }
