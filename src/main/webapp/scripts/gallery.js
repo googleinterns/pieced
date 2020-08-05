@@ -213,6 +213,9 @@ function clearSearchForm() {
     document.getElementById('species-search').value='';
 }
 
+var inputLength = 0;
+var decreasing = false;
+
 /**
  * Filters the gallery as the user types letter by letter
  */
@@ -220,12 +223,21 @@ function searchName() {
     $("#species-search").on('input', function() { 
         var input = document.getElementById("species-search");
         var filter = input.value.toUpperCase();
+
+        if (filter.length > inputLength) {
+            inputLength = filter.length;
+            decreasing = false;
+        } else {
+            inputLength = filter.length;
+            decreasing = true;
+        }
+
         var grid_item = grid.getElementsByClassName("grid-filters");
         for (var i = 0; i < grid_item.length; i++) {
             var name = grid_item[i].getElementsByTagName("a")[0].innerText;
             if (name.toUpperCase().indexOf(filter) <= -1) {
                 grid_item[i].style.display = "none";
-            } else {
+            } else if (grid_item[i].style.display != "none" || decreasing) {
                 grid_item[i].style.display = "block";
             }
         }
