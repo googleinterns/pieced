@@ -33,7 +33,7 @@ function populatePageWithSpeciesData(speciesData) {
 
     commonNameContainer.innerText = speciesData.commonName;
     scientificNameContainer.innerText = speciesData.binomialName;
-    populationContainer.innerText = speciesData.population;
+    populationContainer.innerText = speciesData.population + " left";
     statusContainer.innerText = getSpeciesStatus(speciesData.status);
     descriptionContainer.innerText = speciesData.wikipediaNotes;
     citationsContainer.innerText = speciesData.citationLink;
