@@ -6,6 +6,10 @@ var $active_filters_ul = $('.active-filters');
 var $grid = $('#grid')
 var DIV = "div";
 
+$(window).bind("pageshow", function() {
+    clearSearchForm();
+});
+
 // Call these functions when page loads
 $(document).ready(function() {
     // Initialize Masonry
@@ -49,10 +53,12 @@ function fetchAllSpeciesData(sortBy) {
             var $html = $(
                 `<div class="grid-filters ${speciesData[species].status} ${speciesData[species].trend} ${speciesData[species].taxonomicPath.order_t} ${speciesData[species].taxonomicPath.class_t}">
                     <div class="grid-item">
-                        <img src="${speciesData[species].imageLink}" />
-                        <div class="overlay-grid">
-                            <a href="/species.html?species=${speciesData[species].commonName}"> ${speciesData[species].commonName} </a>
-                        </div>
+                        <a class="species-link" href="/species.html?species=${speciesData[species].commonName}">
+                            <img src="${speciesData[species].imageLink}" />
+                            <div class="overlay-grid species-name">
+                                    ${speciesData[species].commonName}
+                            </div>
+                        </a>
                     </div>
                 </div>`);
             $grid.append($html)
@@ -159,6 +165,7 @@ function addFilter(class_name, category) {
     filters.set(class_name, category)
     addFilterToListUI(class_name);
     applyAllFilters();
+    filterByName();
 }
 
 /**
@@ -171,6 +178,7 @@ function deleteFilter() {
 
         filters.delete($(this).text())
         applyAllFilters();
+        filterByName();
     });
 }
 
@@ -181,6 +189,7 @@ function clearFilters() {
     $('.active-filters').empty();
     filters.clear();
     applyAllFilters();
+    filterByName();
 }
 
 /**
@@ -201,21 +210,47 @@ function addFilterToListUI(class_name) {
 
 // -------------------------------------------- SEARCH FUNCTIONS -------------------------------------------- //
 /**
+ * Clears the search form
+ */
+function clearSearchForm() {
+    document.getElementById('species-search').value='';
+}
+
+var inputLength = 0;
+
+/**
  * Filters the gallery as the user types letter by letter
  */
 function searchName() {
     $("#species-search").on('input', function() { 
         var input = document.getElementById("species-search");
         var filter = input.value.toUpperCase();
+
+        // if we search for a shorter term, reapply all filters and THEN search by term
+        if (filter.length <= inputLength) {
+            applyAllFilters();
+        }
+
+        inputLength = filter.length;
+        filterByName();
+    });
+}
+
+/* 
+ * Helper function for search filtering
+*/ 
+function filterByName(filter) {
+        var input = document.getElementById("species-search");
+        var filter = input.value.toUpperCase();
         var grid_item = grid.getElementsByClassName("grid-filters");
+
         for (var i = 0; i < grid_item.length; i++) {
             var name = grid_item[i].getElementsByTagName("a")[0].innerText;
             if (name.toUpperCase().indexOf(filter) <= -1) {
                 grid_item[i].style.display = "none";
-            } else {
+            } else if (grid_item[i].style.display != "none") {  // make sure we don't reveal species that are already filtered out
                 grid_item[i].style.display = "block";
             }
         }
         $grid.masonry('layout');
-    });
 }
