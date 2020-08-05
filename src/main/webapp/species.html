@@ -14,79 +14,53 @@
   
   <body>
     <div id="navigation"></div>
-
-    <!--------------- HEADER ---------------->
-    <header class="container-fluid">
-      <h1 id="common-name-container"> </h1>
-    </header>
+    <a class="anchor"></a>
 
     <!--------------- CONTENT ---------------->
-    <div id="content">
-        <div class="species-info-box">
-            <div class="species-name">
-                <h1 id="common-name-container"></h1>
-                <h2 id="scientific-name-container"></h2>
+    <div class="container page-header content">
+        <a href="/#gallery-anchor" class="previous">&laquo;</a>
+        <div class="row">
+            <div id="species-image-container" class="col col-xs-6">
+                <canvas onmouseover="animateToFullResolution()" onmouseout="animateToOldResolution()" id="canvas" height = "550" width = "550"> </canvas>
+                <img id="species-image" class="image" alt = "Placeholder" style="display: none;">
             </div>
-        </div>
-        <!-- Page Content -->
-        <div id="species-page" class="container-fluid"> 
-            <div id="species-image-container">
-                <!-- Canvas for pixelation -->
-                <div>
-                    <canvas onmouseover="animateToFullResolution()" onmouseout="animateToOldResolution()" id="canvas" height = "400" width = "500"> </canvas>
-                    <img id="species-image" class="image" alt = "Placeholder" style="display: none;">
-                    <div id="population">
-                        <label id="pixel_label" for="pixel_factor"> Current Population </label>
-                        <input id="pixel_factor" type="number" min="1"  value="100">
-                        <button type="button" id="reset-population">Reset</button>
+            <div class="col col-xs-3 col-sm-offset-4 species-info-box">
+                <!-- <div class="species-status">
+                    <p id="status-container"></p>
+                </div> -->
+                <div class="main-species-info">
+                    <div class="species-name">
+                        <h1 id="common-name-container"></h1>
+                        <h2 id="scientific-name-container"></h2>
                     </div>
-                </div>
-            </div>
-
-            <!-- Containers for species-specific info -->
-            <div id="species-info-container">
-                <div id="name-wrapper" class="info-wrapper">
-                    <h4 class="text-center"> Scientific Name </h4>
-                    <div id="scientific-name-container" class="lead text-center species-attribute"> </div>
-                </div>
-                <div id="status-wrapper" class="info-wrapper">
-                    <h4 class="text-center"> Status </h4>
-                    <div id="status-container" class="lead text-center species-attribute"> </div>
-                </div>
-                <div id="description-wrapper" class="info-wrapper">
-                    <h4 class="text-center"> Description </h4>
-                    <div id="description-container" class="lead text-center species-attribute"> </div>
-                </div>
-                <div id="citations-wrapper" class="info-wrapper">                
-                    <h4 class="text-center"> Citations </h4>
-                    <div id="citations-container" class="lead text-center species-attribute"> </div>
-                </div>
-                <div id="kingdom-wrapper" class="info-wrapper">
-                    <h4 class="text-center"> Kingdom </h4>
-                    <div id="kingdom-container" class="lead text-center species-attribute"> </div>
-                </div>
-                <div id="phylum-wrapper" class="info-wrapper">
-                    <h4 class="text-center"> Phylum </h4>
-                    <div id="phylum-container" class="lead text-center species-attribute"> </div>
-                </div>
-                <div id="class-wrapper" class="info-wrapper">
-                    <h4 class="text-center"> Class </h4>
-                    <div id="class-container" class="lead text-center species-attribute"> </div>
-                </div>
-                <div id="order-wrapper" class="info-wrapper">
-                    <h4 class="text-center"> Order </h4>
-                    <div id="order-container" class="lead text-center species-attribute"> </div>
-                </div>
-                <div id="family-wrapper" class="info-wrapper">
-                    <h4 class="text-center"> Family </h4>
-                    <div id="family-container" class="lead text-center species-attribute"> </div>
-                </div>
-                <div id="genus-wrapper" class="info-wrapper">
-                    <h4 class="text-center"> Genus </h4>
-                    <div id="genus-container" class="lead text-center species-attribute"> </div>
+                    <p id="population-container"></p>
+                    <p>This species is considered <b><span id="status-container"></span></b>. 
+                        <span id="description-container"></span>
+                    </p>
+                    <!-- <p id="description-container"></p> -->
+                    <p id="taxonomy-container"></p>
+                    <!-- <div id="slider-container">
+                        <input type="range" min="1" class="slider" id="population-slider">
+                        <small>The image is made with approximately <span id="slider-value"></span> pixels.</small>
+                    </div> -->
+                    <div id="population">
+                        <label id="pixel_label" for="pixel_factor">Number of pixels: </label>
+                        <input id="pixel_factor" type="number" min="1"  value="100">
+                        <button class="btn solid-btn" type="button" id="reset-population">Reset Population</button>
+                    </div>
+                    <!-- <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Number of pixels:</span>
+                        </div>
+                        <input id="pixel_factor" type="number" min="1" class="form-control" aria-label="Num pixels">
+                        <div class="input-group-append">
+                            <button id="reset-population" class="btn" type="button">Reset Population</button>
+                        </div>
+                    </div> -->
                 </div>
             </div>
         </div>
+        <p id="image-credit"></p>
     </div>
 
     <!-- JavaScript -->

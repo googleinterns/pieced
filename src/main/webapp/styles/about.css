@@ -4,3 +4,24 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+/* #body-container {
+    background: linear-gradient(
+        to bottom, 
+        var(--dark-main-1), 0.01%, var(--light-bg-2)
+    ); 
+    padding: 0 10em 2em 10em !important;
+} */
+
+/* .page-header {
+    background: linear-gradient(
+        to bottom, 
+        var(--dark-main-1),
+        10%,
+        var(--light-bg-2)
+    ); 
+}
+#home-container {
+    background: var(--light-bg-2);
+    padding: 0 10em 2em 10em !important;
+} */
