@@ -1,4 +1,4 @@
-/**************** BODY *******************/
+/**************** CONTENT *******************/
 .citations-list {
     list-style-type: none;
 }
@@ -18,4 +18,19 @@
 
 .card-image {
     width: 20em;
+}
+
+.page-header {
+    /* margin: 0 10em 0 10em !important; */
+    background: linear-gradient(
+        to bottom, 
+        var(--dark-main-1),
+        0.5%,
+        var(--light-bg-1)
+    ); 
+}
+#home-container {
+    background: var(--light-bg-1);
+    padding: 0 10em 2em 10em !important;
+    /* margin: 0 10em 0 10em !important; */
 }
