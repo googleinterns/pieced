@@ -165,6 +165,7 @@ function addFilter(class_name, category) {
     filters.set(class_name, category)
     addFilterToListUI(class_name);
     applyAllFilters();
+    filterByName();
 }
 
 /**
@@ -177,6 +178,7 @@ function deleteFilter() {
 
         filters.delete($(this).text())
         applyAllFilters();
+        filterByName();
     });
 }
 
@@ -187,6 +189,7 @@ function clearFilters() {
     $('.active-filters').empty();
     filters.clear();
     applyAllFilters();
+    filterByName();
 }
 
 /**
@@ -214,7 +217,6 @@ function clearSearchForm() {
 }
 
 var inputLength = 0;
-var decreasing = false;
 
 /**
  * Filters the gallery as the user types letter by letter
@@ -224,23 +226,31 @@ function searchName() {
         var input = document.getElementById("species-search");
         var filter = input.value.toUpperCase();
 
-        if (filter.length > inputLength) {
-            inputLength = filter.length;
-            decreasing = false;
-        } else {
-            inputLength = filter.length;
-            decreasing = true;
+        // if we search for a shorter term, reapply all filters and THEN search by term
+        if (filter.length <= inputLength) {
+            applyAllFilters();
         }
 
+        inputLength = filter.length;
+        filterByName();
+    });
+}
+
+/* 
+ * Helper function for search filtering
+*/ 
+function filterByName(filter) {
+        var input = document.getElementById("species-search");
+        var filter = input.value.toUpperCase();
         var grid_item = grid.getElementsByClassName("grid-filters");
+
         for (var i = 0; i < grid_item.length; i++) {
             var name = grid_item[i].getElementsByTagName("a")[0].innerText;
             if (name.toUpperCase().indexOf(filter) <= -1) {
                 grid_item[i].style.display = "none";
-            } else if (grid_item[i].style.display != "none" || decreasing) {
+            } else if (grid_item[i].style.display != "none") {  // make sure we don't reveal species that are already filtered out
                 grid_item[i].style.display = "block";
             }
         }
         $grid.masonry('layout');
-    });
 }
