@@ -1,18 +1,21 @@
 .species-info-box {
-    background: white;
-    width: 40%;
-    padding: 20px;
+  align-self: flex-start;
+  background-color: white;
+  padding:20px;
+  position: relative;
+  transform: translate(-5%, 50%);
+}
+
+.species-image-box {
+    background: red;
 }
 
 .species-name {
-    background:white;
     color: var(--dark-main-1);
-    text-align: center;
 }
 
-#common-name-container {
+h1 #common-name-container {
     text-transform: uppercase;
-    /* color: var(--dark-main-1); */
     font-size: 2rem;
 }
 
