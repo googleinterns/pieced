@@ -17,8 +17,8 @@ var originalNumPixels = image.width * image.height;
 
 // Grab initial slider value (equal to species population)
 // Must be parsed as numerical values to avoid bug where the values are treated as Strings in some places, but ints in others
-var population = parseInt(slider.value);;
-var PIXEL_FACTOR_OLD = parseInt(slider.value);;
+var population = parseInt(slider.value);
+var PIXEL_FACTOR_OLD = parseInt(slider.value);
 var PIXEL_FACTOR_CURR = parseInt(slider.value);
 
 // Add trigger to animate whenever the slider value changes
