@@ -14,42 +14,15 @@
     color: var(--dark-main-1);
 }
 
-h1 #common-name-container {
-    text-transform: uppercase;
-    font-size: 2rem;
-}
-
-#scientific-name-container {
-    font-size: 1rem;
-    /* color: var(--dark-main-1); */
-}
-#species-page {
-    display: flex;
-    flex-direction: row;
-    min-height: 100%;
-    padding: 0 !important;
-}
-
-#species-image-container {
-    /* background: var(--image-container-color); */
-    flex-grow: 1;
-    padding: 25px 25px 0px 25px;
-}
-
-#species-name, #species-image, #canvas, #pixel_factor, #pixel_label {
-    display: block;
-    margin: auto;
-}
-
-.species-attribute {
+/* .species-attribute {
     padding-bottom: 0.5em;
 }
 
 label {
     text-align: center;
-}
+} */
 
-#species-info-container {
+/* #species-info-container {
     display: flex;
     flex-direction: column;
     background: var(--info-container-color);
@@ -73,7 +46,7 @@ label {
     border-radius: .25rem;
     background: #7EC8C2;
     padding-top: 10px;
-}
+} */
 
 #name-wrapper {
     grid-area: name;

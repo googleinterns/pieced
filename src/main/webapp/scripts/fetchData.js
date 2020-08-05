@@ -18,6 +18,7 @@ function populatePageWithSpeciesData(speciesData) {
     // var canvas                  = document.getElementById('canvas');
     var commonNameContainer     = document.getElementById('common-name-container');
     var scientificNameContainer = document.getElementById('scientific-name-container');
+    var populationContainer     = document.getElementById('population-container');
     var statusContainer         = document.getElementById('status-container');
     var descriptionContainer    = document.getElementById('description-container');
     var citationsContainer      = document.getElementById('citations-container');
@@ -30,48 +31,23 @@ function populatePageWithSpeciesData(speciesData) {
     var familyContainer         = document.getElementById('family-container');
     var genusContainer          = document.getElementById('genus-container');
 
-    // Update names for species
-    commonNameContainer.innerText       = speciesData.commonName;
-    scientificNameContainer.innerText   = speciesData.binomialName;
-
-    // Map conservation status code to term and update entry
-    var statusCode = speciesData.status;
-    statusCode = (statusCode == null) ? null : statusCode.substr(0, 2);
-    var statusMap = {
-            "EX" : "Extinct",
-            "EW" : "Extinct in the Wild",
-            "CR" : "Critically Endangered",
-            "EN" : "Endangered",
-            "VU" : "Vulnerable",
-            "NT" : "Near Threatened",
-            "LC" : "Least Concern",
-            "DD" : "Data Deficient",
-            "DO" : "Domesticated",
-            "NE" : "Not Evaluated"
-            };
-    statusContainer.innerText = (statusMap[statusCode] === undefined) ? "unknown" : statusCode + ": " + statusMap[statusCode];
-
-        // Update description entry
-        var notes = speciesData.wikipediaNotes;
-        switch(notes) {
-            case null:
-                descriptionContainer.innerText = "N/A";
-                break;
-            case "":
-                descriptionContainer.innerText = "N/A";
-                break;
-            default:
-                descriptionContainer.innerText = notes;
-        }
-        citationsContainer.innerText = speciesData.citationLink;
-
-    // Update image source
+    commonNameContainer.innerText = speciesData.commonName;
+    scientificNameContainer.innerText = speciesData.binomialName;
+    populationContainer.innerText = speciesData.population;
+    statusContainer.innerText = getSpeciesStatus(speciesData.status);
+    descriptionContainer.innerText = speciesData.wikipediaNotes;
+    citationsContainer.innerText = speciesData.citationLink;
     img.src = speciesData.imageLink;
-    // canvas.width = img.width = Math.round(img.naturalWidth/16)*16;
-    // canvas.height = img.height = Math.round(img.naturalHeight/16)*16;
 
-    // canvas.width = img.width = img.naturalWidth;
-    // canvas.height = img.height = img.naturalHeight;
+    // Update species taxonomic path
+    if (speciesData.taxonomicPath != null) {
+        kingdomContainer.innerText      = speciesData.taxonomicPath.kingdom_t;
+        phylumContainer.innerText       = speciesData.taxonomicPath.phylum_t;
+        classContainer.innerText        = speciesData.taxonomicPath.class_t;
+        orderContainer.innerText        = speciesData.taxonomicPath.order_t;
+        familyContainer.innerText       = speciesData.taxonomicPath.family_t;
+        genusContainer.innerText        = speciesData.taxonomicPath.genus_t;
+    }
 
     // Manipulate pixelation value based on species population
     pixelSlider.max = img.width * img.height;
@@ -86,17 +62,27 @@ function populatePageWithSpeciesData(speciesData) {
     ctx.webkitImageSmoothingEnabled = false;
     ctx.imageSmoothingEnabled = false;
 
-    // Update species taxonomic path
-    if (speciesData.taxonomicPath != null) {
-        kingdomContainer.innerText      = speciesData.taxonomicPath.kingdom_t;
-        phylumContainer.innerText       = speciesData.taxonomicPath.phylum_t;
-        classContainer.innerText        = speciesData.taxonomicPath.class_t;
-        orderContainer.innerText        = speciesData.taxonomicPath.order_t;
-        familyContainer.innerText       = speciesData.taxonomicPath.family_t;
-        genusContainer.innerText        = speciesData.taxonomicPath.genus_t;
-    }
+    
 
     pixelSetup();
+}
+
+// Map conservation status code to term and update entry
+function getSpeciesStatus(statusCode) {
+    statusCode = (statusCode == null) ? null : statusCode.substr(0, 2);
+    var statusMap = {
+            "EX" : "Extinct",
+            "EW" : "Extinct in the Wild",
+            "CR" : "Critically Endangered",
+            "EN" : "Endangered",
+            "VU" : "Vulnerable",
+            "NT" : "Near Threatened",
+            "LC" : "Least Concern",
+            "DD" : "Data Deficient",
+            "DO" : "Domesticated",
+            "NE" : "Not Evaluated"
+        };
+    return (statusMap[statusCode] === undefined) ? "Unknown" : statusCode + ": " + statusMap[statusCode];
 }
 
 // Capitalize each word in species' names
