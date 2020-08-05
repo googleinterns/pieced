@@ -32,6 +32,7 @@ image.onload = pixelate;
 function pixelSetup()  {
     // console.log(PIXEL_FACTOR_CURR + " " + PIXEL_FACTOR_OLD + " " + originalNumPixels);
     originalNumPixels = image.width * image.height;
+    var population = parseInt(slider.value);
     PIXEL_FACTOR_OLD = parseInt(slider.value);
     PIXEL_FACTOR_CURR = parseInt(slider.value);
     // console.log(PIXEL_FACTOR_CURR + " " + PIXEL_FACTOR_OLD + " " + originalNumPixels);

@@ -16,7 +16,8 @@ a:hover {
 }
 
 a, h1, h2, h3, p, li {
-    color: var(--dark-main-1);
+    /* color: var(--dark-main-1); */
+    color: whitesmoke;
 }
 
 h1 {
@@ -37,7 +38,7 @@ hr {
 }
 
 .page-header {
-    background: var(--light-bg-1);
+    /* background: var(--light-bg-1); */
     /* background: linear-gradient(
         to bottom, 
         var(--dark-main-1),
@@ -47,6 +48,6 @@ hr {
 }
 
 #home-container {
-    background: var(--light-bg-1);
+    /* background: var(--light-bg-1); */
     padding: 0 10em 2em 10em !important;
 }
