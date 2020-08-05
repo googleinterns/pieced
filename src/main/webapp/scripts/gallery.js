@@ -55,7 +55,7 @@ function fetchAllSpeciesData(sortBy) {
                     <div class="grid-item">
                         <a class="species-link" href="/species.html?species=${speciesData[species].commonName}">
                             <img src="${speciesData[species].imageLink}" />
-                            <div class="overlay-grid">
+                            <div class="overlay-grid species-name">
                                     ${speciesData[species].commonName}
                             </div>
                         </a>

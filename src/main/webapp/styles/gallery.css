@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 
-a {
+a, .species-name {
     color: white;
 }
 
