@@ -16,7 +16,9 @@
 .page-header {
     background: linear-gradient(
         to bottom, 
-        var(--dark-main-1), 0.5%, var(--light-bg-2)
+        var(--dark-main-1),
+        10%,
+        var(--light-bg-2)
     ); 
 }
 #home-container {
