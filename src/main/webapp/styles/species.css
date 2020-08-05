@@ -3,7 +3,7 @@
   background-color: white;
   padding: 20px;
   position: relative;
-  transform: translate(-5%, 50%);
+  transform: translate(-5%, 30%);
 }
 
 .species-status {
@@ -57,8 +57,29 @@ canvas {
 }
 
 /******* SLIDER *******/
-.reset-btn {
+.solid-btn {
     background: var(--accent);
+}
+
+.back-btn {
+    background: var(--light-bg-1);
+    font-size: 120%;
+    font-weight: bold;
+    width: 15px;
+    height: 15px;
+}
+
+.previous {
+    font-size: 150%;
+    background-color: grey;
+    color: black;
+    display: inline-block;
+    padding: 0px 10px;
+}
+
+.previous:hover {
+    background-color: var(--light-bg-1);
+    color: black;
 }
 
 .slidecontainer {

@@ -18,9 +18,10 @@
 
     <!--------------- CONTENT ---------------->
     <div class="container page-header content">
+        <a href="/#gallery-anchor" class="previous">&laquo;</a>
         <div class="row">
             <div id="species-image-container" class="col col-xs-6">
-                <canvas onmouseover="animateToFullResolution()" onmouseout="animateToOldResolution()" id="canvas" height = "600" width = "600"> </canvas>
+                <canvas onmouseover="animateToFullResolution()" onmouseout="animateToOldResolution()" id="canvas" height = "550" width = "550"> </canvas>
                 <img id="species-image" class="image" alt = "Placeholder" style="display: none;">
             </div>
             <div class="col col-xs-3 col-sm-offset-4 species-info-box">
@@ -45,7 +46,7 @@
                     <div id="population">
                         <label id="pixel_label" for="pixel_factor">Number of pixels: </label>
                         <input id="pixel_factor" type="number" min="1"  value="100">
-                        <button class="btn reset-btn" type="button" id="reset-population">Reset Population</button>
+                        <button class="btn solid-btn" type="button" id="reset-population">Reset Population</button>
                     </div>
                     <!-- <div class="input-group mb-3">
                         <div class="input-group-prepend">
