@@ -5,6 +5,8 @@ var filters = new Map()
 var $active_filters_ul = $('.active-filters');
 var $grid = $('#grid')
 var DIV = "div";
+// $('.species-link').click(function(){clearSearch(); return false; });
+
 
 // Call these functions when page loads
 $(document).ready(function() {
@@ -49,12 +51,17 @@ function fetchAllSpeciesData(sortBy) {
             var $html = $(
                 `<div class="grid-filters ${speciesData[species].status} ${speciesData[species].trend} ${speciesData[species].taxonomicPath.order_t} ${speciesData[species].taxonomicPath.class_t}">
                     <div class="grid-item">
-                        <img src="${speciesData[species].imageLink}" />
-                        <div class="overlay-grid">
-                            <a href="/species.html?species=${speciesData[species].commonName}"> ${speciesData[species].commonName} </a>
-                        </div>
+                        <a class="species-link" href="/species.html?species=${speciesData[species].commonName}">
+                            <img src="${speciesData[species].imageLink}" />
+                            <div class="overlay-grid">
+                                    ${speciesData[species].commonName}
+                            </div>
+                        </a>
                     </div>
                 </div>`);
+            $( ".species-link" ).click(function() {
+                alert( "Handler for .click() called." );
+            });
             $grid.append($html)
                 // add and lay out newly appended items
                 .masonry('appended', $html);
@@ -172,6 +179,14 @@ function deleteFilter() {
         filters.delete($(this).text())
         applyAllFilters();
     });
+}
+
+/**
+ * Clears search bar when item is selected
+ */
+function clearSearch() {
+    console.log("YUP");
+    $("#species-search")[0].reset();
 }
 
 /**
