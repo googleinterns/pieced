@@ -24,30 +24,36 @@
                 <img id="species-image" class="image" alt = "Placeholder" style="display: none;">
             </div>
             <div class="col col-xs-3 col-sm-offset-4 species-info-box">
-                <div class="species-name">
-                    <h1 id="common-name-container"></h1>
-                    <h2 id="scientific-name-container"></h2>
+                <div class="species-status">
+                    <p id="status-container"></p>
                 </div>
-                <p id="population-container"></p>
-                <p id="description-container"></p>
-                <!-- <div id="slider-container">
-                    <input type="range" min="1" class="slider" id="population-slider">
-                    <small>The image is made with approximately <span id="slider-value"></span> pixels.</small>
-                </div> -->
-                <div id="population">
-                    <label id="pixel_label" for="pixel_factor">Number of pixels: </label>
-                    <input id="pixel_factor" type="number" min="1"  value="100">
-                    <button class="btn reset-btn" type="button" id="reset-population">Reset Population</button>
+                <div class="main-species-info">
+                    <div class="species-name">
+                        <h1 id="common-name-container"></h1>
+                        <h2 id="scientific-name-container"></h2>
+                    </div>
+                    <p id="population-container"></p>
+                    <p id="description-container"></p>
+                    <p id="taxonomy-container"></p>
+                    <!-- <div id="slider-container">
+                        <input type="range" min="1" class="slider" id="population-slider">
+                        <small>The image is made with approximately <span id="slider-value"></span> pixels.</small>
+                    </div> -->
+                    <div id="population">
+                        <label id="pixel_label" for="pixel_factor">Number of pixels: </label>
+                        <input id="pixel_factor" type="number" min="1"  value="100">
+                        <button class="btn reset-btn" type="button" id="reset-population">Reset Population</button>
+                    </div>
+                    <!-- <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Number of pixels:</span>
+                        </div>
+                        <input id="pixel_factor" type="number" min="1" class="form-control" aria-label="Num pixels">
+                        <div class="input-group-append">
+                            <button id="reset-population" class="btn" type="button">Reset Population</button>
+                        </div>
+                    </div> -->
                 </div>
-                <!-- <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Number of pixels:</span>
-                    </div>
-                    <input id="pixel_factor" type="number" min="1" class="form-control" aria-label="Num pixels">
-                    <div class="input-group-append">
-                        <button id="reset-population" class="btn" type="button">Reset Population</button>
-                    </div>
-                </div> -->
             </div>
         </div>
         <p id="image-credit"></p>

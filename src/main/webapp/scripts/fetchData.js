@@ -25,6 +25,7 @@ function populatePageWithSpeciesData(speciesData) {
     var img                     = document.getElementById('species-image');
     var imageCreditContainer    = document.getElementById('image-credit');
     var pixelSlider             = document.getElementById('pixel_factor');
+    var taxonomyContainer       = document.getElementById('taxonomy-container');
     var kingdomContainer        = document.getElementById('kingdom-container');
     var phylumContainer         = document.getElementById('phylum-container');
     var classContainer          = document.getElementById('class-container');
@@ -45,6 +46,8 @@ function populatePageWithSpeciesData(speciesData) {
 
     // Update species taxonomic path
     if (speciesData.taxonomicPath != null) {
+        var taxonomyString = `<b>${speciesData.taxonomicPath.kingdom_t} > ${speciesData.taxonomicPath.phylum_t} > ${speciesData.taxonomicPath.class_t} > ${speciesData.taxonomicPath.order_t} > ${speciesData.taxonomicPath.family_t} > ${speciesData.taxonomicPath.genus_t}</b>`;
+        taxonomyContainer.innerHTML = taxonomyString;
         kingdomContainer.innerText = speciesData.taxonomicPath.kingdom_t;
         phylumContainer.innerText = speciesData.taxonomicPath.phylum_t;
         classContainer.innerText = speciesData.taxonomicPath.class_t;
@@ -85,7 +88,7 @@ function getSpeciesStatus(statusCode) {
             "DO" : "Domesticated",
             "NE" : "Not Evaluated"
         };
-    return (statusMap[statusCode] === undefined) ? "Unknown" : statusCode + ": " + statusMap[statusCode];
+    return (statusMap[statusCode] === undefined) ? "Unknown" : statusMap[statusCode];
 }
 
 // Capitalize each word in species' names
