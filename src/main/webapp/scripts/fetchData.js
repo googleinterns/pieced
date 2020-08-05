@@ -41,12 +41,12 @@ function populatePageWithSpeciesData(speciesData) {
 
     // Update species taxonomic path
     if (speciesData.taxonomicPath != null) {
-        kingdomContainer.innerText      = speciesData.taxonomicPath.kingdom_t;
-        phylumContainer.innerText       = speciesData.taxonomicPath.phylum_t;
-        classContainer.innerText        = speciesData.taxonomicPath.class_t;
-        orderContainer.innerText        = speciesData.taxonomicPath.order_t;
-        familyContainer.innerText       = speciesData.taxonomicPath.family_t;
-        genusContainer.innerText        = speciesData.taxonomicPath.genus_t;
+        kingdomContainer.innerText = speciesData.taxonomicPath.kingdom_t;
+        phylumContainer.innerText = speciesData.taxonomicPath.phylum_t;
+        classContainer.innerText = speciesData.taxonomicPath.class_t;
+        orderContainer.innerText = speciesData.taxonomicPath.order_t;
+        familyContainer.innerText = speciesData.taxonomicPath.family_t;
+        genusContainer.innerText = speciesData.taxonomicPath.genus_t;
     }
 
     // Manipulate pixelation value based on species population
@@ -61,8 +61,6 @@ function populatePageWithSpeciesData(speciesData) {
     ctx.mozImageSmoothingEnabled = false;
     ctx.webkitImageSmoothingEnabled = false;
     ctx.imageSmoothingEnabled = false;
-
-    
 
     pixelSetup();
 }
