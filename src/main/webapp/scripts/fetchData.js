@@ -21,24 +21,24 @@ function populatePageWithSpeciesData(speciesData) {
     var populationContainer     = document.getElementById('population-container');
     var statusContainer         = document.getElementById('status-container');
     var descriptionContainer    = document.getElementById('description-container');
-    var citationsContainer      = document.getElementById('citations-container');
+    // var citationsContainer      = document.getElementById('citations-container');
     var img                     = document.getElementById('species-image');
     var imageCreditContainer    = document.getElementById('image-credit');
     var pixelSlider             = document.getElementById('pixel_factor');
     var taxonomyContainer       = document.getElementById('taxonomy-container');
-    var kingdomContainer        = document.getElementById('kingdom-container');
-    var phylumContainer         = document.getElementById('phylum-container');
-    var classContainer          = document.getElementById('class-container');
-    var orderContainer          = document.getElementById('order-container');
-    var familyContainer         = document.getElementById('family-container');
-    var genusContainer          = document.getElementById('genus-container');
+    // var kingdomContainer        = document.getElementById('kingdom-container');
+    // var phylumContainer         = document.getElementById('phylum-container');
+    // var classContainer          = document.getElementById('class-container');
+    // var orderContainer          = document.getElementById('order-container');
+    // var familyContainer         = document.getElementById('family-container');
+    // var genusContainer          = document.getElementById('genus-container');
 
     commonNameContainer.innerText = speciesData.commonName;
     scientificNameContainer.innerText = speciesData.binomialName;
     populationContainer.innerText = speciesData.population + " left";
     statusContainer.innerText = getSpeciesStatus(speciesData.status);
     descriptionContainer.innerText = speciesData.wikipediaNotes;
-    citationsContainer.innerText = speciesData.citationLink;
+    // citationsContainer.innerText = speciesData.citationLink;
     img.src = speciesData.imageLink;
 
     var citation = `<a href=${speciesData.citationLink}>&copy Wikipedia</a>`;
@@ -46,14 +46,19 @@ function populatePageWithSpeciesData(speciesData) {
 
     // Update species taxonomic path
     if (speciesData.taxonomicPath != null) {
-        var taxonomyString = `<b>${speciesData.taxonomicPath.kingdom_t} > ${speciesData.taxonomicPath.phylum_t} > ${speciesData.taxonomicPath.class_t} > ${speciesData.taxonomicPath.order_t} > ${speciesData.taxonomicPath.family_t} > ${speciesData.taxonomicPath.genus_t}</b>`;
+        var taxonomyString = `<b>${speciesData.taxonomicPath.kingdom_t} > 
+                                 ${speciesData.taxonomicPath.phylum_t} > 
+                                 ${speciesData.taxonomicPath.class_t} > 
+                                 ${speciesData.taxonomicPath.order_t} > 
+                                 ${speciesData.taxonomicPath.family_t} > 
+                                 ${speciesData.taxonomicPath.genus_t}</b>`;
         taxonomyContainer.innerHTML = taxonomyString;
-        kingdomContainer.innerText = speciesData.taxonomicPath.kingdom_t;
-        phylumContainer.innerText = speciesData.taxonomicPath.phylum_t;
-        classContainer.innerText = speciesData.taxonomicPath.class_t;
-        orderContainer.innerText = speciesData.taxonomicPath.order_t;
-        familyContainer.innerText = speciesData.taxonomicPath.family_t;
-        genusContainer.innerText = speciesData.taxonomicPath.genus_t;
+        // kingdomContainer.innerText = speciesData.taxonomicPath.kingdom_t;
+        // phylumContainer.innerText = speciesData.taxonomicPath.phylum_t;
+        // classContainer.innerText = speciesData.taxonomicPath.class_t;
+        // orderContainer.innerText = speciesData.taxonomicPath.order_t;
+        // familyContainer.innerText = speciesData.taxonomicPath.family_t;
+        // genusContainer.innerText = speciesData.taxonomicPath.genus_t;
     }
 
     // Manipulate pixelation value based on species population
