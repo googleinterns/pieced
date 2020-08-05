@@ -7,7 +7,7 @@ var $grid = $('#grid')
 var DIV = "div";
 
 $(window).bind("pageshow", function() {
-    document.getElementById('species-search').value='';
+    clearSearchForm();
 });
 
 // Call these functions when page loads
@@ -206,6 +206,13 @@ function addFilterToListUI(class_name) {
 }
 
 // -------------------------------------------- SEARCH FUNCTIONS -------------------------------------------- //
+/**
+ * Clears the search form
+ */
+function clearSearchForm() {
+    document.getElementById('species-search').value='';
+}
+
 /**
  * Filters the gallery as the user types letter by letter
  */
