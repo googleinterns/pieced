@@ -62,6 +62,7 @@ function populatePageWithSpeciesData(speciesData) {
     ctx.webkitImageSmoothingEnabled = false;
     ctx.imageSmoothingEnabled = false;
 
+    pixelSliderSetup(speciesData.population, img.width * img.height);
     pixelSetup();
 }
 
@@ -89,4 +90,29 @@ function capitalizeSpeciesName(name) {
     capitalizedArray = wordsArray.map(w => w.substring(0,1).toUpperCase() + w.substring(1));
     capitalizedName = capitalizedArray.join(' ');
     return capitalizedName;
+}
+
+function pixelSliderSetup(population, maxPopulation) {
+    // var slider = document.getElementById("population-slider");
+    // var output = document.getElementById("slider-value");
+    // console.log(typeof population);
+    // console.log(typeof maxPopulation);
+    // slider.value = toString(population);
+    // slider.max = toString(maxPopulation);
+    // console.log(slider.value);
+    // output.innerHTML = slider.value;
+    // slider.oninput = function() {
+    //     output.innerHTML = this.value;
+    // }
+    
+    var slider = document.getElementById("population-slider");
+    var output = document.getElementById("slider-value");
+    
+    slider.value = population;
+    slider.max = maxPopulation;
+    output.innerHTML = slider.value;
+    
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+    }
 }
