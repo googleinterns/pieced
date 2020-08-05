@@ -1,24 +1,52 @@
 /************ shared between action & about **********/
-body {
+/* body {
     padding: 3em 10em !important;
-}
+} */
 
-a {
+/* a {
     color: whitesmoke;
+} */
+
+.link {
+    text-decoration: underline !important;
 }
 
 a:hover {
-    color: var(--accent);
+    color: whitesmoke;
 }
 
-h1, h2, h3, p, li {
-    color: whitesmoke;
+a, h1, h2, h3, p, li {
+    color: var(--dark-main-1);
 }
 
 h1 {
     text-align: center;
+    color: whitesmoke;
 }
 
 hr {
     color: var(--accent);
+}
+
+.page-header {
+    padding: 10em 0;
+}
+
+#body-container {
+    margin-top: 65px;
+}
+
+.page-header {
+    background: var(--light-bg-1);
+    /* background: linear-gradient(
+        to bottom, 
+        var(--dark-main-1),
+        10%,
+        var(--light-bg-1)
+    );  */
+}
+
+#home-container {
+    background: var(--light-bg-1);
+    padding: 0 10em 2em 10em !important;
 }
