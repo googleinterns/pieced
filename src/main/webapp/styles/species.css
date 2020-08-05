@@ -26,6 +26,14 @@
     line-height: 0.9;
 }
 
+#image-credit a {
+    color: grey;
+}
+
+#image-credit a:hover {
+    color: var(--accent);
+}
+
 canvas {
     padding-top: 25px;
     image-rendering: optimizeSpeed;

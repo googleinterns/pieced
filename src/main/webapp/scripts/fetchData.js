@@ -23,6 +23,7 @@ function populatePageWithSpeciesData(speciesData) {
     var descriptionContainer    = document.getElementById('description-container');
     var citationsContainer      = document.getElementById('citations-container');
     var img                     = document.getElementById('species-image');
+    var imageCreditContainer    = document.getElementById('image-credit');
     var pixelSlider             = document.getElementById('pixel_factor');
     var kingdomContainer        = document.getElementById('kingdom-container');
     var phylumContainer         = document.getElementById('phylum-container');
@@ -38,6 +39,9 @@ function populatePageWithSpeciesData(speciesData) {
     descriptionContainer.innerText = speciesData.wikipediaNotes;
     citationsContainer.innerText = speciesData.citationLink;
     img.src = speciesData.imageLink;
+
+    var citation = `<a href=${speciesData.citationLink}>&copy Wikipedia</a>`;
+    imageCreditContainer.innerHTML = citation;
 
     // Update species taxonomic path
     if (speciesData.taxonomicPath != null) {
