@@ -8,11 +8,13 @@
 } */
 
 .link {
-    text-decoration: underline !important;
+    /* text-decoration: underline !important; */
+    font-weight: bold !important;
 }
 
 a:hover {
-    color: whitesmoke;
+    /* text-decoration: underline !important; */
+    color: var(--accent);
 }
 
 a, h1, h2, h3, p, li {
@@ -23,6 +25,7 @@ a, h1, h2, h3, p, li {
 h1 {
     text-align: center;
     color: whitesmoke;
+    /* padding: 2em; */
 }
 
 hr {
@@ -33,21 +36,64 @@ hr {
     padding: 10em 0;
 }
 
-#body-container {
+/* #body-container {
     margin-top: 65px;
-}
+} */
 
-.page-header {
-    /* background: var(--light-bg-1); */
-    /* background: linear-gradient(
+/* .page-header {
+    background: var(--light-bg-1);
+    background: linear-gradient(
         to bottom, 
         var(--dark-main-1),
         10%,
         var(--light-bg-1)
-    );  */
-}
+    );  
+} */
+
 
 #home-container {
     /* background: var(--light-bg-1); */
-    padding: 0 10em 2em 10em !important;
+    padding: 2em 10em 2em 10em !important;
+}
+
+/**************** HEADER *******************/
+.info-header {
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    /* background: linear-gradient(
+        to top, 
+        var(--dark-main-1),
+        10%,
+        rgba(0, 0, 0, 0.5)
+    ); */
+    height: 400px;
+    overflow: hidden;
+}
+
+.about-header {
+    background-image: url('https://images.unsplash.com/photo-1570083797430-3b43c40abefb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80');
+}
+
+.action-header {
+    background-image: url('https://images.unsplash.com/photo-1500064171035-d88a47d65074?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1082&q=80');
+}
+
+.overlay {
+    position: absolute;
+    min-height: 100%;
+    min-width: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.description {
+    left: 50%;
+    position: absolute;
+    top: 45%;
+    transform: translate(-50%, -55%);
+    text-align: center;
+    color: white;
+    margin-top: 65px;
 }
