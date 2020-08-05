@@ -38,11 +38,6 @@
             <div id="species-image-container" class="col col-xs-6">
                 <canvas onmouseover="animateToFullResolution()" onmouseout="animateToOldResolution()" id="canvas" height = "600" width = "600"> </canvas>
                 <img id="species-image" class="image" alt = "Placeholder" style="display: none;">
-                <div id="population">
-                    <label id="pixel_label" for="pixel_factor"> Current Population </label>
-                    <input id="pixel_factor" type="number" min="1"  value="100">
-                    <button type="button" id="reset-population">Reset</button>
-                </div>
             </div>
             <div class="col col-xs-3 col-sm-offset-4 species-info-box">
                 <div class="species-name">
@@ -51,12 +46,24 @@
                 </div>
                 <p id="population-container"></p>
                 <p id="description-container"></p>
-                <div id="slider-container">
-                    <!-- <input type="range" min="1" class="slider" id="population-range">
-                    <label for="population-range">Image created with approximately <span id="slider-value"></span> pixels.</label> -->
+                <!-- <div id="slider-container">
                     <input type="range" min="1" class="slider" id="population-slider">
                     <small>The image is made with approximately <span id="slider-value"></span> pixels.</small>
+                </div> -->
+                <div id="population">
+                    <label id="pixel_label" for="pixel_factor">Number of pixels: </label>
+                    <input id="pixel_factor" type="number" min="1"  value="100">
+                    <button class="btn reset-btn" type="button" id="reset-population">Reset Population</button>
                 </div>
+                <!-- <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Number of pixels:</span>
+                    </div>
+                    <input id="pixel_factor" type="number" min="1" class="form-control" aria-label="Num pixels">
+                    <div class="input-group-append">
+                        <button id="reset-population" class="btn" type="button">Reset Population</button>
+                    </div>
+                </div> -->
             </div>
         </div>
     </div>

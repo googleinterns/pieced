@@ -37,6 +37,10 @@ canvas {
 }
 
 /******* SLIDER *******/
+.reset-btn {
+    background: var(--accent);
+}
+
 .slidecontainer {
     width: 100%;
 }
