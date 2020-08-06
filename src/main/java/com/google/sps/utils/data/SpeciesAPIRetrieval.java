@@ -152,7 +152,6 @@ public class SpeciesAPIRetrieval {
             System.out.println(((Map) i).getOrDefault("decimalLongitude", null));
         }
 
-        // species.setGeoData(apiMap);
         return;
     }  
 }

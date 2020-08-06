@@ -135,10 +135,7 @@ public class DataCollection {
                     addApiInfo(species);
                     addSpeciesToDatastore(species);
                 }
-                // addGeoInfo(species);
-                // break;
             }
-            // break;
         }
     }
 
@@ -260,7 +257,6 @@ public class DataCollection {
             }
 
             System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
-            //   Species species = new Species(commonName, binomialName, status, trend, population, notes, imageLink, url);
             Species species = new Species.Builder()
                                         .withCommonName(commonName)
                                         .withBinomialName(binomialName)
