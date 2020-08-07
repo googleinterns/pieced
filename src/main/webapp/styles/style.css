@@ -1,63 +1,93 @@
 /**************** VARIABLES *******************/
 :root {
-  --main: #7EC8C2;
-  --body: #000;
+    --accent: #AB887C;
+    --light-main-2: #606158;
+    --light-main-1: #34462a;
+    --main: #13250c;
+    --dark-main-1: #0a0c0d;
+    --light-bg-1: #a2b09b;
+    --light-bg-2: #9cb4ba;
 }
 
 /**************** MAIN *******************/
 body {
-  padding: 0;
-  margin: 0;
-  color: var(--body);
-  background-color: var(--main);
-  background-image: url('https://images.alphacoders.com/887/887559.jpg'); /* just as a filler */
-
+    padding: 0;
+    margin: 0;
+    background: var(--dark-main-1);
+    color: var(--light-main-2);
 }
 
-/**************** NAVBAR *******************/
-.navbar {
-  border-bottom: 2px solid var(--body);
+a {
+    color: black;
 }
 
-.bg-nav {
-  background: #fff;
-  border-bottom-color: #fff;
+a:hover {
+    text-decoration: none;
 }
 
+/**************** NAVBAR TRANSPARENT *******************/
 .navbar-brand {
-  text-transform: uppercase;
-  margin-left: 20px;
-  letter-spacing: 0px;
-  font-size: 2em;
+    text-transform: uppercase;
+    margin-left: 20px;
+    letter-spacing: 0px;
+    font-size: 1.5em;
+    color: white;
+}
+
+.navbar-brand:hover {
+    color: white;
 }
 
 .navbar-collapse {
-  justify-content: flex-end;
-  margin-right: 20px;
+    justify-content: flex-end;
+    margin-right: 20px;
 }
 
 .nav-item {
-  margin-left: 10px;
+    margin-left: 10px;
 }
 
 .nav-link {
-  text-transform: uppercase;
-  padding: 10px;
+    text-transform: uppercase;
+    padding: 10px;
+    color: white;
+}
+
+.nav-link:hover {
+    color: var(--accent);
 }
 
 .nav-btn {
-  outline: 2px solid var(--main);
+    outline: 2px solid var(--accent);
 }
 
 .nav-btn:hover {
-  background: var(--main);
+    background: var(--accent);
+    color: white;
 }
 
-/**************** HEADER *******************/
-header {
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  margin-top: 75px;
-  text-align: center;
+/**************** NAVBAR WHITE *******************/
+.bg-nav {
+    background: white;
+    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.bg-nav .navbar-brand {
+    color: var(--dark-main-1);
+}
+
+.bg-nav .nav-link {
+    color: var(--dark-main-1) !important;
+}
+
+/**************** SPACING *******************/
+.page-header {
+    margin-top: 65px;
+}
+
+a.anchor {
+    display: block;
+    position: relative;
+    top: -65px;
+    visibility: hidden;
 }

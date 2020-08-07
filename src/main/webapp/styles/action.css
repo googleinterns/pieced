@@ -1,0 +1,21 @@
+/**************** CONTENT *******************/
+.citations-list {
+    list-style-type: none;
+}
+
+#accordion, .card, .collapse {
+    background: none !important;
+    border: none !important;
+}
+
+.card-horizontal {
+    display: flex;
+    flex: 1 1 auto;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    border: none !important;
+}
+
+.card-image {
+    width: 20em;
+}

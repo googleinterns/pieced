@@ -28,11 +28,11 @@ import com.google.sps.utils.data.DataCollection;
  */
 @WebServlet("/refresh-data")
 public class RefreshDataServlet extends HttpServlet {
-  protected final String REDIRECT_URL_HOME = "/";
+    protected final String REDIRECT_URL_HOME = "/";
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    DataCollection.collectData();
-    response.sendRedirect(REDIRECT_URL_HOME);
-  }
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        DataCollection.collectData();
+        response.sendRedirect(REDIRECT_URL_HOME);
+    }
 }

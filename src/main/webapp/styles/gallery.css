@@ -2,8 +2,13 @@
   box-sizing: border-box;
 }
 
-#refresh-button {
-    margin-left: 7px;
+a, .species-name {
+    color: white;
+}
+
+a:hover {
+    color: whitesmoke;
+    text-decoration: underline;
 }
 
 #gallery-page {
@@ -11,17 +16,9 @@
     margin: 0 !important;
 }
 
-.grid {
+#grid {
     max-width: 100%;
     width: 100%;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-.grid:after {
-    content: '';
-    display: block;
-    clear: both;
 }
 
 .grid-sizer,
@@ -45,17 +42,71 @@
     margin: 0 !important;
 }
 
+.EW img {
+    filter: grayscale(100%); 
+}
+
 /* The overlay effect - lays on top of the container and over the image */
-.overlay {
+.overlay-grid {
     position: absolute;
     bottom: 0;
     background: rgb(0, 0, 0);
     background: rgba(0, 0, 0, 0.5); /* Black see-through */
-    color: #f1f1f1;
     width: 100%;
     opacity: 1;
-    color: white;
     font-size: 20px;
     padding: 0.5em;
     text-align: center;
+}
+
+.overlay-grid a {
+    color: white;
+}
+
+/**************** ACTIVE FILTER LIST *******************/
+.active-filter .btn, .active-filter i {
+    color: whitesmoke;
+}
+
+.active-filter i {
+    margin: 2px;
+}
+
+.active-filter button {
+    background: var(--accent) !important;
+    border-radius: 25px;
+    margin: 5px;
+}
+
+.active-filters {
+    margin-right: 5px;
+}
+
+.filters {
+    width: 100%;
+    background: var(--dark-main-1);
+    padding: 5px 10px;
+    font-size: 0.9em;
+}
+
+.form-inline label {
+    margin: 5px;
+}
+
+.form-inline {
+    margin: 5px;
+}
+
+.sidebar {
+    background: var(--dark-main-1) !important;
+    color: white !important;
+}
+
+.nav-item .btn {
+    color: white;
+}
+
+.sidebar h6 {
+    background: var(--accent);
+    color: white !important;
 }

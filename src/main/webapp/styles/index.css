@@ -1,0 +1,46 @@
+/**************** HEADER *******************/
+.header {
+    background-image: url('https://images.unsplash.com/photo-1569498746154-a08b1a403e5b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1190&q=80');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    min-height: 100%;
+    min-width: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.description {
+    left: 50%;
+    position: absolute;
+    top: 45%;
+    transform: translate(-50%, -55%);
+    text-align: center;
+    color: white;
+}
+
+.description h1 {
+    font-size: 5rem;
+    line-height: 0.7;
+}
+
+.description p {
+    color: #fff;
+    font-size: 1.3rem;
+    font-style: italic;
+}
+
+.description .nav-btn {
+    color:#fff;
+    padding: 10px 50px;
+}
+
+/* Creates smooth scrolling to the anchor position */
+html {
+    scroll-behavior: smooth;
+}

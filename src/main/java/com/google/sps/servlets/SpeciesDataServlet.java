@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.servlets.AllDataServlet;
+
 import com.google.sps.utils.data.Species;
 import com.google.sps.utils.data.PopulationTrend;
 import com.google.sps.utils.data.DataCollection;
@@ -40,7 +42,9 @@ import java.util.ArrayList;
 
 /** Servlet that grabs data on individual species. */
 @WebServlet("/speciesData")
-public class SpeciesDataServlet extends HttpServlet {
+public class SpeciesDataServlet extends AllDataServlet {
+    // static final int SC_BAD_REQUEST = 400;
+    // static final int SC_NOT_FOUND = 404;
     Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
     
     @Override
@@ -53,8 +57,7 @@ public class SpeciesDataServlet extends HttpServlet {
         
         // Return invalid data if species name is null or empty
         if (speciesName == null) {
-            String json = generateInvalidResponse(response, "No species name requested.");
-            response.getWriter().println(json);
+            response.sendError(response.SC_BAD_REQUEST, "Invalid species name requested.");
             return;
         }
 
@@ -63,8 +66,7 @@ public class SpeciesDataServlet extends HttpServlet {
         QueryResults<Entity> queriedSpecies = datastore.run(query);
 
         if (!queriedSpecies.hasNext()) {
-            String json = generateInvalidResponse(response, "No results in datastore.");
-            response.getWriter().println(json);
+            response.sendError(response.SC_NOT_FOUND, "No result found in DataStore.");
             return;
         }
 
@@ -72,32 +74,7 @@ public class SpeciesDataServlet extends HttpServlet {
         // so we only need to call queriedSpecies.next() a single time
         Entity speciesData = queriedSpecies.next();
 
-        // Grab information from Datastore entry and construct Species object
-        String commonName       = speciesData.getString("common_name");
-        String binomialName     = speciesData.getString("binomial_name");
-        String status           = speciesData.getString("status");
-        String population       = speciesData.getString("population");
-        String wikipediaNotes   = speciesData.getString("wikipedia_notes");
-        String imageLink        = speciesData.getString("image_link");
-        String citationLink     = speciesData.getString("citation_link");
-        PopulationTrend trend   = DataCollection.convertToPopulationTrendEnum(speciesData.getString("trend"));
-        TaxonomicPath taxonomy  = new TaxonomicPath(speciesData.getString("kingdom"),
-                                                    speciesData.getString("phylum"),
-                                                    speciesData.getString("class"),
-                                                    speciesData.getString("order"),
-                                                    speciesData.getString("family"),
-                                                    speciesData.getString("genus"));
-
-        Species species = new Species(commonName,
-                                            binomialName,
-                                            status,
-                                            trend,
-                                            population,
-                                            wikipediaNotes,
-                                            imageLink,
-                                            citationLink);
-                                            
-        species.setTaxonomicPath(taxonomy);
+        Species species = convertEntityToSpecies(speciesData);
 
         // Convert Species object to JSON and send it back to caller
         String json = convertToJson(species);
@@ -120,22 +97,5 @@ public class SpeciesDataServlet extends HttpServlet {
             return null;
         }
         return speciesName;
-    }
-
-    // Builds an invalid JSON response when the request is invalid or misses in the datastore.
-    private String generateInvalidResponse(HttpServletResponse response, String errorMessage) {
-        System.err.println("Invalid fetch request: " + errorMessage);
-        Species species = new Species(null,
-                                null,
-                                null,
-                                PopulationTrend.UNKNOWN,
-                                null,
-                                null,
-                                null,
-                                null);
-
-        species.setTaxonomicPath(null);
-        String json = convertToJson(species);
-        return json;
     }
 }
