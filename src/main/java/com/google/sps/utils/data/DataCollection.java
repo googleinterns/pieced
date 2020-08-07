@@ -45,50 +45,37 @@ public class DataCollection {
         collectData();
     }
 
+    /**
+     * Begin running all the parsers for individual species pages and tables
+     */
     public static void collectData() throws IOException {
-        // Parse EXTINCT_URL
-        List<String> extinct_urls = parseExtinctList();
-        for (String url : extinct_urls) {
-            parseSpeciesPage(url);
-        }
-
         // Parse LIST_URL
         List<String> species_urls = parseListofPages();
         for (String url : species_urls) {
             parseSpeciesTable(url);
-        }        
+        }     
+
+        // Parse EXTINCT_URL
+        List<String> extinct_urls = parseExtinctList();
+        for (String url : extinct_urls) {
+            parseSpeciesPage(url);
+        }   
     }
 
+    // ------------------------------  MAIN SPECIES PAGES  ------------------------------ //
     /**
-    * Retrieve API_KEY from api_auth.txt file
-    * @return API_KEY
-    */
-    private static String getKey() {
-        try {
-            File file = new File(API_AUTH_PATH);
-            Scanner sc = new Scanner(file);
-            String key = sc.nextLine();
-            return key;
-        }
-        catch (FileNotFoundException f) {
-            System.out.println("Exception: API_AUTH file not found");
-            return null;
-        }
-    }
-
-    /**
-    * Scrapes LIST_URL to get a list of all the URLs with information about species
-    * Page Structure:
-    * <ul><li>
-    *   <a>Subheading</a>
-    *   <ul>
-    *     <li><a href="LINK"></a></li>
-    *     <li><a href="LINK"></a></li>
-    *   </ul>
-    * </li></ul>
-    *
-    * @return List of all the URLs to go to
-    */
+     * Scrapes LIST_URL to get a list of all the URLs with information about species
+     * Page Structure:
+     * <ul><li>
+     *   <a>Subheading</a>
+     *   <ul>
+     *     <li><a href="LINK"></a></li>
+     *     <li><a href="LINK"></a></li>
+     *   </ul>
+     * </li></ul>
+     *
+     * @return List of all the URLs to go to
+     */
     private static List<String> parseListofPages() throws IOException {
         Document doc = Jsoup.connect(LIST_URL).get();
         Elements content = doc.getElementsByClass(LIST_CONTENT_CLASS);
@@ -96,7 +83,6 @@ public class DataCollection {
         List<String> urls = new ArrayList<String>();
 
         for (Element listItem: listItems) {
-
             // Ignores list items from the Table of Contents
             if (!listItem.attr("class").equals("")) {
                 continue;
@@ -115,9 +101,9 @@ public class DataCollection {
     }
 
     /**
-    * Add information for every species per url into Datastore
-    * @param url: url to parse the tables for
-    */
+     * Add information for every species per url into Datastore
+     * @param url: url to parse the tables for
+     */
     private static void parseSpeciesTable(String url) throws IOException {
         Document doc = Jsoup.connect(url).get();
         Elements elements = doc.getElementsByClass("wikitable");
@@ -140,107 +126,25 @@ public class DataCollection {
     }
 
     /**
-    * Scrapes EXTINCT_URL to get a list of all the URLs with information about species.
-    * The returned URLs direct to individual species pages, rather than a table.
-    * Page Structure:
-    *   <ul>
-    *     <li><a href="LINK"></a>[Text]</li>
-    *     <li><a href="LINK"></a>[Text]</li>
-    *   </ul>
-    *
-    * @return List of all the URLs to go to
-    */
-    private static List<String> parseExtinctList() throws IOException {
-        Document doc = Jsoup.connect(EXTINCT_URL).get();
-        Elements content = doc.getElementsByClass(LIST_CONTENT_CLASS);
-        Elements listItems = content.select("ul > li"); // get list items that are in a nested ul
-        List<String> urls = new ArrayList<String>();
-
-        boolean reachedSpecies = false;
-        for (Element listItem: listItems) {
-            if (listItem.text().contains("Alagoas curassow")) {
-                reachedSpecies = true;
-            }
-
-            // Ignore other list elements
-            if (!reachedSpecies) {
-                continue;
-            }
-
-            // Stop after 19 species urls because there are other urls that share the format
-            if (urls.size() == 19) {
-                break;
-            }
-
-            // Gets the absolute link to the new wiki page
-            // Example: https://en.wikipedia.org/wiki/Alagoas_curassow
-            Element link = listItem.select("a").first();
-            String absHref = link.attr("abs:href");
-            urls.add(absHref);
-        }
-        return urls;
-    }
-
-    /**
-    * Add information from individual species page per url into Datastore
-    * @param url: url to parse the webpage for
-    */
-    private static void parseSpeciesPage(String url) throws IOException {
-        Document doc = Jsoup.connect(url).get();
-        String commonName, imageLink, scientificName;
-
-        // Extract common name
-        Element commonEl = doc.getElementsByClass("firstHeading").first();
-        commonName = commonEl.text().trim();
-
-        // Extract image link
-        Element image = doc.select("img").first();
-        imageLink = scrapeImageLink(image);
-        
-        // Extract scientific name
-        Element binomial = doc.getElementsByClass("binomial").first();
-        if (binomial == null) {
-            Element trinomial = doc.getElementsByClass("trinomial").first();
-            if (trinomial != null) {
-                scientificName = trinomial.text().trim();
-            }
-            else {
-                scientificName = null;
-            }
-        }
-        else {
-            scientificName = binomial.text().trim();
-        }
-
-
-        Species species = processExtinct(commonName, imageLink, scientificName, url);
-        if (species == null || !speciesAlreadyStored(species.getBinomialName())) {
-            addApiInfo(species);
-            addSpeciesToDatastore(species);
-        }
-    }
-
-    /**
-    * Get Species information, calling the appropriate function (based on Wikipedia table format)
-    * @param tds: The row Element to scrape for info
-    * @param url: url that contains the table for citation
-    * @return Species object with filled fields, or null if incomplete
-    */
+     * Get Species information, calling the appropriate function (based on Wikipedia table format)
+     * @param tds: The row Element to scrape for info
+     * @param url: url that contains the table for citation
+     * @return Species object with filled fields, or null if incomplete
+     */
     private static Species processSpecies(Elements tds, String url) {
         if (url.equals(CETACEANS_URL)) {
             return processCetaceans(tds, url);
-        }
-        else {
+        } else {
             return processGeneralSpecies(tds, url);
         }
     }
 
     /**
-    * Get Species information from each row of the table
-    * @param tds: The row Element to scrape for info
-    * @param url: url that contains the table for citation
-    * @return Species object with filled fields, or null if incomplete
-    */
+     * Get Species information from each row of the table
+     * @param tds: The row Element to scrape for info
+     * @param url: url that contains the table for citation
+     * @return Species object with filled fields, or null if incomplete
+     */
     private static Species processGeneralSpecies(Elements tds, String url) {
         if (tds.size() > 6) {
             String commonName = tds.get(0).text().trim();
@@ -258,29 +162,28 @@ public class DataCollection {
 
             System.out.printf("%-35s %-30s %-25s %-10s %-15s %n", commonName, binomialName, population, status, trend);
             Species species = new Species.Builder()
-                                        .withCommonName(commonName)
-                                        .withBinomialName(binomialName)
-                                        .withStatus(status)
-                                        .withPopulationTrend(trend)
-                                        .withPopulation(population)
-                                        .withWikipediaNotes(notes)
-                                        .withImageLink(imageLink)
-                                        .withCitationLink(url)
-                                        .build();
+                                .withCommonName(commonName)
+                                .withBinomialName(binomialName)
+                                .withStatus(status)
+                                .withPopulationTrend(trend)
+                                .withPopulation(population)
+                                .withWikipediaNotes(notes)
+                                .withImageLink(imageLink)
+                                .withCitationLink(url)
+                                .build();
             return species;
         }
         return null;
     }
 
     /**
-    * Get Cetaceans information from each row of the table (different table 
-    * format from the other species)
-    * @param tds: The row Element to scrape for info
-    * @param url: url that contains the table for citation
-    * @return Species object with filled fields, or null if incomplete
-    */
+     * Get Cetaceans information from each row of the table (different table 
+     * format from the other species)
+     * @param tds: The row Element to scrape for info
+     * @param url: url that contains the table for citation
+     * @return Species object with filled fields, or null if incomplete
+     */
     private static Species processCetaceans(Elements tds, String url) {
-
         /**
         * Example of row header:
         * Common name, Scientific name, IUCN Red List status, Global population estimate, Range, Size, Picture
@@ -313,15 +216,94 @@ public class DataCollection {
         return null;
     }
 
+    // ------------------------------  EXTINCT SPECIES PAGES  ------------------------------ //
     /**
-    * Create Species object for extinct in the wild animals
-    * @param commonName: the common name scraped from the webpage
-    * @param imageLink: image link scraped from the webpage
-    * @param scientificName: binomial or trinomial name scraped from the webpage
-    * @param url: url that contains the table for citation
-    * @return Species object with filled fields, or null if incomplete
-    */
-    private static Species processExtinct(String commonName, String imageLink, String scientificName, String url) {
+     * Scrapes EXTINCT_URL to get a list of all the URLs with information about species.
+     * The returned URLs direct to individual species pages, rather than a table.
+     * Page Structure:
+     *   <ul>
+     *     <li><a href="LINK"></a>[Text]</li>
+     *     <li><a href="LINK"></a>[Text]</li>
+     *   </ul>
+     *
+     * @return List of all the URLs to go to
+     */
+    private static List<String> parseExtinctList() throws IOException {
+        Document doc = Jsoup.connect(EXTINCT_URL).get();
+        Elements content = doc.getElementsByClass(LIST_CONTENT_CLASS);
+        Elements listItems = content.select("ul > li"); // get list items that are in a nested ul
+        List<String> urls = new ArrayList<String>();
+
+        boolean reachedSpecies = false;
+        for (Element listItem: listItems) {
+            if (listItem.text().contains("Alagoas curassow")) {
+                reachedSpecies = true;
+            }
+
+            // Ignore other list elements
+            if (!reachedSpecies) {
+                continue;
+            }
+
+            // Stop after 19 species urls because there are other urls that share the format
+            if (urls.size() == 19) {
+                break;
+            }
+
+            // Gets the absolute link to the new wiki page
+            // Example: https://en.wikipedia.org/wiki/Alagoas_curassow
+            Element link = listItem.select("a").first();
+            String absHref = link.attr("abs:href");
+            urls.add(absHref);
+        }
+        return urls;
+    }
+
+    /**
+     * Add information from individual species page per url into Datastore
+     * @param url: url to parse the webpage for
+     */
+    private static void parseSpeciesPage(String url) throws IOException {
+        Document doc = Jsoup.connect(url).get();
+        String commonName, imageLink, scientificName;
+
+        // Extract common name
+        Element commonEl = doc.getElementsByClass("firstHeading").first();
+        commonName = commonEl.text().trim();
+
+        // Extract image link
+        Element image = doc.select("img").first();
+        imageLink = scrapeImageLink(image);
+        
+        // Extract scientific name
+        Element binomial = doc.getElementsByClass("binomial").first();
+        if (binomial == null) {
+            Element trinomial = doc.getElementsByClass("trinomial").first();
+            if (trinomial != null) {
+                scientificName = trinomial.text().trim();
+            } else {
+                scientificName = null;
+            }
+        } else {
+            scientificName = binomial.text().trim();
+        }
+
+        Species species = createExtinctSpecies(commonName, imageLink, scientificName, url);
+        if (species == null || !speciesAlreadyStored(species.getBinomialName())) {
+            addApiInfo(species);
+            addSpeciesToDatastore(species);
+        }
+    }
+
+    /**
+     * Create Species object for extinct in the wild animals
+     * @param commonName: the common name scraped from the webpage
+     * @param imageLink: image link scraped from the webpage
+     * @param scientificName: binomial or trinomial name scraped from the webpage
+     * @param url: url that contains the table for citation
+     * @return Species object with filled fields, or null if incomplete
+     */
+    private static Species createExtinctSpecies(String commonName, String imageLink, String scientificName, String url) {
         Species species = new Species.Builder()
                             .withCommonName(commonName)
                             .withBinomialName(scientificName)
@@ -333,23 +315,39 @@ public class DataCollection {
         return species;
     }
 
+    // ------------------------------  API INFORMATION  ------------------------------ //
     /**
-    * Checks if the species is already in Datastore
-    * @return true if already stored, false otherwise
-    */
-    private static boolean speciesAlreadyStored(String binomialName) {
-        Key key = keyFactory.newKey(binomialName);
-        Entity speciesEntity = datastore.get(key);
-        return speciesEntity != null;
+     * Retrieve API_KEY from api_auth.txt file
+     * @return API_KEY
+     */
+    private static String getKey() {
+        try {
+            File file = new File(API_AUTH_PATH);
+            Scanner sc = new Scanner(file);
+            String key = sc.nextLine();
+            return key;
+        }
+        catch (FileNotFoundException f) {
+            System.out.println("Exception: API_AUTH file not found");
+            return null;
+        }
     }
 
     /**
-    * Retrieves apiMap for the passed species and adds additional info to species from GBIF and 
-    * Knowledge Graph API
-    * @param species: non-null species that isn't already stored in Datastore
-    */
+     * Retrieves apiMap for the passed species and adds additional info to species from GBIF and 
+     * Knowledge Graph API
+     * @param species: non-null species that isn't already stored in Datastore
+     */
     public static void addApiInfo(Species species) {
-        // Add GBIF API-side fields if available
+        addTaxonomyInfo(species);
+        addNarrativeInfo(species);
+    }
+
+    /**
+     * Adds additional taxonomy information about each species from GBIF
+     * @param species: non-null species that isn't already stored in Datastore
+     */
+    public static void addTaxonomyInfo(Species species) {
         try {
             String gbifDataJSON = SpeciesAPIRetrieval.getJSON(DATA_URL, species.getBinomialName());
             Map gbifDataMap = SpeciesAPIRetrieval.convertJSONToMap(gbifDataJSON);
@@ -359,8 +357,13 @@ public class DataCollection {
             System.err.println(ERROR_STRING + e);
             e.printStackTrace();
         }
+    }
 
-        // Add Knowledge Graph API-side fields if available
+    /**
+     * Adds additional narrative information about each species from Knowledge Graph API
+     * @param species: non-null species that isn't already stored in Datastore
+     */
+    public static void addNarrativeInfo(Species species) {
         try {
             String kgDataJSONString = SpeciesAPIRetrieval.getJSON(KG_URL, species.getBinomialName());
             SpeciesAPIRetrieval.addKGInfo(species, kgDataJSONString);
@@ -371,6 +374,10 @@ public class DataCollection {
         }
     }
 
+    /**
+     * Adds additional geographical information about each species from GBIF
+     * @param species: non-null species that isn't already stored in Datastore
+     */
     public static void addGeoInfo(Species species) {
         try {
             String apiGeoJSON = SpeciesAPIRetrieval.getJSON(GEO_URL, species.getBinomialName());
@@ -382,10 +389,21 @@ public class DataCollection {
         }
     }
 
+    // ------------------------------  DATASTORE  ------------------------------ //
     /**
-    * Store species in Datastore
-    * @param species: species to store
-    */
+     * Checks if the species is already in Datastore
+     * @return true if already stored, false otherwise
+     */
+    private static boolean speciesAlreadyStored(String binomialName) {
+        Key key = keyFactory.newKey(binomialName);
+        Entity speciesEntity = datastore.get(key);
+        return speciesEntity != null;
+    }
+
+    /**
+     * Store species in Datastore
+     * @param species: species to store
+     */
     public static void addSpeciesToDatastore(Species species) {
         Key key = keyFactory.newKey(species.getBinomialName());
         Entity oldEntity = datastore.get(key);
@@ -414,7 +432,6 @@ public class DataCollection {
                 speciesEntity = Entity.newBuilder(speciesEntity).set("order", "Not Available").build();
                 speciesEntity = Entity.newBuilder(speciesEntity).set("family", "Not Available").build();
                 speciesEntity = Entity.newBuilder(speciesEntity).set("genus", "Not Available").build();
-        
             }
     
             if (species.getTrend() != null) {
@@ -437,13 +454,13 @@ public class DataCollection {
     // ------------------------------  SCRAPING HELPER FUNCTIONS  ------------------------------ //
 
     /**
-    * Takes in the status information from wikipedia and cleans it.
-    * 
-    * The first two letters are its status according to IUCN and then a parenthesis holds its 
-    * wikipedia reference number. An edge case is "Domesticated" being written out, which is
-    * rewritten as "DO" to match the others.
-    * @param statusString string formatted like EN[#] that needs to be cleaned
-    */
+     * Takes in the status information from wikipedia and cleans it.
+     * 
+     * The first two letters are its status according to IUCN and then a parenthesis holds its 
+     * wikipedia reference number. An edge case is "Domesticated" being written out, which is
+     * rewritten as "DO" to match the others.
+     * @param statusString string formatted like EN[#] that needs to be cleaned
+     */
     private static String scrapeStatus(String statusString) {
         String status = statusString.replaceAll("Domesticated", "DO");
         status = removeBrackets(status);
@@ -454,13 +471,13 @@ public class DataCollection {
     }
 
     /**
-    * Takes in the population information from wikipedia and cleans it.
-    * 
-    * Input comes in two main formats (excluding any commas or white space characters):
-    *    1. a[b] where a is the population count and b is the reference number
-    *    2. a-b[c] where a is the lower bound population, b is the upper bound, and c is the reference number
-    * @param populationString string that needs to be cleaned
-    */
+     * Takes in the population information from wikipedia and cleans it.
+     * 
+     * Input comes in two main formats (excluding any commas or white space characters):
+     *    1. a[b] where a is the population count and b is the reference number
+     *    2. a-b[c] where a is the lower bound population, b is the upper bound, and c is the reference number
+     * @param populationString string that needs to be cleaned
+     */
     private static String scrapePopulation(String populationString) {
         String pop = removeBrackets(populationString);
         pop = pop.replaceAll("[^0-9.–-]", ""); // remove any characters other than numbers and '-'
@@ -468,12 +485,12 @@ public class DataCollection {
     }
 
     /**
-    * Takes in the trendImg element from wikipedia and extracts the trend
-    * 
-    * If the species has trend information, the format is:
-    *    <img alt="TREND" src="image" title="TREND">
-    * @param trendImg html for the trend box in the table
-    */
+     * Takes in the trendImg element from wikipedia and extracts the trend
+     * 
+     * If the species has trend information, the format is:
+     *    <img alt="TREND" src="image" title="TREND">
+     * @param trendImg html for the trend box in the table
+     */
     private static PopulationTrend scrapeTrend(Element trendImg) {
         String trend;
         if (trendImg != null) {
@@ -485,27 +502,26 @@ public class DataCollection {
     }
 
     /**
-    * Takes in content of the scientific name cell from wikipedia and extracts the binomial name.
-    *
-    * Example: Balaena mysticetus Linnaeus, 1758 -> Balaena mysticetus
-    * @param scientificName content of the scientific name cell
-    */
+     * Takes in content of the scientific name cell from wikipedia and extracts the binomial name.
+     *
+     * Example: Balaena mysticetus Linnaeus, 1758 -> Balaena mysticetus
+     * @param scientificName content of the scientific name cell
+     */
     private static String scrapeBinomial(String scientificName) {
         String[] nameArray = scientificName.split(" ");
         String result = nameArray[0] + " " + nameArray[1];
-        // System.out.println("before: " + scientificName + " ===== after : " + result);
         return result;
     }
 
     /**
-    * Takes in the image element from wikipedia and extracts the url
-    * 
-    * If the species has an image, the format is:
-    *    <img src="IMAGE_URL" srcset="IMAGE_URL 1.5x, IMAGE_URL 2x">
-    * Example format:
-    *    <img src="//upload.wikimedia.org/image.jpg" srcset="//upload.wikimedia.org/image.jpg 1.5x, //upload.wikimedia.org/image.jpg 2x">
-    * @param trendImg html for the species image in the table
-    */
+     * Takes in the image element from wikipedia and extracts the url
+     * 
+     * If the species has an image, the format is:
+     *    <img src="IMAGE_URL" srcset="IMAGE_URL 1.5x, IMAGE_URL 2x">
+     * Example format:
+     *    <img src="//upload.wikimedia.org/image.jpg" srcset="//upload.wikimedia.org/image.jpg 1.5x, //upload.wikimedia.org/image.jpg 2x">
+     * @param trendImg html for the species image in the table
+     */
     private static String scrapeImageLink(Element image) {
         if (image == null) {
             return null;
@@ -530,6 +546,11 @@ public class DataCollection {
         return imageLink;
     }
 
+    /**
+     * Convert a string into a PopulationTrend
+     * @param trendString: scraped string from Wikipedia to be converted
+     * @return corresponding PopulationTrend, UNKNOWN otherwise
+     */
     public static PopulationTrend convertToPopulationTrendEnum(String trendString) {
         try {
             return PopulationTrend.valueOf(trendString.trim().toUpperCase());
@@ -538,23 +559,33 @@ public class DataCollection {
         }
     }
 
+    /**
+     * Removes all characters between square brackets.
+     * For example) "CR[10]" --> "CR"
+     * @param og: string to convert
+     * @return cleaned string without reference
+     */
     private static String removeBrackets(String og) {
         return og.replaceAll("\\s*\\[[^\\]]*\\]\\s*", " ");
     }
 
+    /** 
+     * Converts wikipedia population string to a long. If string comes in range, returns average
+     * @param populationString: string to convert, formatted like "1" or "1-2"
+     * @return populationString as a long
+     */
     private static long convertPopulationLong(String populationString) {
-        String popValues[]= populationString.split("–|-");
+        String popValues[] = populationString.split("–|-");
         try {
             if (popValues.length == 1) {
                 return Long.parseLong(populationString);
-            }
-            else {
+            } else {
                 long popAverage = (Long.parseLong(popValues[0]) + Long.parseLong(popValues[1])) / 2;
                 return popAverage;
             }
         }
         catch (NumberFormatException n) {
-            // System.out.println("Error: Wikipedia population '" + populationString + "' had incorrect format.");
+            System.out.println("Error: Wikipedia population '" + populationString + "' had incorrect format.");
             return -1;
         }
     }
