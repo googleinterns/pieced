@@ -16,7 +16,6 @@ $(document).ready(function() {
     $grid.masonry({
         itemSelector: '.grid-item',
         percentPosition: true,
-        // horizontalOrder: true,
         columnWidth: '.grid-sizer'
     });
 
@@ -213,7 +212,7 @@ function addFilterToListUI(class_name) {
  * Clears the search form
  */
 function clearSearchForm() {
-    document.getElementById('species-search').value='';
+    document.getElementById('species-search').value = '';
 }
 
 var inputLength = 0;
@@ -240,17 +239,17 @@ function searchName() {
  * Helper function for search filtering
 */ 
 function filterByName(filter) {
-        var input = document.getElementById("species-search");
-        var filter = input.value.toUpperCase();
-        var grid_item = grid.getElementsByClassName("grid-filters");
+    var input = document.getElementById("species-search");
+    var filter = input.value.toUpperCase();
+    var grid_item = grid.getElementsByClassName("grid-filters");
 
-        for (var i = 0; i < grid_item.length; i++) {
-            var name = grid_item[i].getElementsByTagName("a")[0].innerText;
-            if (name.toUpperCase().indexOf(filter) <= -1) {
-                grid_item[i].style.display = "none";
-            } else if (grid_item[i].style.display != "none") {  // make sure we don't reveal species that are already filtered out
-                grid_item[i].style.display = "block";
-            }
+    for (var i = 0; i < grid_item.length; i++) {
+        var name = grid_item[i].getElementsByTagName("a")[0].innerText;
+        if (name.toUpperCase().indexOf(filter) <= -1) {
+            grid_item[i].style.display = "none";
+        } else if (grid_item[i].style.display != "none") {  // make sure we don't reveal species that are already filtered out
+            grid_item[i].style.display = "block";
         }
-        $grid.masonry('layout');
+    }
+    $grid.masonry('layout');
 }

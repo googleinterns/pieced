@@ -1,74 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="styles/species.css">
-    <link rel="stylesheet" href="styles/style.css">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="styles/species.css">
+        <link rel="stylesheet" href="styles/style.css">
 
-  </head>
+    </head>
   
-  <body>
-    <div id="navigation"></div>
-    <a class="anchor"></a>
+    <body>
+        <div id="navigation"></div>
 
-    <!--------------- CONTENT ---------------->
-    <div class="container page-header content">
-        <a href="/#gallery-anchor" class="previous">&laquo;</a>
-        <div class="row">
-            <div id="species-image-container" class="col col-xs-6">
-                <canvas onmouseover="animateToFullResolution()" onmouseout="animateToOldResolution()" id="canvas" height = "550" width = "550"> </canvas>
-                <img id="species-image" class="image" alt = "Placeholder" style="display: none;">
-            </div>
-            <div class="col col-xs-3 col-sm-offset-4 species-info-box">
-                <!-- <div class="species-status">
-                    <p id="status-container"></p>
-                </div> -->
-                <div class="main-species-info">
-                    <div class="species-name">
-                        <h1 id="common-name-container"></h1>
-                        <h2 id="scientific-name-container"></h2>
-                    </div>
-                    <p id="population-container"></p>
-                    <p>This species is considered <b><span id="status-container"></span></b>. 
-                        <span id="description-container"></span>
-                    </p>
-                    <!-- <p id="description-container"></p> -->
-                    <p id="taxonomy-container"></p>
-                    <!-- <div id="slider-container">
-                        <input type="range" min="1" class="slider" id="population-slider">
-                        <small>The image is made with approximately <span id="slider-value"></span> pixels.</small>
-                    </div> -->
-                    <div id="population">
-                        <label id="pixel_label" for="pixel_factor">Number of pixels: </label>
-                        <input id="pixel_factor" type="number" min="1" value="120">
-                        <button class="btn solid-btn" type="button" id="reset-population">Reset Population</button>
-                    </div>
-                    <!-- <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Number of pixels:</span>
+        <!--------------- CONTENT ---------------->
+        <div class="container page-header">
+            <a href="/#gallery-anchor" class="previous">&laquo;</a>
+            <div class="row">
+                <!-- IMAGE -->
+                <div id="species-image-container" class="col col-xs-6">
+                    <canvas onmouseover="animateToFullResolution()" onmouseout="animateToOldResolution()" id="canvas" height = "550" width = "550"> </canvas>
+                    <img id="species-image" class="image" alt = "Placeholder" style="display: none;">
+                </div>
+
+                <!-- INFO -->
+                <div class="col col-xs-3 col-sm-offset-4 species-info-box">
+                    <div class="main-species-info">
+                        <div class="species-name">
+                            <h1 id="common-name-container"></h1>
+                            <h2 id="scientific-name-container"></h2>
                         </div>
-                        <input id="pixel_factor" type="number" min="1" class="form-control" aria-label="Num pixels">
-                        <div class="input-group-append">
-                            <button id="reset-population" class="btn" type="button">Reset Population</button>
+                        <p id="population-container"></p>
+                        <p>This species is considered <b><span id="status-container"></span></b>. 
+                            <span id="description-container"></span>
+                        </p>
+                        <p id="taxonomy-container"></p>
+                        <div id="population">
+                            <label id="pixel_label" for="pixel_factor">Number of pixels: </label>
+                            <input id="pixel_factor" type="number" min="1" value="120">
+                            <button class="btn solid-btn" type="button" id="reset-population">Reset Population</button>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
             </div>
+            <p id="image-credit"></p>
         </div>
-        <p id="image-credit"></p>
-    </div>
 
-    <!-- JavaScript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+        <!-- JavaScript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+        <script src="bootstrap/js/bootstrap.min.js"></script>
 
-    <script src="scripts/pixelation.js"></script>
-    <script src="scripts/fetchData.js"></script>
-    <script src="scripts/script.js"></script>
-    <script src="scripts/species.js"></script>
-  </body>
+        <script src="scripts/pixelation.js"></script>
+        <script src="scripts/fetchData.js"></script>
+        <script src="scripts/script.js"></script>
+        <script src="scripts/species.js"></script>
+    </body>
 </html>

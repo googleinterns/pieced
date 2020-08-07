@@ -3,14 +3,17 @@ package com.google.sps.utils.data;
 import com.google.gson.Gson;
 import com.google.sps.utils.data.Species;
 import com.google.sps.utils.data.TaxonomicPath;
+
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.io.UnsupportedEncodingException;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -38,16 +41,15 @@ public class SpeciesAPIRetrieval {
     private static String encode(String url) {
         try {
             return URLEncoder.encode(url, StandardCharsets.UTF_8.toString());
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e.getCause());
         }
     }
 
     /**
-    * Will be used to convert API JSON to a Map for easier access
-    * @return converted map of JSON, or null if incorrect JSON format
-    */
+     * Will be used to convert API JSON to a Map for easier access
+     * @return converted map of JSON, or null if incorrect JSON format
+     */
     public static Map convertJSONToMap(String jsonString) {
         Gson gson = new Gson();
         Map map = gson.fromJson(jsonString, Map.class);
@@ -63,9 +65,9 @@ public class SpeciesAPIRetrieval {
     }
 
     /**
-    * Will be used to convert API JSON to a Map for easier access
-    * @return converted map of JSON, or null if incorrect JSON format
-    */
+     * Will be used to convert API JSON to a Map for easier access
+     * @return converted map of JSON, or null if incorrect JSON format
+     */
     public static HashMap convertGeoToMap(String jsonString) {
         Gson gson = new Gson();
         HashMap map = gson.fromJson(jsonString, HashMap.class);
@@ -73,10 +75,10 @@ public class SpeciesAPIRetrieval {
     }
 
     /**
-    * Updates Species with fields from converted JSON map from GBIF 
-    * @param species: species to add fields to
-    * @param apiMap: map of the JSON returned from API call to this species
-    */
+     * Updates Species with fields from converted JSON map from GBIF 
+     * @param species: species to add fields to
+     * @param apiMap: map of the JSON returned from API call to this species
+     */
     public static void addGBIFInfo(Species species, Map apiMap) {
         if (species == null) {
             return;
@@ -101,10 +103,10 @@ public class SpeciesAPIRetrieval {
     }
 
     /**
-    * Updates Species with fields from converted JSON map from Knowledge Graph 
-    * @param species: species to add fields to
-    * @param jsonString: JSON string returned from API call to this species
-    */
+     * Updates Species with fields from converted JSON map from Knowledge Graph 
+     * @param species: species to add fields to
+     * @param jsonString: JSON string returned from API call to this species
+     */
     public static void addKGInfo(Species species, String jsonString) {
         if (species == null) {
             return;
@@ -133,10 +135,10 @@ public class SpeciesAPIRetrieval {
     }
   
     /**
-    * Updates Species with geographical coordinates from converted JSON map
-    * @param species: species to add fields to
-    * @param apiMap: map of the JSON returned from API call to this species
-    */
+     * Updates Species with geographical coordinates from converted JSON map
+     * @param species: species to add fields to
+     * @param apiMap: map of the JSON returned from API call to this species
+     */
     public static void addAPIGeoInfo(Species species, Map apiMap) {
         if (species == null) {
             return;

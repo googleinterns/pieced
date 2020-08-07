@@ -1,4 +1,7 @@
-/**************** CONTENT *******************/
+.action-header {
+    background-image: url('https://images.unsplash.com/photo-1500064171035-d88a47d65074?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1082&q=80');
+}
+
 .citations-list {
     list-style-type: none;
 }
