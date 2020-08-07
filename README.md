@@ -57,6 +57,6 @@ mvn exec:java
 ```
 
 ## License
-Apache License 2.0
+[Apache License 2.0](LICENSE.md)
 
 Copyright 2020 Fiza Goyal, Ariana Zhu, Maxwell Chen
