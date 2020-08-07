@@ -21,24 +21,16 @@ function populatePageWithSpeciesData(speciesData) {
     var populationContainer     = document.getElementById('population-container');
     var statusContainer         = document.getElementById('status-container');
     var descriptionContainer    = document.getElementById('description-container');
-    // var citationsContainer      = document.getElementById('citations-container');
     var img                     = document.getElementById('species-image');
     var imageCreditContainer    = document.getElementById('image-credit');
     var pixelSlider             = document.getElementById('pixel_factor');
     var taxonomyContainer       = document.getElementById('taxonomy-container');
-    // var kingdomContainer        = document.getElementById('kingdom-container');
-    // var phylumContainer         = document.getElementById('phylum-container');
-    // var classContainer          = document.getElementById('class-container');
-    // var orderContainer          = document.getElementById('order-container');
-    // var familyContainer         = document.getElementById('family-container');
-    // var genusContainer          = document.getElementById('genus-container');
 
     commonNameContainer.innerText = speciesData.commonName;
     scientificNameContainer.innerText = speciesData.binomialName;
     populationContainer.innerText = speciesData.population + " left";
     statusContainer.innerText = getSpeciesStatus(speciesData.status);
     descriptionContainer.innerText = speciesData.wikipediaNotes;
-    // citationsContainer.innerText = speciesData.citationLink;
     img.src = speciesData.imageLink;
 
     var citation = `<a href=${speciesData.citationLink}>&copy Wikipedia</a>`;
@@ -53,19 +45,11 @@ function populatePageWithSpeciesData(speciesData) {
                                  ${speciesData.taxonomicPath.family_t} > 
                                  ${speciesData.taxonomicPath.genus_t}</b>`;
         taxonomyContainer.innerHTML = taxonomyString;
-        // kingdomContainer.innerText = speciesData.taxonomicPath.kingdom_t;
-        // phylumContainer.innerText = speciesData.taxonomicPath.phylum_t;
-        // classContainer.innerText = speciesData.taxonomicPath.class_t;
-        // orderContainer.innerText = speciesData.taxonomicPath.order_t;
-        // familyContainer.innerText = speciesData.taxonomicPath.family_t;
-        // genusContainer.innerText = speciesData.taxonomicPath.genus_t;
     }
 
     // Manipulate pixelation value based on species population
     pixelSlider.max = img.width * img.height;
     var pop = speciesData.population;
-    // console.log("img.width * img.height = " + pixelSlider.max + " population = " + pop);
-    // console.log("natural width * height: " + img.naturalWidth * img.naturalHeight);
     pixelSlider.value = (pop === undefined) ? pixelSlider.max : Math.min(pop, pixelSlider.max);
 
     var ctx = canvas.getContext('2d');
@@ -74,7 +58,6 @@ function populatePageWithSpeciesData(speciesData) {
     ctx.webkitImageSmoothingEnabled = false;
     ctx.imageSmoothingEnabled = false;
 
-    // sliderSetup(speciesData.population, img.width * img.height);
     pixelSetup();
 }
 
@@ -103,16 +86,3 @@ function capitalizeSpeciesName(name) {
     capitalizedName = capitalizedArray.join(' ');
     return capitalizedName;
 }
-
-// function sliderSetup(population, maxPopulation) {
-//     var slider = document.getElementById("population-slider");
-//     var output = document.getElementById("slider-value");
-    
-//     slider.value = population;
-//     slider.max = maxPopulation;
-//     output.innerHTML = slider.value;
-    
-//     slider.oninput = function() {
-//         output.innerHTML = this.value;
-//     }
-// }
