@@ -7,7 +7,15 @@ PIECED aims to visualize the declining populations of different species and high
 
 Inspired by the 2008 WWF Japan Campaign [Population By Pixel](https://www.boredpanda.com/endagered-animals-pixels-extinction/?utm_source=google&utm_medium=organic&utm_campaign=organic), our project highlights population disparities by pixelating species images based on the number of individuals left. We manipulated CSS filters to alter image blurring and smoothing, giving us a controllable pixelation effect where the number of pixels in the image is approximately equal to the estimated population of a given species. We also added animations to transition between the original, full-resolution image and its pixelated counterpart.
 
-![Pixelation Demo](/images/macaw-x3.gif)
+<p align="center">
+  <img height="150px" alt="Pixelation Demo" src="/images/macaw-x3.gif">
+</p>
+
+<!-- <p float="left" align="center">
+  <img src="/images/macaw-x3.gif" width="200" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="/images/macaw-x3.gif" width="200" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="/images/macaw-x3.gif" width="200" />
+</p> -->
 
 ## Meet the Team
 PIECED was developed by Fiza ([@fgoyal](https://github.com/fgoyal)),
